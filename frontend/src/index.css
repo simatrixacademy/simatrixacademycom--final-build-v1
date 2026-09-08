@@ -612,3 +612,14 @@ html {
   border-radius: 9px;
 }
 *::-webkit-scrollbar-thumb:hover { background: rgba(202, 138, 4, 0.5); }
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

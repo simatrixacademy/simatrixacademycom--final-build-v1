@@ -304,145 +304,145 @@ export default function Navbar() {
     >
       <div
         ref={navRef}
-        className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+        className="relative mx-auto flex h-16 max-w-[1440px] 2xl:max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10"
       >
-        {/* Brand Logo */}
-        <Link
-          to="/"
-          className="flex items-center transition-opacity duration-150 hover:opacity-90"
-          aria-label="Simatrix Academy Home"
-        >
-          <img
-            src="/darkMode-without-tagline.svg"
-            alt="Simatrix Academy"
-            className="h-10 sm:h-11 w-auto object-contain transition-transform duration-150 group-hover:scale-105"
-          />
-        </Link>
-
-        {/* Desktop Navigation Links */}
-        <nav
-          onMouseLeave={() => setHoveredNav(null)}
-          className="hidden items-center gap-7 lg:flex xl:gap-8"
-        >
-          <NavLink
+        {/* Left Section: Brand Logo + Desktop Nav Links */}
+        <div className="flex items-center gap-8 xl:gap-10">
+          {/* Brand Logo */}
+          <Link
             to="/"
-            end
-            onMouseEnter={() => setHoveredNav("home")}
-            className={`relative py-1 text-sm font-medium transition-colors ${
-              showHomeIndicator
-                ? "font-semibold text-slate-950"
-                : "text-slate-600 hover:text-slate-950"
-            }`}
+            className="flex shrink-0 items-center transition-opacity duration-150 hover:opacity-90"
+            aria-label="Simatrix Academy Home"
           >
-            <span>Home</span>
-            <span
-              aria-hidden="true"
-              className={`absolute -bottom-2.5 left-0 right-0 h-0.5 rounded-full bg-blue-600 transition-all duration-200 ${
+            <img
+              src="/darkMode-without-tagline.svg"
+              alt="Simatrix Academy"
+              className="h-10 sm:h-11 w-auto object-contain transition-transform duration-150 group-hover:scale-105"
+            />
+          </Link>
+
+          {/* Desktop Navigation Links */}
+          <nav
+            onMouseLeave={() => setHoveredNav(null)}
+            className="hidden items-center gap-6 lg:flex xl:gap-7"
+          >
+            <NavLink
+              to="/"
+              end
+              onMouseEnter={() => setHoveredNav("home")}
+              className={`relative py-1 text-sm font-medium transition-colors ${
                 showHomeIndicator
-                  ? "opacity-100 scale-x-100"
-                  : "opacity-0 scale-x-0 pointer-events-none"
+                  ? "font-semibold text-slate-950"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
-            />
-          </NavLink>
+            >
+              <span>Home</span>
+              <span
+                aria-hidden="true"
+                className={`absolute -bottom-2.5 left-0 right-0 h-0.5 rounded-full bg-blue-600 transition-all duration-200 ${
+                  showHomeIndicator
+                    ? "opacity-100 scale-x-100"
+                    : "opacity-0 scale-x-0 pointer-events-none"
+                }`}
+              />
+            </NavLink>
 
-          {/* Trigger 1: Courses */}
-          <button
-            ref={triggerRefs.courses}
-            type="button"
-            onMouseEnter={() => handleTriggerEnter("courses")}
-            onMouseLeave={handleTriggerLeave}
-            onClick={() => toggleMenu("courses")}
-            aria-expanded={activeMenu === "courses"}
-            className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
-              activeMenu === "courses" || pathname.startsWith("/courses")
-                ? "font-semibold text-slate-950"
-                : "text-slate-600 hover:text-slate-950"
-            }`}
-          >
-            <span>Courses</span>
-            <i
-              className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
-                activeMenu === "courses" ? "rotate-180 text-blue-600 font-bold" : ""
+            {/* Trigger 1: Courses */}
+            <button
+              ref={triggerRefs.courses}
+              type="button"
+              onMouseEnter={() => handleTriggerEnter("courses")}
+              onMouseLeave={handleTriggerLeave}
+              onClick={() => toggleMenu("courses")}
+              aria-expanded={activeMenu === "courses"}
+              className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
+                activeMenu === "courses" || pathname.startsWith("/courses")
+                  ? "font-semibold text-slate-950"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
-            />
-          </button>
+            >
+              <span>Courses</span>
+              <i
+                className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
+                  activeMenu === "courses" ? "rotate-180 text-blue-600 font-bold" : ""
+                }`}
+              />
+            </button>
 
-          {/* Trigger 2: About */}
-          <button
-            ref={triggerRefs.about}
-            type="button"
-            onMouseEnter={() => handleTriggerEnter("about")}
-            onMouseLeave={handleTriggerLeave}
-            onClick={() => toggleMenu("about")}
-            aria-expanded={activeMenu === "about"}
-            className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
-              activeMenu === "about" ||
-              pathname.startsWith("/about") ||
-              pathname === "/awards" ||
-              pathname === "/gallery"
-                ? "font-semibold text-slate-950"
-                : "text-slate-600 hover:text-slate-950"
-            }`}
-          >
-            <span>About</span>
-            <i
-              className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
-                activeMenu === "about" ? "rotate-180 text-blue-600 font-bold" : ""
+            {/* Trigger 2: About */}
+            <button
+              ref={triggerRefs.about}
+              type="button"
+              onMouseEnter={() => handleTriggerEnter("about")}
+              onMouseLeave={handleTriggerLeave}
+              onClick={() => toggleMenu("about")}
+              aria-expanded={activeMenu === "about"}
+              className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
+                activeMenu === "about" ||
+                pathname === "/about" ||
+                pathname === "/mission" ||
+                pathname === "/awards" ||
+                pathname === "/gallery"
+                  ? "font-semibold text-slate-950"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
-            />
-          </button>
+            >
+              <span>About</span>
+              <i
+                className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
+                  activeMenu === "about" ? "rotate-180 text-blue-600 font-bold" : ""
+                }`}
+              />
+            </button>
 
-          {/* Trigger 3: Career & Placement */}
-          <button
-            ref={triggerRefs.support}
-            type="button"
-            onMouseEnter={() => handleTriggerEnter("support")}
-            onMouseLeave={handleTriggerLeave}
-            onClick={() => toggleMenu("support")}
-            aria-expanded={activeMenu === "support"}
-            className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
-              activeMenu === "support" ||
-              [
-                "/placement",
-                "/career-guidance",
-                "/appointment",
-                "/reviews",
-                "/interview-resources",
-                "/blog",
-                "/help-center",
-              ].includes(pathname)
-                ? "font-semibold text-slate-950"
-                : "text-slate-600 hover:text-slate-950"
-            }`}
-          >
-            <span>Career & Placement</span>
-            <i
-              className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
-                activeMenu === "support" ? "rotate-180 text-blue-600 font-bold" : ""
+            {/* Trigger 3: Career & Placement */}
+            <button
+              ref={triggerRefs.support}
+              type="button"
+              onMouseEnter={() => handleTriggerEnter("support")}
+              onMouseLeave={handleTriggerLeave}
+              onClick={() => toggleMenu("support")}
+              aria-expanded={activeMenu === "support"}
+              className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
+                activeMenu === "support" ||
+                pathname === "/placement" ||
+                pathname === "/career-guidance" ||
+                pathname === "/resume-building" ||
+                pathname === "/interview-resources"
+                  ? "font-semibold text-slate-950"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
-            />
-          </button>
+            >
+              <span>Career & Placement</span>
+              <i
+                className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
+                  activeMenu === "support" ? "rotate-180 text-blue-600 font-bold" : ""
+                }`}
+              />
+            </button>
 
-          <NavLink
-            to="/contact"
-            onMouseEnter={() => setHoveredNav("contact")}
-            className={`relative py-1 text-sm font-medium transition-colors ${
-              showContactIndicator
-                ? "font-semibold text-slate-950"
-                : "text-slate-600 hover:text-slate-950"
-            }`}
-          >
-            <span>Contact</span>
-            <span
-              aria-hidden="true"
-              className={`absolute -bottom-2.5 left-0 right-0 h-0.5 rounded-full bg-blue-600 transition-all duration-200 ${
-                showContactIndicator
-                  ? "opacity-100 scale-x-100"
-                  : "opacity-0 scale-x-0 pointer-events-none"
+            {/* Direct Link: Contact */}
+            <NavLink
+              to="/contact"
+              onMouseEnter={() => setHoveredNav("contact")}
+              className={`relative py-1 text-sm font-medium transition-colors ${
+                pathname === "/contact" && !activeMenu && hoveredNav !== "actions"
+                  ? "font-semibold text-slate-950"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
-            />
-          </NavLink>
-        </nav>
+            >
+              <span>Contact</span>
+              <span
+                aria-hidden="true"
+                className={`absolute -bottom-2.5 left-0 right-0 h-0.5 rounded-full bg-blue-600 transition-all duration-200 ${
+                  pathname === "/contact" && !activeMenu && hoveredNav !== "actions"
+                    ? "opacity-100 scale-x-100"
+                    : "opacity-0 scale-x-0 pointer-events-none"
+                }`}
+              />
+            </NavLink>
+          </nav>
+        </div>
 
         {/* Right Actions: WhatsApp + Divider + Phone + Smaller Cleaner CTA */}
         <div
@@ -475,7 +475,7 @@ export default function Navbar() {
 
           <Link
             to="/contact"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#0070e0] px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition-all duration-150 hover:bg-[#0060c0] active:translate-y-0"
+            className="ml-4 xl:ml-6 inline-flex items-center gap-1.5 rounded-lg bg-[#0070e0] px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition-all duration-150 hover:bg-[#0060c0] active:translate-y-0"
           >
             <span>Get Course Details</span>
             <i className="ti ti-arrow-right text-xs" />

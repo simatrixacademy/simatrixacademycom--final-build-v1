@@ -14,6 +14,7 @@ const HERO_BANNERS = [
   {
     id: "banner-offer-20",
     src: "/banner/REF1.png",
+    mobileSrc: "/banner/REF1_MOBILE.png",
     alt: "September Special Offer: Get 20% OFF Full Stack & AI Courses with hands-on projects and expert mentors",
     to: "/courses",
     title: "Get 20% OFF Full Stack & AI Courses",
@@ -21,6 +22,7 @@ const HERO_BANNERS = [
   {
     id: "banner-learn-build",
     src: "/banner/REF2.png",
+    mobileSrc: "/banner/REF2_MOBILE.png",
     alt: "Learn Today, Build Tomorrow: Industry-oriented IT training programs with live classes and placement support",
     to: "/courses",
     title: "Learn Today. Build Tomorrow.",
@@ -28,17 +30,10 @@ const HERO_BANNERS = [
   {
     id: "banner-lead-tomorrow",
     src: "/banner/REF3.png",
+    mobileSrc: "/banner/REF3_MOBILE.png",
     alt: "Learn Today, Lead Tomorrow: Practical learning and placement assistance from industry experts",
     to: "/career-guidance",
     title: "Learn Today. Lead Tomorrow.",
-  },
-  {
-    id: "banner-learn-without-limits",
-    src: "/banner/REF4.png",
-    mobileSrc: "/banner/REF4_MOBILE.png",
-    alt: "Learn Without Limits: Start Your Journey Toward a Successful Career in Technology",
-    to: "/contact",
-    title: "Learn Without Limits",
   },
 ];
 
@@ -343,35 +338,17 @@ function CourseTile({ course }) {
       to={`/courses/${course.slug}`}
       className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/80 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-blue-500"
     >
-      {/* Top Banner with Image in the Background & Gradient Overlay */}
-      <div className="relative aspect-[16/8] w-full overflow-hidden bg-slate-900 p-4 flex items-center justify-between">
+      {/* Top Banner with Clean Normal Image */}
+      <div className="relative aspect-[16/8] w-full overflow-hidden bg-slate-100">
         <img
           src={courseImg}
-          alt=""
-          aria-hidden="true"
+          alt={course.title}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/60 to-slate-950/70"
-        />
-
-        {/* Badges & Icons floating cleanly over the background image */}
-        <div className="relative z-10 pr-2">
-          <span className="inline-flex items-center gap-1 rounded-md bg-white/15 px-2 py-0.5 text-[10px] font-semibold text-sky-300 backdrop-blur-sm border border-white/10">
-            <i className="ti ti-device-laptop" /> Offline + Online
-          </span>
-          <p className="mt-1.5 text-xs font-bold text-white drop-shadow-sm line-clamp-1">
-            {course.category?.name || "Career Track"}
-          </p>
-        </div>
-        <div className="relative z-10 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 text-xl text-sky-300 backdrop-blur-sm border border-white/10 transition-transform duration-300 group-hover:scale-110">
-          <i className={icon(course.icon || course.category?.icon || "code")} />
-        </div>
       </div>
 
       {/* Card Body - Simatrix Design */}
@@ -493,7 +470,8 @@ function PopularCoursesCarousel({ courses }) {
       <div
         ref={trackRef}
         onScroll={updateActiveDot}
-        className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scroll-smooth"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {courses.map((course) => (
           <div
@@ -518,7 +496,7 @@ function PopularCoursesCarousel({ courses }) {
           </button>
 
           {/* Dots Indicator in Simatrix Blue */}
-          <div className="flex items-center gap-1.5 px-2" role="tablist" aria-label="Course pagination">
+          <div className="flex items-center gap-1 sm:gap-1.5 px-1" role="tablist" aria-label="Course pagination">
             {Array.from({ length: totalDots }).map((_, idx) => (
               <button
                 key={idx}
@@ -527,12 +505,16 @@ function PopularCoursesCarousel({ courses }) {
                 aria-selected={activeIndex === idx}
                 aria-label={`Go to slide ${idx + 1}`}
                 onClick={() => scrollToDot(idx)}
-                className={`transition-all duration-300 rounded-full cursor-pointer ${
-                  activeIndex === idx
-                    ? "h-2 w-6 bg-blue-600 shadow-xs"
-                    : "h-2 w-2 bg-slate-200 hover:bg-blue-200"
-                }`}
-              />
+                className="flex items-center justify-center p-1 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    activeIndex === idx
+                      ? "h-2 w-6 bg-blue-600 shadow-xs"
+                      : "h-2 w-2 bg-slate-200 hover:bg-blue-200"
+                  }`}
+                />
+              </button>
             ))}
           </div>
 
@@ -1325,6 +1307,13 @@ function HeroCarousel({ onEnquiry }) {
   const isAnimating = useRef(false);
   const containerRef = useRef(null);
 
+  const realCurrent = useMemo(() => {
+    if (isSingle) return 0;
+    if (current <= 0) return activeBanners.length - 1;
+    if (current >= extendedSlides.length - 1) return 0;
+    return current - 1;
+  }, [current, isSingle, activeBanners.length, extendedSlides.length]);
+
   // Sync current index when switching between single and multiple banners
   useEffect(() => {
     setCurrent(activeBanners.length <= 1 ? 0 : 1);
@@ -1376,6 +1365,9 @@ function HeroCarousel({ onEnquiry }) {
     isAnimating.current = true;
     setWithTransition(true);
     setCurrent((val) => val + direction);
+    setTimeout(() => {
+      isAnimating.current = false;
+    }, 450);
   };
 
   // Seamless jump when reaching boundary clones
@@ -1532,6 +1524,84 @@ function HeroCarousel({ onEnquiry }) {
             );
           })}
         </div>
+
+        {/* Navigation Arrows (Reveal on Hover) */}
+        {!isSingle && (
+          <>
+            <button
+              type="button"
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                move(-1);
+              }}
+              aria-label="Previous slide"
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
+            >
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                move(1);
+              }}
+              aria-label="Next slide"
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
+            >
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </>
+        )}
+
+        {/* Slide Indicators */}
+        {!isSingle && (
+          <div
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+            className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+          >
+            {activeBanners.map((banner, idx) => (
+              <button
+                key={banner.id || idx}
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (idx === realCurrent) return;
+                  isAnimating.current = true;
+                  setWithTransition(true);
+                  setCurrent(idx + 1);
+                  setTimeout(() => {
+                    isAnimating.current = false;
+                  }, 450);
+                }}
+                className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
+                aria-label={`Go to slide ${idx + 1}`}
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    idx === realCurrent
+                      ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
+                      : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
