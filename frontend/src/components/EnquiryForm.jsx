@@ -203,7 +203,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
               onChange={set("preferred_mode")}
             >
               <option value="">Select learning mode</option>
-              <option value="Classroom Offline (Madurai / Virudhunagar Labs)">Classroom Labs (Madurai / Virudhunagar)</option>
+              <option value="Classroom Offline (Virudhunagar Labs)">Classroom Labs (Virudhunagar)</option>
               <option value="Live Interactive Online">Live Interactive Online</option>
               <option value="Flexible / Hybrid">Flexible / Discuss with Advisor</option>
             </select>

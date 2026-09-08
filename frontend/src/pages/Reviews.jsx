@@ -32,7 +32,7 @@ export default function Reviews() {
   useSeo({
     title: "Student Reviews & Outcomes · Simatrix Academy",
     description:
-      "Read verified student reviews, career transformations, and placement feedback from Simatrix Academy learners in Madurai and Virudhunagar.",
+      "Read verified student reviews, career transformations, and placement feedback from Simatrix Academy learners in Virudhunagar.",
     canonical: "/reviews",
   });
 
@@ -58,7 +58,7 @@ export default function Reviews() {
       <PageHero
         eyebrow="Verified Learner Stories"
         title="Real experiences. Honest perspectives."
-        subtitle="Discover how learners from Madurai, Virudhunagar, and across Tamil Nadu transitioned from classroom training to software engineering careers."
+        subtitle="Discover how learners from Virudhunagar and across Tamil Nadu transitioned from classroom training to software engineering careers."
       >
         <div className="reveal mt-8 flex flex-wrap gap-3" style={{ "--d": "160ms" }}>
           <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-5 py-3.5 text-white backdrop-blur-md shadow-xs">
@@ -256,7 +256,7 @@ export default function Reviews() {
                             {review.role || "Simatrix Graduate"}
                           </p>
                           <p className="truncate text-[11px] text-slate-500">
-                            {review.college || review.batch || "Madurai Campus"}
+                            {review.college || review.batch || "Virudhunagar Campus"}
                           </p>
                         </div>
                       </figcaption>

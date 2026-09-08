@@ -451,7 +451,7 @@ export default function Navbar() {
           className="hidden items-center gap-4 xl:gap-5 lg:flex"
         >
           <a
-            href="https://wa.me/919363793854?text=Hello%20Simatrix%20Academy%2C%20I%20would%20like%20to%20know%20more%20about%20your%20courses"
+            href="https://wa.me/919363793954?text=Hello%20Simatrix%20Academy%2C%20I%20would%20like%20to%20know%20more%20about%20your%20courses"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700"
@@ -465,12 +465,12 @@ export default function Navbar() {
           <span className="h-4 w-px bg-slate-200" aria-hidden="true" />
 
           <a
-            href="tel:+919363793854"
+            href="tel:+919363793954"
             className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 transition hover:text-slate-950"
             title="Call Admissions"
           >
             <i className="ti ti-phone text-sm text-sky-600" />
-            <span>+91 93637 93854</span>
+            <span>+91 93637 93954</span>
           </a>
 
           <Link

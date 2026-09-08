@@ -50,7 +50,7 @@ const STORIES = [
     headline: "From final-year confusion to a full-stack developer offer.",
     quote: "Before Simatrix, my college projects were mostly copied tutorial code. Here, mentors pushed us to build a full-stack e-commerce engine with real authentication, payment gateways, and Docker deployment. During my interview, I shared my live GitHub repo and defended the database schema with complete confidence.",
     highlight: "3 Live Full-Stack Apps Shipped",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar",
     rating: 5,
   },
   {
@@ -59,7 +59,7 @@ const STORIES = [
     course: "Python & AI Engineering",
     category: "ai",
     avatar: avatar2,
-    college: "TCE Madurai",
+    college: "Thiagarajar College of Engg",
     batch: "2025-2026 Batch",
     role: "AI / Data Science Associate",
     headline: "Trainers explain complex ML pipelines simply. The code reviews were invaluable.",
@@ -80,7 +80,7 @@ const STORIES = [
     headline: "Physical lab access with real server equipment made all the difference.",
     quote: "Online video courses never give you real server muscle memory. Setting up CI/CD pipelines, Kubernetes clusters, and AWS VPCs in the Simatrix computer lab gave me practical skills that directly matched the job requirements in my technical interview.",
     highlight: "AWS Certified & Docker CI/CD",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar",
     rating: 5,
   },
   {
@@ -95,7 +95,7 @@ const STORIES = [
     headline: "Hands-on packet analysis and network security labs you cannot get from slides.",
     quote: "The practical defensive labs, Wireshark packet captures, and vulnerability scanning exercises gave me practical experience that impressed the hiring panel. The placement team also conducted 3 rounds of mock technical interviews before my drive.",
     highlight: "SOC Lab & Penetration Testing",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar",
     rating: 5,
   },
   {
@@ -104,13 +104,13 @@ const STORIES = [
     course: "Full Stack JavaScript / React",
     category: "full-stack",
     avatar: avatar1,
-    college: "Fatima College, Madurai",
+    college: "Fatima College",
     batch: "BCA Fresher",
     role: "Frontend Engineer Intern",
     headline: "As a non-engineering student, the step-by-step guidance removed all self-doubt.",
     quote: "Coming from a non-engineering degree, I was intimidated by modern frameworks. The mentors at Simatrix took me from HTML fundamentals to building full-scale Next.js web applications with TypeScript. The 1-on-1 lab support is unmatched.",
     highlight: "Next.js & Tailwind SaaS App",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar",
     rating: 5,
   },
   {
@@ -125,7 +125,7 @@ const STORIES = [
     headline: "Transitioned from a non-tech sales job to a BI analyst role in 4 months.",
     quote: "I wanted to transition into IT without starting from zero. Simatrix gave me a structured track covering advanced SQL, Python data pipelines, and interactive executive dashboards. The career counsellors helped me rework my resume to highlight transferable problem-solving skills.",
     highlight: "Interactive Power BI Dashboards",
-    campus: "Virudhunagar Center",
+    campus: "Virudhunagar",
     rating: 5,
   },
   {
@@ -140,7 +140,7 @@ const STORIES = [
     headline: "The free internship gave me live sprint experience before campus placements.",
     quote: "Most college internships are just certificate rubber-stamps. At Simatrix, we had daily standups, Git branch reviews, and sprint deadlines. That tangible experience was the single biggest talking point during my on-campus placement interview.",
     highlight: "Sprint-Based Team Development",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar",
     rating: 5,
   },
   {
@@ -153,9 +153,9 @@ const STORIES = [
     batch: "2024 Graduate",
     role: "Systems & Cloud Engineer",
     headline: "The placement support doesn't end until you receive a verified offer letter.",
-    quote: "Even after course completion, the placement desk arranged direct interviews with partner IT firms in Madurai and Chennai. Their resume optimization helped my profile pass ATS screening, and the mock HR rounds helped me negotiate my offer with confidence.",
+    quote: "Even after course completion, the placement desk arranged direct interviews with partner IT firms in Chennai and Bangalore. Their resume optimization helped my profile pass ATS screening, and the mock HR rounds helped me negotiate my offer with confidence.",
     highlight: "Placed at Chennai IT Hub",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar",
     rating: 5,
   },
 ];
@@ -214,7 +214,7 @@ const FAQ_ITEMS = [
     category: "Courses & Labs",
     tag: "Training Modes",
     question: "Do you offer classroom (offline) and live online classes?",
-    answer: "Yes. We offer fully equipped physical classroom training with dedicated computer labs at our Madurai and Virudhunagar centers, as well as interactive live online batches with screen-sharing, mentor debugging, and recorded sessions.",
+    answer: "Yes. We offer fully equipped physical classroom training with dedicated computer labs at our Virudhunagar center, as well as interactive live online batches with screen-sharing, mentor debugging, and recorded sessions.",
   },
   {
     id: "faq-4",
@@ -699,7 +699,7 @@ function ModernLearnerStories({ testimonials = [] }) {
         </span>
         <span className="font-semibold text-slate-800">4.9 / 5.0 rating</span>
         <span className="text-slate-300">•</span>
-        <span>Verified graduates across Madurai &amp; Virudhunagar</span>
+        <span>Verified graduates across Virudhunagar &amp; Tamil Nadu</span>
         <span className="text-slate-300">•</span>
         <Link
           to="/reviews"
@@ -1494,7 +1494,7 @@ function HeroCarousel({ onEnquiry }) {
             return (
               <article
                 key={banner.keyId || `${banner.id}-${index}`}
-                className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403] max-h-[560px]"
+                className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403]"
                 aria-hidden={!isCurrent}
                 inert={!isCurrent ? "" : undefined}
               >
@@ -1516,6 +1516,7 @@ function HeroCarousel({ onEnquiry }) {
                     priority={isSingle ? true : index === 1}
                     widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1535, 1920, 2560]}
                     sizes="100vw"
+                    forceCloudflare={true}
                     className="h-full w-full object-cover object-center select-none pointer-events-none"
                     draggable="false"
                   />
@@ -1676,7 +1677,7 @@ function FaqSection({ toEnquiry }) {
                 </p>
                 <p className="text-[11px] text-slate-500 flex items-center gap-1.5">
                   <i className="ti ti-map-pin text-xs text-blue-600 shrink-0" />
-                  <span>Walk-in lab tour at Virudhunagar &amp; Madurai centers.</span>
+                  <span>Walk-in lab tour at Virudhunagar center.</span>
                 </p>
               </div>
             </div>
@@ -2237,7 +2238,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Real Campus & Lab Environment (Madurai & Virudhunagar) + Parent Trust */}
+      {/* Real Campus & Lab Environment (Virudhunagar) + Parent Trust */}
       <section id="learning-environment" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
         <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <SectionTitle
@@ -2256,7 +2257,7 @@ export default function Home() {
                 Fully equipped computer workstations with development environments pre-configured so you focus on writing code from day one.
               </p>
               <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
-                <i className="ti ti-map-pin" /> Madurai &amp; Virudhunagar
+                <i className="ti ti-map-pin" /> Virudhunagar Campus
               </div>
             </div>
 
@@ -2381,7 +2382,7 @@ export default function Home() {
                   {
                     icon: "ti-device-desktop",
                     title: "Campus Lab & Syllabus Walkthrough",
-                    desc: "Inspect our computer labs in Madurai & Virudhunagar, project deliverables, and class schedule.",
+                    desc: "Inspect our computer labs in Virudhunagar, project deliverables, and class schedule.",
                   },
                   {
                     icon: "ti-bolt",
@@ -2417,7 +2418,7 @@ export default function Home() {
                       <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                       Mentors Active
                     </div>
-                    <p className="text-[11px] text-slate-500">Madurai &amp; Virudhunagar</p>
+                    <p className="text-[11px] text-slate-500">Virudhunagar Campus</p>
                   </div>
                 </div>
 

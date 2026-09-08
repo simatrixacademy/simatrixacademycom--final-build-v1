@@ -15,7 +15,7 @@ export const STORIES = [
     headline: "From final-year confusion to a full-stack developer offer.",
     quote: "Before Simatrix, my college projects were mostly copied tutorial code. Here, mentors pushed us to build a full-stack e-commerce engine with real authentication, payment gateways, and Docker deployment. During my interview, I shared my live GitHub repo and defended the database schema with complete confidence.",
     highlight: "3 Live Full-Stack Apps Shipped",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar Center",
     rating: 5,
   },
   {
@@ -24,7 +24,7 @@ export const STORIES = [
     course: "Python & AI Engineering",
     category: "ai",
     avatar: avatar2,
-    college: "TCE Madurai",
+    college: "Thiagarajar College of Engg",
     batch: "2025-2026 Batch",
     role: "AI / Data Science Associate",
     headline: "Trainers explain complex ML pipelines simply. The code reviews were invaluable.",
@@ -45,7 +45,7 @@ export const STORIES = [
     headline: "Physical lab access with real server equipment made all the difference.",
     quote: "Online video courses never give you real server muscle memory. Setting up CI/CD pipelines, Kubernetes clusters, and AWS VPCs in the Simatrix computer lab gave me practical skills that directly matched the job requirements in my technical interview.",
     highlight: "AWS Certified & Docker CI/CD",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar Center",
     rating: 5,
   },
   {
@@ -60,7 +60,7 @@ export const STORIES = [
     headline: "Hands-on packet analysis and network security labs you cannot get from slides.",
     quote: "The practical defensive labs, Wireshark packet captures, and vulnerability scanning exercises gave me practical experience that impressed the hiring panel. The placement team also conducted 3 rounds of mock technical interviews before my drive.",
     highlight: "SOC Lab & Penetration Testing",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar Center",
     rating: 5,
   },
   {
@@ -69,13 +69,13 @@ export const STORIES = [
     course: "Full Stack JavaScript / React",
     category: "full-stack",
     avatar: avatar1,
-    college: "Fatima College, Madurai",
+    college: "Fatima College",
     batch: "BCA Fresher",
     role: "Frontend Engineer Intern",
     headline: "As a non-engineering student, the step-by-step guidance removed all self-doubt.",
     quote: "Coming from a non-engineering degree, I was intimidated by modern frameworks. The mentors at Simatrix took me from HTML fundamentals to building full-scale Next.js web applications with TypeScript. The 1-on-1 lab support is unmatched.",
     highlight: "Next.js & Tailwind SaaS App",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar Center",
     rating: 5,
   },
   {
@@ -105,7 +105,7 @@ export const STORIES = [
     headline: "The free internship gave me live sprint experience before campus placements.",
     quote: "Most college internships are just certificate rubber-stamps. At Simatrix, we had daily standups, Git branch reviews, and sprint deadlines. That tangible experience was the single biggest talking point during my on-campus placement interview.",
     highlight: "Sprint-Based Team Development",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar Center",
     rating: 5,
   },
   {
@@ -118,9 +118,9 @@ export const STORIES = [
     batch: "2024 Graduate",
     role: "Systems & Cloud Engineer",
     headline: "The placement support doesn't end until you receive a verified offer letter.",
-    quote: "Even after course completion, the placement desk arranged direct interviews with partner IT firms in Madurai and Chennai. Their resume optimization helped my profile pass ATS screening, and the mock HR rounds helped me negotiate my offer with confidence.",
+    quote: "Even after course completion, the placement desk arranged direct interviews with partner IT firms in Chennai and Bangalore. Their resume optimization helped my profile pass ATS screening, and the mock HR rounds helped me negotiate my offer with confidence.",
     highlight: "Placed at Chennai IT Hub",
-    campus: "Madurai Campus",
+    campus: "Virudhunagar Center",
     rating: 5,
   },
 ];
@@ -153,7 +153,7 @@ export function mergeReviewsWithStories(backendReviews = []) {
         headline: "“Hands-on projects and direct mentor support made all the difference.”",
         quote: item.quote || item.content,
         highlight: "Verified Placement Support",
-        campus: "Madurai Campus",
+        campus: "Virudhunagar Center",
         rating: item.rating || 5,
       });
     }
