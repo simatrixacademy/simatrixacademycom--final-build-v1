@@ -863,8 +863,8 @@ function CommunitySection({ data, courses, testimonials }) {
   const people = [avatar1, avatar2, avatar3];
 
   return (
-    <section className="bg-white pb-12 pt-2 sm:pb-16 sm:pt-3" aria-labelledby="community-title">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="bg-white pb-12 pt-4 sm:pb-16 sm:pt-6" aria-labelledby="community-title">
+      <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
         {/* Header - Kept clean and authoritative */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-bold uppercase tracking-[.22em] text-amber-700">Why Simatrix</p>
@@ -1453,155 +1453,157 @@ function HeroCarousel({ onEnquiry }) {
 
   return (
     <section
-      className="relative w-full bg-white"
+      className="relative w-full bg-[#080d1a] py-0 sm:py-3 lg:py-5"
       aria-label="Simatrix Featured Announcements"
     >
-      <div
-        ref={containerRef}
-        tabIndex={isSingle ? -1 : 0}
-        className={`group relative w-full overflow-hidden bg-white outline-none select-none ${
-          isSingle ? "" : isDragging ? "cursor-grabbing touch-pan-y" : "cursor-grab touch-pan-y"
-        }`}
-        aria-roledescription="carousel"
-        aria-label="Simatrix opportunities"
-        onKeyDown={(e) => {
-          if (isSingle) return;
-          if (e.key === "ArrowLeft") move(-1);
-          if (e.key === "ArrowRight") move(1);
-        }}
-        onMouseEnter={() => !isSingle && setPaused(true)}
-        onMouseLeave={() => !isSingle && setPaused(false)}
-        onFocusCapture={() => !isSingle && setPaused(true)}
-        onBlurCapture={(e) => {
-          if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
-        }}
-        onPointerDown={isSingle ? undefined : handlePointerDown}
-        onPointerMove={isSingle ? undefined : handlePointerMove}
-        onPointerUp={isSingle ? undefined : handlePointerUp}
-        onPointerCancel={isSingle ? undefined : handlePointerCancel}
-      >
-        {/* Banner Slides Track */}
+      <div className="mx-auto max-w-[1440px] 2xl:max-w-[1600px] px-0 sm:px-4 lg:px-8 xl:px-10">
         <div
-          className="flex motion-reduce:transition-none"
-          onTransitionEnd={handleTransitionEnd}
-          style={{
-            transform: isSingle ? "none" : `translateX(calc(-${current * 100}% + ${dragOffset}px))`,
-            transition: isSingle || isDragging || !withTransition ? "none" : "transform 450ms cubic-bezier(0.25, 1, 0.5, 1)",
+          ref={containerRef}
+          tabIndex={isSingle ? -1 : 0}
+          className={`group relative w-full overflow-hidden bg-slate-900 outline-none select-none sm:rounded-2xl lg:rounded-3xl shadow-2xl border-0 sm:border border-slate-800/80 ${
+            isSingle ? "" : isDragging ? "cursor-grabbing touch-pan-y" : "cursor-grab touch-pan-y"
+          }`}
+          aria-roledescription="carousel"
+          aria-label="Simatrix opportunities"
+          onKeyDown={(e) => {
+            if (isSingle) return;
+            if (e.key === "ArrowLeft") move(-1);
+            if (e.key === "ArrowRight") move(1);
           }}
+          onMouseEnter={() => !isSingle && setPaused(true)}
+          onMouseLeave={() => !isSingle && setPaused(false)}
+          onFocusCapture={() => !isSingle && setPaused(true)}
+          onBlurCapture={(e) => {
+            if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+          }}
+          onPointerDown={isSingle ? undefined : handlePointerDown}
+          onPointerMove={isSingle ? undefined : handlePointerMove}
+          onPointerUp={isSingle ? undefined : handlePointerUp}
+          onPointerCancel={isSingle ? undefined : handlePointerCancel}
         >
-          {extendedSlides.map((banner, index) => {
-            const isCurrent = isSingle ? true : index === current;
-            return (
-              <article
-                key={banner.keyId || `${banner.id}-${index}`}
-                className="relative w-full shrink-0 aspect-square sm:aspect-auto h-auto sm:h-[220px] md:h-[300px] lg:h-[400px] max-h-[85vh]"
-                aria-hidden={!isCurrent}
-                inert={!isCurrent ? "" : undefined}
-              >
-                <Link
-                  to={banner.to}
-                  onClick={(e) => {
-                    if (hasDragged.current) {
-                      e.preventDefault();
-                    }
-                  }}
-                  className="block h-full w-full select-none focus:outline-none"
-                  aria-label={banner.title}
-                  tabIndex={isCurrent ? 0 : -1}
-                  draggable="false"
-                >
-                  <ResponsiveImage
-                    src={banner.src}
-                    alt={banner.alt}
-                    priority={isSingle ? true : index === 1}
-                    widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1920, 2120]}
-                    sizes="100vw"
-                    className="h-full w-full object-cover object-center select-none pointer-events-none"
-                    draggable="false"
-                  />
-                </Link>
-              </article>
-            );
-          })}
-        </div>
-
-        {/* Navigation Arrows (Reveal on Hover) */}
-        {!isSingle && (
-          <>
-            <button
-              type="button"
-              onPointerDown={(e) => e.stopPropagation()}
-              onPointerUp={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                move(-1);
-              }}
-              aria-label="Previous slide"
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
-            >
-              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-            </button>
-
-            <button
-              type="button"
-              onPointerDown={(e) => e.stopPropagation()}
-              onPointerUp={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                move(1);
-              }}
-              aria-label="Next slide"
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
-            >
-              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
-            </button>
-          </>
-        )}
-
-        {/* Slide Indicators */}
-        {!isSingle && (
+          {/* Banner Slides Track */}
           <div
-            onPointerDown={(e) => e.stopPropagation()}
-            onPointerUp={(e) => e.stopPropagation()}
-            className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+            className="flex motion-reduce:transition-none"
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              transform: isSingle ? "none" : `translateX(calc(-${current * 100}% + ${dragOffset}px))`,
+              transition: isSingle || isDragging || !withTransition ? "none" : "transform 450ms cubic-bezier(0.25, 1, 0.5, 1)",
+            }}
           >
-            {activeBanners.map((banner, idx) => (
+            {extendedSlides.map((banner, index) => {
+              const isCurrent = isSingle ? true : index === current;
+              return (
+                <article
+                  key={banner.keyId || `${banner.id}-${index}`}
+                  className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403] sm:h-auto max-h-[460px] 2xl:max-h-[520px]"
+                  aria-hidden={!isCurrent}
+                  inert={!isCurrent ? "" : undefined}
+                >
+                  <Link
+                    to={banner.to}
+                    onClick={(e) => {
+                      if (hasDragged.current) {
+                        e.preventDefault();
+                      }
+                    }}
+                    className="block h-full w-full select-none focus:outline-none"
+                    aria-label={banner.title}
+                    tabIndex={isCurrent ? 0 : -1}
+                    draggable="false"
+                  >
+                    <ResponsiveImage
+                      src={banner.src}
+                      alt={banner.alt}
+                      priority={isSingle ? true : index === 1}
+                      widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1535, 1920]}
+                      sizes="(max-width: 639px) 100vw, (max-width: 1535px) 100vw, 1600px"
+                      className="h-full w-full object-cover object-center select-none pointer-events-none"
+                      draggable="false"
+                    />
+                  </Link>
+                </article>
+              );
+            })}
+          </div>
+
+          {/* Navigation Arrows (Reveal on Hover) */}
+          {!isSingle && (
+            <>
               <button
-                key={banner.id || idx}
                 type="button"
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  if (idx === realCurrent) return;
-                  isAnimating.current = true;
-                  setWithTransition(true);
-                  setCurrent(idx + 1);
-                  setTimeout(() => {
-                    isAnimating.current = false;
-                  }, 450);
+                  move(-1);
                 }}
-                className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
-                aria-label={`Go to slide ${idx + 1}`}
+                aria-label="Previous slide"
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
               >
-                <span
-                  className={`block rounded-full transition-all duration-300 ${
-                    idx === realCurrent
-                      ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
-                      : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
-                  }`}
-                />
+                <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
               </button>
-            ))}
-          </div>
-        )}
+
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  move(1);
+                }}
+                aria-label="Next slide"
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
+              >
+                <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {/* Slide Indicators */}
+          {!isSingle && (
+            <div
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+            >
+              {activeBanners.map((banner, idx) => (
+                <button
+                  key={banner.id || idx}
+                  type="button"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onPointerUp={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (idx === realCurrent) return;
+                    isAnimating.current = true;
+                    setWithTransition(true);
+                    setCurrent(idx + 1);
+                    setTimeout(() => {
+                      isAnimating.current = false;
+                    }, 450);
+                  }}
+                  className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
+                  aria-label={`Go to slide ${idx + 1}`}
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${
+                      idx === realCurrent
+                        ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
+                        : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -1622,7 +1624,7 @@ function FaqSection({ toEnquiry }) {
 
   return (
     <section id="faqs" className="scroll-mt-32 border-t border-slate-200/80 bg-slate-50/70 py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
           {/* Left Column: Heading & Enhanced Quick Help Desk */}
           <div>
@@ -1908,7 +1910,7 @@ export default function Home() {
       <CommunitySection data={data} courses={courses} testimonials={testimonials} />
 
       {error && !data ? (
-        <section className="mx-auto max-w-7xl px-6 py-20 text-center">
+        <section className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10 py-20 text-center">
           <p className="text-slate-600">We couldn’t load the latest courses right now.</p>
           <Link to="/courses" className="mt-4 inline-flex font-bold text-brand-700">
             Browse courses
@@ -1916,41 +1918,43 @@ export default function Home() {
         </section>
       ) : (
         <>
-          <section id="learning-paths" className="scroll-mt-32 mx-auto max-w-7xl px-6 py-20 sm:py-28">
-            <SectionTitle
-              eyebrow="Find your path"
-              title="Choose the skill you want to build"
-              description="Start with a field that matches your goals. Each path takes you from essential concepts to practical application."
-            />
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {!data ? (
-                Array.from({ length: 6 }).map((_, i) => <CategorySkeleton key={i} />)
-              ) : (
-                data.categories?.slice(0, 6).map((category) => (
-                  <Link
-                    key={category.id}
-                    to={`/courses?category=${category.slug}`}
-                    className="group flex items-center gap-4 rounded-2xl border border-slate-200 p-5 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg"
-                  >
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl text-brand-700">
-                      <i className={icon(category.icon)} />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <strong className="block text-slate-950">{category.name}</strong>
-                      <span className="mt-1 block text-sm text-slate-500">
-                        {(category.courses || []).length} courses
+          <section id="learning-paths" className="scroll-mt-32 w-full bg-white py-20 sm:py-28">
+            <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
+              <SectionTitle
+                eyebrow="Find your path"
+                title="Choose the skill you want to build"
+                description="Start with a field that matches your goals. Each path takes you from essential concepts to practical application."
+              />
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {!data ? (
+                  Array.from({ length: 6 }).map((_, i) => <CategorySkeleton key={i} />)
+                ) : (
+                  data.categories?.slice(0, 6).map((category) => (
+                    <Link
+                      key={category.id}
+                      to={`/courses?category=${category.slug}`}
+                      className="group flex items-center gap-4 rounded-2xl border border-slate-200 p-5 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg"
+                    >
+                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl text-brand-700">
+                        <i className={icon(category.icon)} />
                       </span>
-                    </span>
-                    <i className="ti ti-chevron-right text-slate-400 transition group-hover:translate-x-1" />
-                  </Link>
-                ))
-              )}
+                      <span className="min-w-0 flex-1">
+                        <strong className="block text-slate-950">{category.name}</strong>
+                        <span className="mt-1 block text-sm text-slate-500">
+                          {(category.courses || []).length} courses
+                        </span>
+                      </span>
+                      <i className="ti ti-chevron-right text-slate-400 transition group-hover:translate-x-1" />
+                    </Link>
+                  ))
+                )}
+              </div>
             </div>
           </section>
 
           {(!data || featured.length > 0) && (
             <section id="popular-programs" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
-              <div className="mx-auto max-w-7xl px-6">
+              <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                   <SectionTitle
                     left
@@ -1985,7 +1989,7 @@ export default function Home() {
 
       {/* Free Full-Stack Internship Section */}
       <section id="internship" className="scroll-mt-32 bg-white py-20 sm:py-28">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+        <div className="mx-auto grid max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] gap-10 px-4 sm:px-6 lg:px-8 xl:px-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3.5 py-1 text-xs font-bold uppercase tracking-[.18em] text-amber-800">
               <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
@@ -2090,7 +2094,7 @@ export default function Home() {
 
       {/* Where Learning Leads / Tangible Outcomes */}
       <section id="outcomes" className="scroll-mt-32 border-y border-slate-200/80 bg-gradient-to-b from-white to-slate-50/50 py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-700">Where learning leads</p>
@@ -2198,7 +2202,7 @@ export default function Home() {
 
       {/* Your Learning Journey with Visual Progression Connectors */}
       <section id="learning-journey" className="scroll-mt-32 bg-[#0d1b32] py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <SectionTitle
             dark
             eyebrow="Your learning journey"
@@ -2235,7 +2239,7 @@ export default function Home() {
 
       {/* Real Campus & Lab Environment (Madurai & Virudhunagar) + Parent Trust */}
       <section id="learning-environment" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <SectionTitle
             eyebrow="Campus & Environment"
             title="Learn in physical computer labs with mentor assistance"
@@ -2322,7 +2326,7 @@ export default function Home() {
 
       {/* Learner Stories / Testimonials */}
       <section id="learner-stories" className="scroll-mt-32 relative bg-slate-50/40 py-16 sm:py-20 overflow-hidden border-y border-slate-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <ModernLearnerStories testimonials={testimonials} />
         </div>
       </section>
@@ -2343,7 +2347,7 @@ export default function Home() {
           className="pointer-events-none absolute -bottom-24 left-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-sky-100/30 via-brand-100/20 to-purple-100/20 blur-3xl opacity-60"
         />
 
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_1.15fr]">
             {/* Left Column: Authoritative Value Proposition & Direct Contact */}
             <div className="lg:sticky lg:top-32">

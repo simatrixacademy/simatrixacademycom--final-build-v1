@@ -103,7 +103,7 @@ export default function Footer() {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-12 sm:px-6 sm:pt-16">
+      <div className="relative mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-12 sm:pt-16">
         {/* ================================================================= */}
         {/* CORE DIRECTORY GRID                                               */}
         {/* ================================================================= */}
@@ -257,7 +257,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Legal / Copyright Row */}
-        <div className="relative mx-auto mt-8 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/5 px-4 pt-6 text-xs text-slate-500 sm:flex-row sm:px-6">
+        <div className="relative mx-auto mt-8 flex max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] flex-col items-center justify-between gap-4 border-t border-white/5 px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 text-xs text-slate-500 sm:flex-row">
           <p>&copy; {year} Simatrix Academy. All rights reserved.</p>
 
           <div className="flex items-center gap-5">
