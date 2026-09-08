@@ -1453,157 +1453,155 @@ function HeroCarousel({ onEnquiry }) {
 
   return (
     <section
-      className="relative w-full bg-[#080d1a] py-0 sm:py-3 lg:py-5"
+      className="relative w-full bg-white"
       aria-label="Simatrix Featured Announcements"
     >
-      <div className="mx-auto max-w-[1440px] 2xl:max-w-[1600px] px-0 sm:px-4 lg:px-8 xl:px-10">
+      <div
+        ref={containerRef}
+        tabIndex={isSingle ? -1 : 0}
+        className={`group relative w-full overflow-hidden bg-white outline-none select-none ${
+          isSingle ? "" : isDragging ? "cursor-grabbing touch-pan-y" : "cursor-grab touch-pan-y"
+        }`}
+        aria-roledescription="carousel"
+        aria-label="Simatrix opportunities"
+        onKeyDown={(e) => {
+          if (isSingle) return;
+          if (e.key === "ArrowLeft") move(-1);
+          if (e.key === "ArrowRight") move(1);
+        }}
+        onMouseEnter={() => !isSingle && setPaused(true)}
+        onMouseLeave={() => !isSingle && setPaused(false)}
+        onFocusCapture={() => !isSingle && setPaused(true)}
+        onBlurCapture={(e) => {
+          if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+        }}
+        onPointerDown={isSingle ? undefined : handlePointerDown}
+        onPointerMove={isSingle ? undefined : handlePointerMove}
+        onPointerUp={isSingle ? undefined : handlePointerUp}
+        onPointerCancel={isSingle ? undefined : handlePointerCancel}
+      >
+        {/* Banner Slides Track */}
         <div
-          ref={containerRef}
-          tabIndex={isSingle ? -1 : 0}
-          className={`group relative w-full overflow-hidden bg-slate-900 outline-none select-none sm:rounded-2xl lg:rounded-3xl shadow-2xl border-0 sm:border border-slate-800/80 ${
-            isSingle ? "" : isDragging ? "cursor-grabbing touch-pan-y" : "cursor-grab touch-pan-y"
-          }`}
-          aria-roledescription="carousel"
-          aria-label="Simatrix opportunities"
-          onKeyDown={(e) => {
-            if (isSingle) return;
-            if (e.key === "ArrowLeft") move(-1);
-            if (e.key === "ArrowRight") move(1);
+          className="flex motion-reduce:transition-none"
+          onTransitionEnd={handleTransitionEnd}
+          style={{
+            transform: isSingle ? "none" : `translateX(calc(-${current * 100}% + ${dragOffset}px))`,
+            transition: isSingle || isDragging || !withTransition ? "none" : "transform 450ms cubic-bezier(0.25, 1, 0.5, 1)",
           }}
-          onMouseEnter={() => !isSingle && setPaused(true)}
-          onMouseLeave={() => !isSingle && setPaused(false)}
-          onFocusCapture={() => !isSingle && setPaused(true)}
-          onBlurCapture={(e) => {
-            if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
-          }}
-          onPointerDown={isSingle ? undefined : handlePointerDown}
-          onPointerMove={isSingle ? undefined : handlePointerMove}
-          onPointerUp={isSingle ? undefined : handlePointerUp}
-          onPointerCancel={isSingle ? undefined : handlePointerCancel}
         >
-          {/* Banner Slides Track */}
-          <div
-            className="flex motion-reduce:transition-none"
-            onTransitionEnd={handleTransitionEnd}
-            style={{
-              transform: isSingle ? "none" : `translateX(calc(-${current * 100}% + ${dragOffset}px))`,
-              transition: isSingle || isDragging || !withTransition ? "none" : "transform 450ms cubic-bezier(0.25, 1, 0.5, 1)",
-            }}
-          >
-            {extendedSlides.map((banner, index) => {
-              const isCurrent = isSingle ? true : index === current;
-              return (
-                <article
-                  key={banner.keyId || `${banner.id}-${index}`}
-                  className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403] sm:h-auto max-h-[460px] 2xl:max-h-[520px]"
-                  aria-hidden={!isCurrent}
-                  inert={!isCurrent ? "" : undefined}
+          {extendedSlides.map((banner, index) => {
+            const isCurrent = isSingle ? true : index === current;
+            return (
+              <article
+                key={banner.keyId || `${banner.id}-${index}`}
+                className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403] max-h-[560px]"
+                aria-hidden={!isCurrent}
+                inert={!isCurrent ? "" : undefined}
+              >
+                <Link
+                  to={banner.to}
+                  onClick={(e) => {
+                    if (hasDragged.current) {
+                      e.preventDefault();
+                    }
+                  }}
+                  className="block h-full w-full select-none focus:outline-none"
+                  aria-label={banner.title}
+                  tabIndex={isCurrent ? 0 : -1}
+                  draggable="false"
                 >
-                  <Link
-                    to={banner.to}
-                    onClick={(e) => {
-                      if (hasDragged.current) {
-                        e.preventDefault();
-                      }
-                    }}
-                    className="block h-full w-full select-none focus:outline-none"
-                    aria-label={banner.title}
-                    tabIndex={isCurrent ? 0 : -1}
+                  <ResponsiveImage
+                    src={banner.src}
+                    alt={banner.alt}
+                    priority={isSingle ? true : index === 1}
+                    widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1535, 1920, 2560]}
+                    sizes="100vw"
+                    className="h-full w-full object-cover object-center select-none pointer-events-none"
                     draggable="false"
-                  >
-                    <ResponsiveImage
-                      src={banner.src}
-                      alt={banner.alt}
-                      priority={isSingle ? true : index === 1}
-                      widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1535, 1920]}
-                      sizes="(max-width: 639px) 100vw, (max-width: 1535px) 100vw, 1600px"
-                      className="h-full w-full object-cover object-center select-none pointer-events-none"
-                      draggable="false"
-                    />
-                  </Link>
-                </article>
-              );
-            })}
-          </div>
+                  />
+                </Link>
+              </article>
+            );
+          })}
+        </div>
 
-          {/* Navigation Arrows (Reveal on Hover) */}
-          {!isSingle && (
-            <>
-              <button
-                type="button"
-                onPointerDown={(e) => e.stopPropagation()}
-                onPointerUp={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  move(-1);
-                }}
-                aria-label="Previous slide"
-                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
-              >
-                <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                onPointerDown={(e) => e.stopPropagation()}
-                onPointerUp={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  move(1);
-                }}
-                aria-label="Next slide"
-                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
-              >
-                <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
-            </>
-          )}
-
-          {/* Slide Indicators */}
-          {!isSingle && (
-            <div
+        {/* Navigation Arrows (Reveal on Hover) */}
+        {!isSingle && (
+          <>
+            <button
+              type="button"
               onPointerDown={(e) => e.stopPropagation()}
               onPointerUp={(e) => e.stopPropagation()}
-              className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                move(-1);
+              }}
+              aria-label="Previous slide"
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
             >
-              {activeBanners.map((banner, idx) => (
-                <button
-                  key={banner.id || idx}
-                  type="button"
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onPointerUp={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (idx === realCurrent) return;
-                    isAnimating.current = true;
-                    setWithTransition(true);
-                    setCurrent(idx + 1);
-                    setTimeout(() => {
-                      isAnimating.current = false;
-                    }, 450);
-                  }}
-                  className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
-                  aria-label={`Go to slide ${idx + 1}`}
-                >
-                  <span
-                    className={`block rounded-full transition-all duration-300 ${
-                      idx === realCurrent
-                        ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
-                        : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                move(1);
+              }}
+              aria-label="Next slide"
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
+            >
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </>
+        )}
+
+        {/* Slide Indicators */}
+        {!isSingle && (
+          <div
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+            className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+          >
+            {activeBanners.map((banner, idx) => (
+              <button
+                key={banner.id || idx}
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (idx === realCurrent) return;
+                  isAnimating.current = true;
+                  setWithTransition(true);
+                  setCurrent(idx + 1);
+                  setTimeout(() => {
+                    isAnimating.current = false;
+                  }, 450);
+                }}
+                className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
+                aria-label={`Go to slide ${idx + 1}`}
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    idx === realCurrent
+                      ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
+                      : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -2201,38 +2199,40 @@ export default function Home() {
       </section>
 
       {/* Your Learning Journey with Visual Progression Connectors */}
-      <section id="learning-journey" className="scroll-mt-32 bg-[#0d1b32] py-20 sm:py-28">
+      <section id="learning-journey" className="scroll-mt-32 bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-          <SectionTitle
-            dark
-            eyebrow="Your learning journey"
-            title="A structured path from day one to your first tech job"
-            description="Every stage is intentionally designed so you never wonder what to work on next."
-          />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map(([number, title, text], index) => (
-              <div
-                key={number}
-                className="relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[.04] p-6 backdrop-blur-xs transition hover:border-amber-400/40 hover:bg-white/[.06]"
-              >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-3xl font-bold text-amber-300">{number}</span>
-                    {index < STEPS.length - 1 && (
-                      <span className="hidden lg:flex items-center text-slate-500 font-mono text-xs">
-                        Step 0{index + 1} → 0{index + 2}
-                      </span>
-                    )}
+          <div className="relative overflow-hidden rounded-3xl bg-[#0d1b32] p-8 sm:p-12 lg:p-14 shadow-2xl border border-slate-800">
+            <SectionTitle
+              dark
+              eyebrow="Your learning journey"
+              title="A structured path from day one to your first tech job"
+              description="Every stage is intentionally designed so you never wonder what to work on next."
+            />
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {STEPS.map(([number, title, text], index) => (
+                <div
+                  key={number}
+                  className="relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[.04] p-6 backdrop-blur-xs transition hover:border-amber-400/40 hover:bg-white/[.06]"
+                >
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-display text-3xl font-bold text-amber-300">{number}</span>
+                      {index < STEPS.length - 1 && (
+                        <span className="hidden lg:flex items-center text-slate-500 font-mono text-xs">
+                          Step 0{index + 1} → 0{index + 2}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="mt-4 text-lg font-bold text-white">{title}</h3>
+                    <p className="mt-2 text-xs leading-6 text-slate-300">{text}</p>
                   </div>
-                  <h3 className="mt-4 text-lg font-bold text-white">{title}</h3>
-                  <p className="mt-2 text-xs leading-6 text-slate-300">{text}</p>
+                  <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4 text-[11px] font-semibold text-amber-400">
+                    <i className="ti ti-circle-check text-xs" />
+                    <span>Phase Milestone</span>
+                  </div>
                 </div>
-                <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4 text-[11px] font-semibold text-amber-400">
-                  <i className="ti ti-circle-check text-xs" />
-                  <span>Phase Milestone</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
