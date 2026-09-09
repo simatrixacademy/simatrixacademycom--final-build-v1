@@ -35,6 +35,8 @@ jobs:
           script: |
             rm -rf domains/simatrixacademy.com/public_html/assets
             rm -rf domains/simatrixacademy.com/public_html/logos
+            rm -f domains/simatrixacademy.com/public_html/index.html
+            echo "Deployed commit ${{ github.sha }} at $(date)" > domains/simatrixacademy.com/public_html/deploy-time.txt
 
       - name: Upload Frontend
         uses: appleboy/scp-action@v0.1.7
