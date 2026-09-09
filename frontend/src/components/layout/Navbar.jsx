@@ -284,30 +284,38 @@ export default function Navbar() {
     setActiveMenu((prev) => (prev === menuName ? null : menuName));
   };
 
-  const primaryCategories = categories.slice(0, 6);
-
   const isHomeActive = pathname === "/";
-  const showHomeIndicator = isHomeActive && !activeMenu && (!hoveredNav || hoveredNav === "home");
-
+  const isCoursesActive = activeMenu === "courses" || pathname.startsWith("/courses");
+  const isAboutActive =
+    activeMenu === "about" ||
+    pathname === "/about" ||
+    pathname === "/mission" ||
+    pathname === "/awards" ||
+    pathname === "/gallery";
+  const isCareerActive =
+    activeMenu === "support" ||
+    pathname === "/placement" ||
+    pathname === "/career-guidance" ||
+    pathname === "/resume-building" ||
+    pathname === "/interview-resources";
   const isContactActive = pathname === "/contact";
-  const showContactIndicator = isContactActive && !activeMenu && (!hoveredNav || hoveredNav === "contact");
 
   return (
     <header
       className={`sticky top-0 w-full transition-all duration-200 ${
         mobileOpen
-          ? "z-[100] border-b border-slate-200 bg-white shadow-sm"
+          ? "z-[100] border-b border-slate-200 bg-white shadow-xs"
           : scrolled
-          ? "z-50 border-b border-slate-200/90 bg-white/95 shadow-[0_4px_25px_-4px_rgba(15,23,42,0.08)] backdrop-blur-xl"
-          : "z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md"
+          ? "z-50 border-b border-slate-200/90 bg-white/95 shadow-[0_4px_25px_-4px_rgba(15,23,42,0.06)] backdrop-blur-xl"
+          : "z-50 border-b border-slate-100 bg-white"
       }`}
     >
       <div
         ref={navRef}
-        className="relative mx-auto flex h-16 max-w-[1440px] 2xl:max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10"
+        className="relative mx-auto flex h-18 sm:h-20 max-w-[1440px] 2xl:max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10"
       >
         {/* Left Section: Brand Logo + Desktop Nav Links */}
-        <div className="flex items-center gap-8 xl:gap-10">
+        <div className="flex items-center gap-7 lg:gap-8 xl:gap-10">
           {/* Brand Logo */}
           <Link
             to="/"
@@ -324,30 +332,23 @@ export default function Navbar() {
           {/* Desktop Navigation Links */}
           <nav
             onMouseLeave={() => setHoveredNav(null)}
-            className="hidden items-center gap-6 lg:flex xl:gap-7"
+            className="hidden items-center gap-6 lg:flex xl:gap-8"
           >
+            {/* 1. Home */}
             <NavLink
               to="/"
               end
               onMouseEnter={() => setHoveredNav("home")}
-              className={`relative py-1 text-sm font-medium transition-colors ${
-                showHomeIndicator
-                  ? "font-semibold text-slate-950"
-                  : "text-slate-600 hover:text-slate-950"
+              className={`py-1 text-[14.5px] transition-colors ${
+                isHomeActive
+                  ? "font-semibold text-[#0070e0]"
+                  : "font-medium text-slate-700 hover:text-[#0070e0]"
               }`}
             >
               <span>Home</span>
-              <span
-                aria-hidden="true"
-                className={`absolute -bottom-2.5 left-0 right-0 h-0.5 rounded-full bg-blue-600 transition-all duration-200 ${
-                  showHomeIndicator
-                    ? "opacity-100 scale-x-100"
-                    : "opacity-0 scale-x-0 pointer-events-none"
-                }`}
-              />
             </NavLink>
 
-            {/* Trigger 1: Courses */}
+            {/* 2. Courses (Dropdown) */}
             <button
               ref={triggerRefs.courses}
               type="button"
@@ -355,21 +356,21 @@ export default function Navbar() {
               onMouseLeave={handleTriggerLeave}
               onClick={() => toggleMenu("courses")}
               aria-expanded={activeMenu === "courses"}
-              className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
-                activeMenu === "courses" || pathname.startsWith("/courses")
-                  ? "font-semibold text-slate-950"
-                  : "text-slate-600 hover:text-slate-950"
+              className={`group flex items-center gap-1.5 py-1 text-[14.5px] transition-colors cursor-pointer ${
+                isCoursesActive
+                  ? "font-semibold text-[#0070e0]"
+                  : "font-medium text-slate-700 hover:text-[#0070e0]"
               }`}
             >
               <span>Courses</span>
               <i
-                className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
-                  activeMenu === "courses" ? "rotate-180 text-blue-600 font-bold" : ""
-                }`}
+                className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
+                  isCoursesActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+                } ${activeMenu === "courses" ? "rotate-180" : ""}`}
               />
             </button>
 
-            {/* Trigger 2: About */}
+            {/* 3. About (Dropdown) */}
             <button
               ref={triggerRefs.about}
               type="button"
@@ -377,25 +378,21 @@ export default function Navbar() {
               onMouseLeave={handleTriggerLeave}
               onClick={() => toggleMenu("about")}
               aria-expanded={activeMenu === "about"}
-              className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
-                activeMenu === "about" ||
-                pathname === "/about" ||
-                pathname === "/mission" ||
-                pathname === "/awards" ||
-                pathname === "/gallery"
-                  ? "font-semibold text-slate-950"
-                  : "text-slate-600 hover:text-slate-950"
+              className={`group flex items-center gap-1.5 py-1 text-[14.5px] transition-colors cursor-pointer ${
+                isAboutActive
+                  ? "font-semibold text-[#0070e0]"
+                  : "font-medium text-slate-700 hover:text-[#0070e0]"
               }`}
             >
               <span>About</span>
               <i
-                className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
-                  activeMenu === "about" ? "rotate-180 text-blue-600 font-bold" : ""
-                }`}
+                className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
+                  isAboutActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+                } ${activeMenu === "about" ? "rotate-180" : ""}`}
               />
             </button>
 
-            {/* Trigger 3: Career & Placement */}
+            {/* 4. Career & Placement (Dropdown) */}
             <button
               ref={triggerRefs.support}
               type="button"
@@ -403,79 +400,70 @@ export default function Navbar() {
               onMouseLeave={handleTriggerLeave}
               onClick={() => toggleMenu("support")}
               aria-expanded={activeMenu === "support"}
-              className={`flex items-center gap-1.5 py-1 text-sm font-medium transition-colors cursor-pointer ${
-                activeMenu === "support" ||
-                pathname === "/placement" ||
-                pathname === "/career-guidance" ||
-                pathname === "/resume-building" ||
-                pathname === "/interview-resources"
-                  ? "font-semibold text-slate-950"
-                  : "text-slate-600 hover:text-slate-950"
+              className={`group flex items-center gap-1.5 py-1 text-[14.5px] transition-colors cursor-pointer ${
+                isCareerActive
+                  ? "font-semibold text-[#0070e0]"
+                  : "font-medium text-slate-700 hover:text-[#0070e0]"
               }`}
             >
               <span>Career & Placement</span>
               <i
-                className={`ti ti-chevron-down text-xs text-slate-400 transition-transform duration-200 ${
-                  activeMenu === "support" ? "rotate-180 text-blue-600 font-bold" : ""
-                }`}
+                className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
+                  isCareerActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+                } ${activeMenu === "support" ? "rotate-180" : ""}`}
               />
             </button>
 
-            {/* Direct Link: Contact */}
+            {/* 5. Contact */}
             <NavLink
               to="/contact"
               onMouseEnter={() => setHoveredNav("contact")}
-              className={`relative py-1 text-sm font-medium transition-colors ${
-                pathname === "/contact" && !activeMenu && hoveredNav !== "actions"
-                  ? "font-semibold text-slate-950"
-                  : "text-slate-600 hover:text-slate-950"
+              className={`py-1 text-[14.5px] transition-colors ${
+                isContactActive
+                  ? "font-semibold text-[#0070e0]"
+                  : "font-medium text-slate-700 hover:text-[#0070e0]"
               }`}
             >
               <span>Contact</span>
-              <span
-                aria-hidden="true"
-                className={`absolute -bottom-2.5 left-0 right-0 h-0.5 rounded-full bg-blue-600 transition-all duration-200 ${
-                  pathname === "/contact" && !activeMenu && hoveredNav !== "actions"
-                    ? "opacity-100 scale-x-100"
-                    : "opacity-0 scale-x-0 pointer-events-none"
-                }`}
-              />
             </NavLink>
           </nav>
         </div>
 
-        {/* Right Actions: WhatsApp + Divider + Phone + Smaller Cleaner CTA */}
+        {/* Right Actions: WhatsApp + Divider + Phone + Get Course Details Button */}
         <div
           onMouseEnter={() => setHoveredNav("actions")}
           onMouseLeave={() => setHoveredNav(null)}
           className="hidden items-center gap-4 xl:gap-5 lg:flex"
         >
+          {/* WhatsApp Link */}
           <a
             href="https://wa.me/919363793954?text=Hello%20Simatrix%20Academy%2C%20I%20would%20like%20to%20know%20more%20about%20your%20courses"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700"
+            className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#25D366] hover:text-[#1ebc59] transition-colors"
             title="Chat on WhatsApp"
           >
-            <i className="ti ti-brand-whatsapp text-lg text-emerald-600" />
+            <i className="ti ti-brand-whatsapp text-2xl text-[#25D366]" />
             <span>WhatsApp</span>
           </a>
 
           {/* Clean Vertical Divider */}
-          <span className="h-4 w-px bg-slate-200" aria-hidden="true" />
+          <span className="h-5 w-px bg-slate-200" aria-hidden="true" />
 
+          {/* Phone Link */}
           <a
             href="tel:+919363793954"
-            className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 transition hover:text-slate-950"
+            className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-800 hover:text-[#0070e0] transition-colors"
             title="Call Admissions"
           >
-            <i className="ti ti-phone text-sm text-sky-600" />
-            <span>+91 93637 93954</span>
+            <i className="ti ti-phone text-base text-[#0070e0]" />
+            <span className="font-semibold text-slate-900">+91 93637 93954</span>
           </a>
 
+          {/* CTA Button */}
           <Link
             to="/contact"
-            className="ml-4 xl:ml-6 inline-flex items-center gap-1.5 rounded-lg bg-[#0070e0] px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition-all duration-150 hover:bg-[#0060c0] active:translate-y-0"
+            className="ml-1 xl:ml-2 inline-flex items-center gap-2 rounded-xl bg-[#0070e0] hover:bg-[#0060c4] px-4.5 py-2.5 text-[14px] font-semibold text-white shadow-xs transition-all duration-150 active:scale-[0.98]"
           >
             <span>Get Course Details</span>
             <i className="ti ti-arrow-right text-xs" />
