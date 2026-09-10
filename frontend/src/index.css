@@ -33,9 +33,7 @@
   color-scheme: light;
 }
 
-/* --- Accessibility & interaction baseline (UI/UX pre-delivery checklist) --- */
 
-/* Tailwind v4 no longer sets cursor:pointer on buttons — restore it. */
 button:not(:disabled),
 [role="button"]:not([aria-disabled="true"]),
 label[for],
