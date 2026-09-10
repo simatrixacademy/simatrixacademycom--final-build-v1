@@ -284,6 +284,8 @@ export default function Navbar() {
     setActiveMenu((prev) => (prev === menuName ? null : menuName));
   };
 
+  const primaryCategories = (categories || []).slice(0, 6);
+
   const isHomeActive = pathname === "/";
   const isCoursesActive = activeMenu === "courses" || pathname.startsWith("/courses");
   const isAboutActive =
