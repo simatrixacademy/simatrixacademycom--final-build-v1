@@ -508,11 +508,10 @@ function PopularCoursesCarousel({ courses }) {
                 className="flex items-center justify-center p-1 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
               >
                 <span
-                  className={`block rounded-full transition-all duration-300 ${
-                    activeIndex === idx
+                  className={`block rounded-full transition-all duration-300 ${activeIndex === idx
                       ? "h-2 w-6 bg-blue-600 shadow-xs"
                       : "h-2 w-2 bg-slate-200 hover:bg-blue-200"
-                  }`}
+                    }`}
                 />
               </button>
             ))}
@@ -863,7 +862,7 @@ function CommunitySection({ data, courses, testimonials }) {
   const people = [avatar1, avatar2, avatar3];
 
   return (
-    <section className="bg-white pb-12 pt-4 sm:pb-16 sm:pt-6" aria-labelledby="community-title">
+    <section className="bg-white pb-6 pt-2 sm:pb-8 sm:pt-4" aria-labelledby="community-title">
       <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
         {/* Header - Kept clean and authoritative */}
         <div className="mx-auto max-w-3xl text-center">
@@ -881,9 +880,8 @@ function CommunitySection({ data, courses, testimonials }) {
             {["AK", "RS", "MP", "VK", "SN"].map((name, index) => (
               <span
                 key={name}
-                className={`grid h-14 w-14 place-items-center rounded-full border-4 border-white text-xs font-bold text-white shadow-md ${
-                  ["bg-brand-700", "bg-amber-600", "bg-emerald-700", "bg-violet-700", "bg-slate-800"][index]
-                }`}
+                className={`grid h-14 w-14 place-items-center rounded-full border-4 border-white text-xs font-bold text-white shadow-md ${["bg-brand-700", "bg-amber-600", "bg-emerald-700", "bg-violet-700", "bg-slate-800"][index]
+                  }`}
               >
                 {name}
               </span>
@@ -892,7 +890,7 @@ function CommunitySection({ data, courses, testimonials }) {
         </div>
 
         {/* 1. Four Specific Differentiator Cards */}
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* 01: Industry-Aligned Curriculum */}
           <Link
             to="/courses"
@@ -1397,7 +1395,7 @@ function HeroCarousel({ onEnquiry }) {
     setDragOffset(0);
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (_) {}
+    } catch (_) { }
   };
 
   const handlePointerMove = (e) => {
@@ -1418,7 +1416,7 @@ function HeroCarousel({ onEnquiry }) {
       if (e.currentTarget.hasPointerCapture(e.pointerId)) {
         e.currentTarget.releasePointerCapture(e.pointerId);
       }
-    } catch (_) {}
+    } catch (_) { }
 
     const threshold = 50;
     if (dragOffset < -threshold) {
@@ -1456,153 +1454,153 @@ function HeroCarousel({ onEnquiry }) {
       className="relative w-full bg-white"
       aria-label="Simatrix Featured Announcements"
     >
-      <div
-        ref={containerRef}
-        tabIndex={isSingle ? -1 : 0}
-        className={`group relative w-full overflow-hidden bg-white outline-none select-none ${
-          isSingle ? "" : isDragging ? "cursor-grabbing touch-pan-y" : "cursor-grab touch-pan-y"
-        }`}
-        aria-roledescription="carousel"
-        aria-label="Simatrix opportunities"
-        onKeyDown={(e) => {
-          if (isSingle) return;
-          if (e.key === "ArrowLeft") move(-1);
-          if (e.key === "ArrowRight") move(1);
-        }}
-        onMouseEnter={() => !isSingle && setPaused(true)}
-        onMouseLeave={() => !isSingle && setPaused(false)}
-        onFocusCapture={() => !isSingle && setPaused(true)}
-        onBlurCapture={(e) => {
-          if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
-        }}
-        onPointerDown={isSingle ? undefined : handlePointerDown}
-        onPointerMove={isSingle ? undefined : handlePointerMove}
-        onPointerUp={isSingle ? undefined : handlePointerUp}
-        onPointerCancel={isSingle ? undefined : handlePointerCancel}
-      >
-        {/* Banner Slides Track */}
+      <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-0 sm:px-6 lg:px-8 xl:px-10 sm:pt-4 sm:pb-2">
         <div
-          className="flex motion-reduce:transition-none"
-          onTransitionEnd={handleTransitionEnd}
-          style={{
-            transform: isSingle ? "none" : `translateX(calc(-${current * 100}% + ${dragOffset}px))`,
-            transition: isSingle || isDragging || !withTransition ? "none" : "transform 450ms cubic-bezier(0.25, 1, 0.5, 1)",
+          ref={containerRef}
+          tabIndex={isSingle ? -1 : 0}
+          className={`group relative w-full overflow-hidden bg-white sm:rounded-2xl lg:rounded-3xl outline-none select-none ${isSingle ? "" : isDragging ? "cursor-grabbing touch-pan-y" : "cursor-grab touch-pan-y"
+            }`}
+          aria-roledescription="carousel"
+          aria-label="Simatrix opportunities"
+          onKeyDown={(e) => {
+            if (isSingle) return;
+            if (e.key === "ArrowLeft") move(-1);
+            if (e.key === "ArrowRight") move(1);
           }}
+          onMouseEnter={() => !isSingle && setPaused(true)}
+          onMouseLeave={() => !isSingle && setPaused(false)}
+          onFocusCapture={() => !isSingle && setPaused(true)}
+          onBlurCapture={(e) => {
+            if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+          }}
+          onPointerDown={isSingle ? undefined : handlePointerDown}
+          onPointerMove={isSingle ? undefined : handlePointerMove}
+          onPointerUp={isSingle ? undefined : handlePointerUp}
+          onPointerCancel={isSingle ? undefined : handlePointerCancel}
         >
-          {extendedSlides.map((banner, index) => {
-            const isCurrent = isSingle ? true : index === current;
-            return (
-              <article
-                key={banner.keyId || `${banner.id}-${index}`}
-                className="relative w-full shrink-0 aspect-square sm:aspect-[1535/353]"
-                aria-hidden={!isCurrent}
-                inert={!isCurrent ? "" : undefined}
-              >
-                <Link
-                  to={banner.to}
-                  onClick={(e) => {
-                    if (hasDragged.current) {
-                      e.preventDefault();
-                    }
-                  }}
-                  className="block h-full w-full select-none focus:outline-none"
-                  aria-label={banner.title}
-                  tabIndex={isCurrent ? 0 : -1}
-                  draggable="false"
-                >
-                  <ResponsiveImage
-                    src={banner.src}
-                    alt={banner.alt}
-                    priority={isSingle ? true : index === 1}
-                    widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1535, 1920, 2560]}
-                    sizes="100vw"
-                    forceCloudflare={true}
-                    className="h-full w-full object-cover object-center select-none pointer-events-none"
-                    draggable="false"
-                  />
-                </Link>
-              </article>
-            );
-          })}
-        </div>
-
-        {/* Navigation Arrows (Reveal on Hover) */}
-        {!isSingle && (
-          <>
-            <button
-              type="button"
-              onPointerDown={(e) => e.stopPropagation()}
-              onPointerUp={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                move(-1);
-              }}
-              aria-label="Previous slide"
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
-            >
-              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-            </button>
-
-            <button
-              type="button"
-              onPointerDown={(e) => e.stopPropagation()}
-              onPointerUp={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                move(1);
-              }}
-              aria-label="Next slide"
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
-            >
-              <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
-            </button>
-          </>
-        )}
-
-        {/* Slide Indicators */}
-        {!isSingle && (
+          {/* Banner Slides Track */}
           <div
-            onPointerDown={(e) => e.stopPropagation()}
-            onPointerUp={(e) => e.stopPropagation()}
-            className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+            className="flex motion-reduce:transition-none"
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              transform: isSingle ? "none" : `translateX(calc(-${current * 100}% + ${dragOffset}px))`,
+              transition: isSingle || isDragging || !withTransition ? "none" : "transform 450ms cubic-bezier(0.25, 1, 0.5, 1)",
+            }}
           >
-            {activeBanners.map((banner, idx) => (
+            {extendedSlides.map((banner, index) => {
+              const isCurrent = isSingle ? true : index === current;
+              return (
+                <article
+                  key={banner.keyId || `${banner.id}-${index}`}
+                  className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403]"
+                  aria-hidden={!isCurrent}
+                  inert={!isCurrent ? "" : undefined}
+                >
+                  <Link
+                    to={banner.to}
+                    onClick={(e) => {
+                      if (hasDragged.current) {
+                        e.preventDefault();
+                      }
+                    }}
+                    className="block h-full w-full select-none focus:outline-none"
+                    aria-label={banner.title}
+                    tabIndex={isCurrent ? 0 : -1}
+                    draggable="false"
+                  >
+                    <ResponsiveImage
+                      src={banner.src}
+                      alt={banner.alt}
+                      priority={isSingle ? true : index === 1}
+                      widths={isMobile ? [360, 480, 640, 768, 1080, 1254] : [480, 768, 1080, 1440, 1535, 1920, 2560]}
+                      sizes="100vw"
+                      forceCloudflare={true}
+                      className="h-full w-full object-cover object-center select-none pointer-events-none"
+                      draggable="false"
+                    />
+                  </Link>
+                </article>
+              );
+            })}
+          </div>
+
+          {/* Navigation Arrows (Reveal on Hover) */}
+          {!isSingle && (
+            <>
               <button
-                key={banner.id || idx}
                 type="button"
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  if (idx === realCurrent) return;
-                  isAnimating.current = true;
-                  setWithTransition(true);
-                  setCurrent(idx + 1);
-                  setTimeout(() => {
-                    isAnimating.current = false;
-                  }, 450);
+                  move(-1);
                 }}
-                className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
-                aria-label={`Go to slide ${idx + 1}`}
+                aria-label="Previous slide"
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
               >
-                <span
-                  className={`block rounded-full transition-all duration-300 ${
-                    idx === realCurrent
-                      ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
-                      : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
-                  }`}
-                />
+                <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
               </button>
-            ))}
-          </div>
-        )}
+
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  move(1);
+                }}
+                aria-label="Next slide"
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/85 text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.18)] backdrop-blur-md border border-white/60 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out hover:bg-white hover:text-blue-600 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:opacity-100 cursor-pointer"
+              >
+                <svg className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {/* Slide Indicators */}
+          {!isSingle && (
+            <div
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              className="absolute bottom-2 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex h-3.5 sm:h-4 items-center gap-1 sm:gap-1.5 rounded-full bg-black/25 px-1.5 sm:px-2 backdrop-blur-xs border border-white/10 shadow-xs transition-all duration-300"
+            >
+              {activeBanners.map((banner, idx) => (
+                <button
+                  key={banner.id || idx}
+                  type="button"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onPointerUp={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (idx === realCurrent) return;
+                    isAnimating.current = true;
+                    setWithTransition(true);
+                    setCurrent(idx + 1);
+                    setTimeout(() => {
+                      isAnimating.current = false;
+                    }, 450);
+                  }}
+                  className="flex h-full items-center justify-center p-0.5 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
+                  aria-label={`Go to slide ${idx + 1}`}
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${idx === realCurrent
+                        ? "h-1 w-3.5 sm:h-1.5 sm:w-4.5 bg-white shadow-xs"
+                        : "h-1 w-1 sm:h-1.5 sm:w-1.5 bg-white/40 hover:bg-white/70"
+                      }`}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -1622,7 +1620,7 @@ function FaqSection({ toEnquiry }) {
   };
 
   return (
-    <section id="faqs" className="scroll-mt-32 border-t border-slate-200/80 bg-slate-50/70 py-20 sm:py-28">
+    <section id="faqs" className="scroll-mt-32 border-t border-slate-200/80 bg-slate-50/70 py-10 sm:py-14">
       <div className="mx-auto max-w-6xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
           {/* Left Column: Heading & Enhanced Quick Help Desk */}
@@ -1697,17 +1695,15 @@ function FaqSection({ toEnquiry }) {
                     onClick={() => {
                       setActiveCategory(cat);
                     }}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${
-                      isActive
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${isActive
                         ? "bg-brand-900 text-white shadow-xs"
                         : "border border-slate-200/90 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
-                    }`}
+                      }`}
                   >
                     <span>{cat}</span>
                     <span
-                      className={`grid h-4 min-w-4 place-items-center rounded-full px-1 text-[10px] font-bold ${
-                        isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
-                      }`}
+                      className={`grid h-4 min-w-4 place-items-center rounded-full px-1 text-[10px] font-bold ${isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                        }`}
                     >
                       {count}
                     </span>
@@ -1723,11 +1719,10 @@ function FaqSection({ toEnquiry }) {
                 return (
                   <div
                     key={faq.id}
-                    className={`rounded-2xl border transition-all duration-200 ${
-                      isOpen
+                    className={`rounded-2xl border transition-all duration-200 ${isOpen
                         ? "border-brand-500/50 bg-white shadow-md shadow-brand-900/5 ring-1 ring-brand-500/15"
                         : "border-slate-200/90 bg-white hover:border-slate-300 hover:shadow-2xs"
-                    }`}
+                      }`}
                   >
                     <button
                       type="button"
@@ -1751,11 +1746,10 @@ function FaqSection({ toEnquiry }) {
                         </div>
                       </div>
                       <span
-                        className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full transition-all duration-300 ${
-                          isOpen
+                        className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full transition-all duration-300 ${isOpen
                             ? "bg-brand-700 text-white rotate-180 shadow-xs"
                             : "bg-slate-100 text-slate-500 group-hover:bg-brand-50 group-hover:text-brand-700"
-                        }`}
+                          }`}
                       >
                         <i className="ti ti-chevron-down text-sm" />
                       </span>
@@ -1763,11 +1757,10 @@ function FaqSection({ toEnquiry }) {
 
                     {/* Smooth Animated Accordion Body */}
                     <div
-                      className={`grid transition-all duration-300 ease-in-out ${
-                        isOpen
+                      className={`grid transition-all duration-300 ease-in-out ${isOpen
                           ? "grid-rows-[1fr] opacity-100"
                           : "grid-rows-[0fr] opacity-0"
-                      }`}
+                        }`}
                     >
                       <div className="overflow-hidden">
                         <div className="px-5 pb-5 pt-1 border-t border-slate-100 ml-8">
@@ -2336,7 +2329,7 @@ export default function Home() {
       <section
         ref={enquiryRef}
         id="enquiry"
-        className="scroll-mt-32 relative overflow-hidden bg-gradient-to-b from-white via-slate-50/70 to-slate-100/80 py-24 sm:py-32"
+        className="scroll-mt-32 relative overflow-hidden bg-gradient-to-b from-white via-slate-50/70 to-slate-100/80 py-12 sm:py-16"
       >
         {/* Subtle Ambient Radial Lighting */}
         <div
@@ -2462,9 +2455,37 @@ export default function Home() {
       {/* FAQs Section with Single-Open Accordion & Category Filters */}
       <FaqSection toEnquiry={toEnquiry} />
       <style>{`
-        #main-content > section[class*="py-20"] { padding-top: 3.5rem; padding-bottom: 3.5rem; }
-        #main-content > section:last-of-type { padding-bottom: 2rem; }
-        @media (max-width: 640px) { #main-content > section[class*="py-20"] { padding-top: 2.5rem; padding-bottom: 2.5rem; } }
+        #main-content > section[class*="py-20"],
+        #main-content > section[class*="py-24"],
+        #main-content > section[class*="py-28"],
+        #main-content > section[class*="py-16"],
+        #main-content > section[class*="py-12"] {
+          padding-top: 2.5rem;
+          padding-bottom: 2.5rem;
+        }
+        #main-content > section:first-of-type { padding-top: 0; padding-bottom: 0; }
+        #main-content > section:last-of-type { padding-bottom: 1.5rem; }
+        #main-content > section .scroll-mt-32 { scroll-margin-top: 5rem; }
+        @media (min-width: 640px) {
+          #main-content > section[class*="py-20"],
+          #main-content > section[class*="py-24"],
+          #main-content > section[class*="py-28"],
+          #main-content > section[class*="py-16"],
+          #main-content > section[class*="py-12"] {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+          }
+        }
+        @media (max-width: 640px) {
+          #main-content > section[class*="py-20"],
+          #main-content > section[class*="py-24"],
+          #main-content > section[class*="py-28"],
+          #main-content > section[class*="py-16"],
+          #main-content > section[class*="py-12"] {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+          }
+        }
       `}</style>
     </main>
   );
