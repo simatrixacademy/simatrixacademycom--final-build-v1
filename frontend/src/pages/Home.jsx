@@ -1494,7 +1494,7 @@ function HeroCarousel({ onEnquiry }) {
             return (
               <article
                 key={banner.keyId || `${banner.id}-${index}`}
-                className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403]"
+                className="relative w-full shrink-0 aspect-square sm:aspect-[1535/353]"
                 aria-hidden={!isCurrent}
                 inert={!isCurrent ? "" : undefined}
               >

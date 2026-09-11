@@ -207,8 +207,16 @@ export default function Navbar() {
         setHoveredNav(null);
       }
     };
+    const onResize = () => {
+      setActiveMenu(null);
+      setHoveredNav(null);
+    };
     document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -314,158 +322,155 @@ export default function Navbar() {
     >
       <div
         ref={navRef}
-        className="relative mx-auto flex h-18 sm:h-20 max-w-[1440px] 2xl:max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10"
+        className="relative mx-auto flex h-16 sm:h-18 lg:h-20 max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10"
       >
-        {/* Left Section: Brand Logo + Desktop Nav Links */}
-        <div className="flex items-center gap-7 lg:gap-8 xl:gap-10">
-          {/* Brand Logo */}
-          <Link
+        {/* 1. Left Section: Brand Logo */}
+        <Link
+          to="/"
+          className="flex shrink-0 items-center transition-opacity duration-150 hover:opacity-90"
+          aria-label="Simatrix Academy Home"
+        >
+          <img
+            src="/darkMode-without-tagline.svg"
+            alt="Simatrix Academy"
+            className="h-8.5 sm:h-9.5 lg:h-10 w-auto object-contain transition-transform duration-150 group-hover:scale-105"
+          />
+        </Link>
+
+        {/* 2. Middle Section: Desktop Navigation Links (Properly Spaced) */}
+        <nav
+          onMouseLeave={() => setHoveredNav(null)}
+          className="hidden items-center gap-5 xl:gap-7 2xl:gap-8 lg:flex"
+        >
+          {/* 1. Home */}
+          <NavLink
             to="/"
-            className="flex shrink-0 items-center transition-opacity duration-150 hover:opacity-90"
-            aria-label="Simatrix Academy Home"
+            end
+            onMouseEnter={() => setHoveredNav("home")}
+            className={`py-1 text-[14px] xl:text-[14.5px] transition-colors ${
+              isHomeActive
+                ? "font-semibold text-[#0070e0]"
+                : "font-medium text-slate-700 hover:text-[#0070e0]"
+            }`}
           >
-            <img
-              src="/darkMode-without-tagline.svg"
-              alt="Simatrix Academy"
-              className="h-10 sm:h-11 w-auto object-contain transition-transform duration-150 group-hover:scale-105"
+            <span>Home</span>
+          </NavLink>
+
+          {/* 2. Courses (Dropdown) */}
+          <button
+            ref={triggerRefs.courses}
+            type="button"
+            onMouseEnter={() => handleTriggerEnter("courses")}
+            onMouseLeave={handleTriggerLeave}
+            onClick={() => toggleMenu("courses")}
+            aria-expanded={activeMenu === "courses"}
+            className={`group flex items-center gap-1.5 py-1 text-[14px] xl:text-[14.5px] transition-colors cursor-pointer ${
+              isCoursesActive
+                ? "font-semibold text-[#0070e0]"
+                : "font-medium text-slate-700 hover:text-[#0070e0]"
+            }`}
+          >
+            <span>Courses</span>
+            <i
+              className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
+                isCoursesActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+              } ${activeMenu === "courses" ? "rotate-180" : ""}`}
             />
-          </Link>
+          </button>
 
-          {/* Desktop Navigation Links */}
-          <nav
-            onMouseLeave={() => setHoveredNav(null)}
-            className="hidden items-center gap-6 lg:flex xl:gap-8"
+          {/* 3. About (Dropdown) */}
+          <button
+            ref={triggerRefs.about}
+            type="button"
+            onMouseEnter={() => handleTriggerEnter("about")}
+            onMouseLeave={handleTriggerLeave}
+            onClick={() => toggleMenu("about")}
+            aria-expanded={activeMenu === "about"}
+            className={`group flex items-center gap-1.5 py-1 text-[14px] xl:text-[14.5px] transition-colors cursor-pointer ${
+              isAboutActive
+                ? "font-semibold text-[#0070e0]"
+                : "font-medium text-slate-700 hover:text-[#0070e0]"
+            }`}
           >
-            {/* 1. Home */}
-            <NavLink
-              to="/"
-              end
-              onMouseEnter={() => setHoveredNav("home")}
-              className={`py-1 text-[14.5px] transition-colors ${
-                isHomeActive
-                  ? "font-semibold text-[#0070e0]"
-                  : "font-medium text-slate-700 hover:text-[#0070e0]"
-              }`}
-            >
-              <span>Home</span>
-            </NavLink>
+            <span>About</span>
+            <i
+              className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
+                isAboutActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+              } ${activeMenu === "about" ? "rotate-180" : ""}`}
+            />
+          </button>
 
-            {/* 2. Courses (Dropdown) */}
-            <button
-              ref={triggerRefs.courses}
-              type="button"
-              onMouseEnter={() => handleTriggerEnter("courses")}
-              onMouseLeave={handleTriggerLeave}
-              onClick={() => toggleMenu("courses")}
-              aria-expanded={activeMenu === "courses"}
-              className={`group flex items-center gap-1.5 py-1 text-[14.5px] transition-colors cursor-pointer ${
-                isCoursesActive
-                  ? "font-semibold text-[#0070e0]"
-                  : "font-medium text-slate-700 hover:text-[#0070e0]"
-              }`}
-            >
-              <span>Courses</span>
-              <i
-                className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
-                  isCoursesActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
-                } ${activeMenu === "courses" ? "rotate-180" : ""}`}
-              />
-            </button>
+          {/* 4. Career & Placement (Dropdown) */}
+          <button
+            ref={triggerRefs.support}
+            type="button"
+            onMouseEnter={() => handleTriggerEnter("support")}
+            onMouseLeave={handleTriggerLeave}
+            onClick={() => toggleMenu("support")}
+            aria-expanded={activeMenu === "support"}
+            className={`group flex items-center gap-1.5 py-1 text-[14px] xl:text-[14.5px] transition-colors cursor-pointer ${
+              isCareerActive
+                ? "font-semibold text-[#0070e0]"
+                : "font-medium text-slate-700 hover:text-[#0070e0]"
+            }`}
+          >
+            <span>Career & Placement</span>
+            <i
+              className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
+                isCareerActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+              } ${activeMenu === "support" ? "rotate-180" : ""}`}
+            />
+          </button>
 
-            {/* 3. About (Dropdown) */}
-            <button
-              ref={triggerRefs.about}
-              type="button"
-              onMouseEnter={() => handleTriggerEnter("about")}
-              onMouseLeave={handleTriggerLeave}
-              onClick={() => toggleMenu("about")}
-              aria-expanded={activeMenu === "about"}
-              className={`group flex items-center gap-1.5 py-1 text-[14.5px] transition-colors cursor-pointer ${
-                isAboutActive
-                  ? "font-semibold text-[#0070e0]"
-                  : "font-medium text-slate-700 hover:text-[#0070e0]"
-              }`}
-            >
-              <span>About</span>
-              <i
-                className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
-                  isAboutActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
-                } ${activeMenu === "about" ? "rotate-180" : ""}`}
-              />
-            </button>
+          {/* 5. Contact */}
+          <NavLink
+            to="/contact"
+            onMouseEnter={() => setHoveredNav("contact")}
+            className={`py-1 text-[14px] xl:text-[14.5px] transition-colors ${
+              isContactActive
+                ? "font-semibold text-[#0070e0]"
+                : "font-medium text-slate-700 hover:text-[#0070e0]"
+            }`}
+          >
+            <span>Contact</span>
+          </NavLink>
+        </nav>
 
-            {/* 4. Career & Placement (Dropdown) */}
-            <button
-              ref={triggerRefs.support}
-              type="button"
-              onMouseEnter={() => handleTriggerEnter("support")}
-              onMouseLeave={handleTriggerLeave}
-              onClick={() => toggleMenu("support")}
-              aria-expanded={activeMenu === "support"}
-              className={`group flex items-center gap-1.5 py-1 text-[14.5px] transition-colors cursor-pointer ${
-                isCareerActive
-                  ? "font-semibold text-[#0070e0]"
-                  : "font-medium text-slate-700 hover:text-[#0070e0]"
-              }`}
-            >
-              <span>Career & Placement</span>
-              <i
-                className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
-                  isCareerActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
-                } ${activeMenu === "support" ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {/* 5. Contact */}
-            <NavLink
-              to="/contact"
-              onMouseEnter={() => setHoveredNav("contact")}
-              className={`py-1 text-[14.5px] transition-colors ${
-                isContactActive
-                  ? "font-semibold text-[#0070e0]"
-                  : "font-medium text-slate-700 hover:text-[#0070e0]"
-              }`}
-            >
-              <span>Contact</span>
-            </NavLink>
-          </nav>
-        </div>
-
-        {/* Right Actions: WhatsApp + Divider + Phone + Get Course Details Button */}
+        {/* 3. Right Actions: WhatsApp + Divider + Phone + Get Course Details Button */}
         <div
           onMouseEnter={() => setHoveredNav("actions")}
           onMouseLeave={() => setHoveredNav(null)}
-          className="hidden items-center gap-4 xl:gap-5 lg:flex"
+          className="hidden shrink-0 items-center gap-3.5 xl:gap-5 lg:flex"
         >
           {/* WhatsApp Link */}
           <a
             href="https://wa.me/919363793954?text=Hello%20Simatrix%20Academy%2C%20I%20would%20like%20to%20know%20more%20about%20your%20courses"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#25D366] hover:text-[#1ebc59] transition-colors"
+            className="inline-flex items-center gap-1.5 text-[13.5px] xl:text-[14px] font-semibold text-[#25D366] hover:text-[#1ebc59] transition-colors whitespace-nowrap"
             title="Chat on WhatsApp"
           >
-            <i className="ti ti-brand-whatsapp text-2xl text-[#25D366]" />
+            <i className="ti ti-brand-whatsapp text-xl xl:text-2xl text-[#25D366]" />
             <span>WhatsApp</span>
           </a>
 
           {/* Clean Vertical Divider */}
-          <span className="h-5 w-px bg-slate-200" aria-hidden="true" />
+          <span className="h-4.5 w-px bg-slate-200 shrink-0" aria-hidden="true" />
 
           {/* Phone Link */}
           <a
             href="tel:+919363793954"
-            className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-800 hover:text-[#0070e0] transition-colors"
+            className="inline-flex items-center gap-1.5 xl:gap-2 text-[13.5px] xl:text-[14px] font-semibold text-slate-800 hover:text-[#0070e0] transition-colors whitespace-nowrap"
             title="Call Admissions"
           >
-            <i className="ti ti-phone text-base text-[#0070e0]" />
+            <i className="ti ti-phone text-sm xl:text-base text-[#0070e0]" />
             <span className="font-semibold text-slate-900">+91 93637 93954</span>
           </a>
 
           {/* CTA Button */}
           <Link
             to="/contact"
-            className="ml-1 xl:ml-2 inline-flex items-center gap-2 rounded-xl bg-[#0070e0] hover:bg-[#0060c4] px-4.5 py-2.5 text-[14px] font-semibold text-white shadow-xs transition-all duration-150 active:scale-[0.98]"
+            className="ml-0.5 xl:ml-1 inline-flex items-center gap-2 rounded-xl bg-[#0070e0] hover:bg-[#0060c4] px-3.5 py-2 xl:px-4.5 xl:py-2.5 text-[13.5px] xl:text-[14px] font-semibold text-white shadow-xs transition-all duration-150 active:scale-[0.98] whitespace-nowrap shrink-0"
           >
             <span>Get Course Details</span>
             <i className="ti ti-arrow-right text-xs" />
