@@ -25,6 +25,8 @@ const BlogDetail = lazy(() => import("../pages/BlogDetail"));
 const Reviews = lazy(() => import("../pages/Reviews"));
 const Contact = lazy(() => import("../pages/Contact"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const Branches = lazy(() => import("../pages/Branches"));
+const CityTraining = lazy(() => import("../pages/CityTraining"));
 
 // Dashboard v2 (EfferdDashboard2 — standalone shell)
 const EfferdDashboard2 = lazy(() => import("../components/ui/efferd-dashboard-2"));
@@ -80,6 +82,11 @@ export default function AppRoutes() {
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/branches" element={<Branches />} />
+
+          {/* City-specific SEO landing pages */}
+          <Route path="/software-training-in-:citySlug" element={<CityTraining />} />
+
           <Route path="*" element={<NotFound />} />
         </Route>
 

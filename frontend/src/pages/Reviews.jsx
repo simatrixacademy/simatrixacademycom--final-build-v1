@@ -30,9 +30,9 @@ export default function Reviews() {
   }, []);
 
   useSeo({
-    title: "Student Reviews & Outcomes · Simatrix Academy",
+    title: "Student Reviews | Software Training in Virudhunagar | Simatrix Academy",
     description:
-      "Read verified student reviews, career transformations, and placement feedback from Simatrix Academy learners in Virudhunagar.",
+      "Read verified student reviews and placement outcomes from Simatrix Academy — the best software training institute in Virudhunagar. Real career transformations and feedback from our learners.",
     canonical: "/reviews",
   });
 

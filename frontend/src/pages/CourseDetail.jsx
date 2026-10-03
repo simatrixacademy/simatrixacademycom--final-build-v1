@@ -8,7 +8,105 @@ import EnquiryForm from "../components/EnquiryForm";
 import CourseQuiz from "../components/CourseQuiz";
 import CourseCard from "../components/CourseCard";
 
-const sections = [["overview", "Overview"], ["curriculum", "Curriculum"], ["roadmap", "Roadmap"], ["careers", "Careers"], ["quiz", "Quiz"], ["enquire", "Enquire"]];
+const sections = [
+  ["overview", "Overview"],
+  ["curriculum", "Curriculum"],
+  ["roadmap", "Roadmap"],
+  ["careers", "Careers"],
+  ["faqs", "FAQs"],
+  ["locations", "Locations"],
+  ["quiz", "Quiz"],
+  ["enquire", "Enquire"],
+];
+
+function getCourseSeoConfig(course) {
+  if (!course) return { title: "Software Courses in Virudhunagar | Simatrix Academy" };
+  const s = (course.slug || "").toLowerCase();
+  const t = (course.title || "").toLowerCase();
+
+  let title = `${course.title} Training in Virudhunagar | Simatrix Academy`;
+  let description = `${course.summary || ""} Learn ${course.title} in Virudhunagar with hands-on projects, industry mentors, and 100% placement support at Simatrix Academy.`;
+
+  if (s.includes("python") || t.includes("python")) {
+    title = "Python Course & Training in Virudhunagar | Simatrix Academy";
+    description = "Best Python training institute in Virudhunagar. Master Python programming, Django, data structures, and practical projects with 100% placement support.";
+  } else if (s.includes("java") || t.includes("java")) {
+    title = "Java Training Institute in Virudhunagar | Java Course | Simatrix Academy";
+    description = "Leading Java training institute in Virudhunagar. Learn Core Java, Spring Boot, Microservices, and REST APIs with placement assistance at Simatrix Academy.";
+  } else if (s.includes("full-stack") || s.includes("mern") || t.includes("full stack")) {
+    title = "Full Stack Development Course in Virudhunagar | Simatrix Academy";
+    description = "Comprehensive full stack developer course in Virudhunagar. Master frontend, backend, databases, and deployment with job-oriented placement support.";
+  } else if (s.includes("data-analytics") || s.includes("data-science") || t.includes("data analyst")) {
+    title = "Data Analytics Course in Virudhunagar | Power BI & SQL | Simatrix Academy";
+    description = "Premier Data Analytics training in Virudhunagar. Learn Power BI, SQL, Python for Data Analysis, and Excel with career-focused placement assistance.";
+  }
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: `${course.title} Training in Virudhunagar`,
+    description: course.summary || course.description,
+    educationalCredentialAwarded: "Course Completion Certificate & Verified Project Portfolio",
+    provider: {
+      "@type": "EducationalOrganization",
+      name: "Simatrix Academy",
+      url: "https://www.simatrixacademy.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "1/2A, 1st Floor, AA Road, Near Head Post Office",
+        addressLocality: "Virudhunagar",
+        addressRegion: "Tamil Nadu",
+        postalCode: "626001",
+        addressCountry: "IN",
+      },
+    },
+    hasCourseInstance: [
+      {
+        "@type": "CourseInstance",
+        courseMode: "Blended",
+        courseWorkload: "PT60H",
+        location: {
+          "@type": "Place",
+          name: "Simatrix Academy Virudhunagar Campus",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "1/2A, 1st Floor, AA Road, Near Head Post Office",
+            addressLocality: "Virudhunagar",
+            addressRegion: "Tamil Nadu",
+            postalCode: "626001",
+            addressCountry: "IN",
+          },
+        },
+      },
+      {
+        "@type": "CourseInstance",
+        courseMode: "Online",
+        courseWorkload: "PT60H",
+      },
+    ],
+  };
+
+  return { title, description, canonical: `/courses/${course.slug}`, jsonLd };
+}
+
+const COURSE_FAQS = (title) => [
+  {
+    q: `What is the eligibility for the ${title} course in Virudhunagar?`,
+    a: `Our ${title} program is open to college students, freshers, engineering/arts graduates (B.E, B.Tech, BCA, B.Sc CS/IT), and working professionals seeking to transition into software development. No prior advanced coding knowledge is required as we begin from fundamental principles.`,
+  },
+  {
+    q: `Do you provide placement support for ${title} students?`,
+    a: `Yes! Every student enrolled in ${title} at Simatrix Academy receives dedicated placement assistance. This includes technical mock interviews, resume optimization, portfolio review, soft skill enhancement, and interview calls with our hiring partner network across Tamil Nadu and Bangalore.`,
+  },
+  {
+    q: `Can students from Sivakasi, Rajapalayam, or Srivilliputhur enroll in this ${title} course?`,
+    a: `Absolutely! We offer flexible morning and evening classroom batches at our central Virudhunagar campus (easily reachable by bus/train), as well as interactive live online batches so you can attend without daily travel.`,
+  },
+  {
+    q: `Will I work on real-world projects during the ${title} training?`,
+    a: `Yes. Practical learning is our core philosophy. You will build end-to-end applications, commit code to GitHub, and deploy live apps to showcase in technical interviews.`,
+  },
+];
 
 export default function CourseDetail() {
   const { slug } = useParams();
@@ -27,7 +125,28 @@ export default function CourseDetail() {
     api.getCourses(course.category?.slug).then((res) => setRelated((res.data || []).filter((item) => item.slug !== course.slug).slice(0, 3))).catch(() => setRelated([]));
   }, [course]);
 
-  useSeo(course ? { title: `${course.title} · Simatrix Academy`, description: course.summary, canonical: `/courses/${course.slug}`, jsonLd: { "@context": "https://schema.org", "@type": "Course", name: course.title, description: course.summary, provider: { "@type": "Organization", name: "Simatrix Academy" } } } : { title: "Course · Simatrix Academy" });
+  useSeo(getCourseSeoConfig(course));
+
+  /* Dynamic FAQPage Schema for Course */
+  useEffect(() => {
+    if (!course) return;
+    const faqs = COURSE_FAQS(course.title);
+    const faqLd = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    };
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.setAttribute("data-seo", "course-faq");
+    script.text = JSON.stringify(faqLd);
+    document.head.appendChild(script);
+    return () => script.remove();
+  }, [course]);
 
   if (error) return <CourseError message={error} onRetry={load} />;
   if (!course) return <CourseSkeleton />;
@@ -80,6 +199,60 @@ export default function CourseDetail() {
           {course.roadmap?.length > 0 && <section id="roadmap" className="scroll-mt-36"><SectionTitle eyebrow="Learning journey" title="Your course roadmap" /><ol className="relative mt-7 space-y-0 before:absolute before:bottom-6 before:left-[1.15rem] before:top-6 before:w-px before:bg-brand-200">{course.roadmap.map((step, index) => <Reveal as="li" key={`${step}-${index}`} delay={(index % 5) * 60} className="relative flex gap-4 pb-6 last:pb-0"><span className="relative z-10 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-700 text-sm font-bold text-white shadow-md">{index + 1}</span><div className="flex-1 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm"><p className="text-sm font-medium leading-6 text-slate-700">{step}</p></div></Reveal>)}</ol></section>}
 
           {course.designations?.length > 0 && <section id="careers" className="scroll-mt-36"><SectionTitle eyebrow="Career pathways" title="Roles you can explore" subtitle="These are potential career directions, not placement or employment guarantees." /><ul className="mt-6 grid gap-4 sm:grid-cols-2">{course.designations.map((designation, index) => <Reveal as="li" key={`${designation}-${index}`} delay={(index % 2) * 70} className="flex items-center gap-4 rounded-2xl border border-brand-100 bg-brand-50 p-5"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-brand-700 shadow-sm"><i className="ti ti-briefcase" /></span><div><p className="text-sm font-bold text-slate-900">{designation}</p><p className="mt-1 text-xs text-slate-500">A role aligned with skills from this program</p></div></Reveal>)}</ul></section>}
+
+          {/* Course FAQs Section */}
+          <section id="faqs" className="scroll-mt-36">
+            <SectionTitle
+              eyebrow="Frequently asked questions"
+              title={`${course.title} Training FAQ`}
+              subtitle={`Everything you need to know about learning ${course.title} in Virudhunagar.`}
+            />
+            <div className="mt-6 divide-y divide-slate-200 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              {COURSE_FAQS(course.title).map((faq, idx) => (
+                <div key={idx} className={`py-4 ${idx === 0 ? "pt-0" : ""} ${idx === 3 ? "pb-0" : ""}`}>
+                  <h3 className="font-display text-base font-bold text-slate-900">{faq.q}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Regional Training Locations Strip */}
+          <section id="locations" className="scroll-mt-36 rounded-3xl border border-brand-200 bg-brand-50/40 p-6 sm:p-8">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-accent-700">Regional Learning Options</span>
+                <h3 className="font-display text-xl font-bold text-slate-900">
+                  {course.title} Training Across Southern Tamil Nadu
+                </h3>
+                <p className="mt-1 text-xs text-slate-600">
+                  Attend classroom training at our Virudhunagar campus or interactive live online batches from your hometown with 100% placement support.
+                </p>
+              </div>
+              <Link to="/branches" className="shrink-0 text-xs font-bold text-brand-700 hover:text-brand-900">
+                View All Branches &rarr;
+              </Link>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              {[
+                ["Virudhunagar (Campus)", "/software-training-in-virudhunagar"],
+                ["Sivakasi (25 km)", "/software-training-in-sivakasi"],
+                ["Rajapalayam (40 km)", "/software-training-in-rajapalayam"],
+                ["Srivilliputhur (35 km)", "/software-training-in-srivilliputhur"],
+                ["Aruppukottai (18 km)", "/software-training-in-aruppukottai"],
+                ["Sattur (24 km)", "/software-training-in-sattur"],
+              ].map(([name, url]) => (
+                <Link
+                  key={url}
+                  to={url}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 shadow-sm"
+                >
+                  <i className="ti ti-map-pin text-brand-600 text-sm" />
+                  {name}
+                </Link>
+              ))}
+            </div>
+          </section>
 
           <section id="quiz" className="scroll-mt-36"><CourseQuiz key={course.slug} courseTitle={course.title} questions={course.quiz} /></section>
         </main>

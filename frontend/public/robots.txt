@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /dashboard-v2
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Host: https://www.simatrixacademy.com
+Sitemap: https://www.simatrixacademy.com/sitemap.xml

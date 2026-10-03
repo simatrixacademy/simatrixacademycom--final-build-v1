@@ -19,8 +19,8 @@ export default function Contact() {
   const [courses, setCourses] = useState([]);
 
   useSeo({
-    title: "Contact Simatrix Academy Virudhunagar",
-    description: "Contact or visit Simatrix Academy in Virudhunagar for course details, schedules and career guidance.",
+    title: "Contact Simatrix Academy — Software Training in Virudhunagar",
+    description: "Contact or visit Simatrix Academy — the best software training institute in Virudhunagar. Get course details, batch schedules, fee structure and career guidance.",
     canonical: "/contact",
     jsonLd: {
       "@context": "https://schema.org",

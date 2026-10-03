@@ -1492,7 +1492,7 @@ function HeroCarousel({ onEnquiry }) {
               return (
                 <article
                   key={banner.keyId || `${banner.id}-${index}`}
-                  className="relative w-full shrink-0 aspect-square sm:aspect-[1535/403]"
+                  className="relative w-full shrink-0 aspect-square sm:aspect-[1535/353]"
                   aria-hidden={!isCurrent}
                   inert={!isCurrent ? "" : undefined}
                 >
@@ -1824,11 +1824,58 @@ export default function Home() {
   const mainRef = useRef(null);
 
   useSeo({
-    title: "Simatrix Academy | Build Skills That Lead to Tech Careers",
-    description: "Learn practical technology skills through mentor-led training, projects, career guidance and placement assistance at Simatrix Academy.",
+    title: "No.1 Software Training Institute in Virudhunagar | Simatrix Academy",
+    description: "Best software training institute in Virudhunagar with 100% placement support. Learn Python, Java, Full Stack, Data Analytics, Cloud & AI with hands-on projects and expert mentors at Simatrix Academy.",
     canonical: "/",
-    jsonLd: { "@context": "https://schema.org", "@type": "EducationalOrganization", name: "Simatrix Academy", url: typeof window !== "undefined" ? window.location.origin : "" },
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      name: "Simatrix Academy",
+      alternateName: ["Simatrix", "Simatrix Academy Virudhunagar"],
+      url: "https://www.simatrixacademy.com",
+      logo: "https://www.simatrixacademy.com/simatrix_logo_only.png",
+      description: "No.1 software training institute in Virudhunagar offering Python, Java, Full Stack, Data Analytics, Cloud and AI courses with 100% placement support.",
+      telephone: "+91-93637-93954",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "1/2A, 1st Floor, AA Road, Near Head Post Office",
+        addressLocality: "Virudhunagar",
+        addressRegion: "Tamil Nadu",
+        postalCode: "626001",
+        addressCountry: "IN",
+      },
+      areaServed: [
+        { "@type": "City", name: "Virudhunagar" },
+        { "@type": "City", name: "Sivakasi" },
+        { "@type": "City", name: "Rajapalayam" },
+        { "@type": "City", name: "Srivilliputhur" },
+        { "@type": "City", name: "Aruppukottai" },
+        { "@type": "City", name: "Sattur" },
+      ],
+      sameAs: [
+        "https://www.google.com/maps/search/?api=1&query=Simatrix+Academy+Virudhunagar+AA+Road",
+      ],
+    },
   });
+
+  /* Injected FAQPage Schema for Google Rich Snippets on Homepage */
+  useEffect(() => {
+    const faqLd = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQ_ITEMS.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    };
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.setAttribute("data-seo", "home-faq");
+    script.text = JSON.stringify(faqLd);
+    document.head.appendChild(script);
+    return () => script.remove();
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -2448,6 +2495,104 @@ export default function Home() {
 
               <EnquiryForm courses={courses} compact type={enquiryIntent} />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Regional Training Locations Hub — Distributes PageRank and Captures Regional Intent */}
+      <section className="border-t border-slate-200/80 bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+            <div>
+              <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.22em] text-amber-700">
+                <span className="h-px w-7 bg-amber-600" />
+                Regional Coverage
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+                Software Training Across Virudhunagar District
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+                Simatrix Academy is the premier IT training destination for learners from all major towns in the district. Choose your location to see dedicated batch timings and travel directions.
+              </p>
+            </div>
+            <Link
+              to="/branches"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-800 shadow-sm transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-900"
+            >
+              <span>View All Branches & Travel Guidance</span>
+              <i className="ti ti-arrow-right" />
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                city: "Virudhunagar",
+                slug: "virudhunagar",
+                badge: "Main Campus",
+                desc: "Head office on AA Road with state-of-the-art computer labs, high-speed fiber internet, and daily hands-on mentor desks.",
+                courses: "Python, Java, MERN, Data Analytics",
+              },
+              {
+                city: "Sivakasi",
+                slug: "sivakasi",
+                badge: "25 km Away",
+                desc: "35 mins direct bus ride. Popular among Sivakasi engineering and arts graduates seeking high-paying IT placements.",
+                courses: "Full Stack, Python, Cloud, AI",
+              },
+              {
+                city: "Rajapalayam",
+                slug: "rajapalayam",
+                badge: "40 km Away",
+                desc: "Direct train and express bus connectivity. Live interactive online batches and weekend classroom options available.",
+                courses: "Java Full Stack, Data Analytics, Python",
+              },
+              {
+                city: "Srivilliputhur",
+                slug: "srivilliputhur",
+                badge: "35 km Away",
+                desc: "Industry-grade software training replacing basic computer centers. End-to-end GitHub projects and interview coaching.",
+                courses: "Python Full Stack, Power BI & SQL, Web Dev",
+              },
+              {
+                city: "Aruppukottai",
+                slug: "aruppukottai",
+                badge: "18 km Away",
+                desc: "Fast 20-minute bus commute via NH 38. Convenient morning and evening batches aligned with college schedules.",
+                courses: "MERN Stack, Python, Data Analytics",
+              },
+              {
+                city: "Sattur",
+                slug: "sattur",
+                badge: "24 km Away",
+                desc: "25 mins via NH 44 highway. Career-focused curriculum with verified certificates and dedicated placement assistance.",
+                courses: "Java, Python, Web Development",
+              },
+            ].map((loc) => (
+              <Link
+                key={loc.slug}
+                to={`/software-training-in-${loc.slug}`}
+                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-md"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-bold text-brand-700 border border-brand-100">
+                      {loc.badge}
+                    </span>
+                    <span className="text-xs font-semibold text-brand-600 transition group-hover:translate-x-1">
+                      Explore <i className="ti ti-arrow-right ml-0.5" />
+                    </span>
+                  </div>
+                  <h3 className="mt-3 font-display text-lg font-bold text-slate-900 group-hover:text-brand-700">
+                    Software Training in {loc.city}
+                  </h3>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600">{loc.desc}</p>
+                </div>
+                <div className="mt-4 border-t border-slate-100 pt-3 text-[11px] text-slate-500">
+                  <span className="font-semibold text-slate-700">Top Tracks:</span> {loc.courses}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import { Spinner } from "../components/ui";
@@ -34,8 +34,8 @@ export default function About() {
   const [site, setSite] = useState(null);
 
   useSeo({
-    title: "Academy Overview | Simatrix Academy",
-    description: "Discover how Simatrix Academy helps students and freshers build practical technology skills through guided learning, projects and career preparation.",
+    title: "About Simatrix Academy — IT Training Institute in Virudhunagar",
+    description: "Simatrix Academy is a leading IT training institute in Virudhunagar helping students and freshers build practical technology skills through hands-on projects, expert mentors and placement assistance.",
     canonical: "/about",
   });
 

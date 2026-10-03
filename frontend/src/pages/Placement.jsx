@@ -27,8 +27,8 @@ function Eyebrow({ children, dark = false }) {
 
 export default function Placement() {
   useSeo({
-    title: "Placement Training & Assistance | Simatrix Academy",
-    description: "Prepare for IT opportunities through resume building, mock interviews, aptitude practice, professional communication and placement assistance.",
+    title: "100% Placement Training Institute in Virudhunagar | Simatrix Academy",
+    description: "IT training with placement in Virudhunagar. Get resume building, mock interviews, aptitude practice and placement assistance at Simatrix Academy — the best placement training institute in Virudhunagar.",
     canonical: "/placement",
   });
 

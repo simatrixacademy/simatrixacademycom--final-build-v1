@@ -8,8 +8,8 @@ export default function Blog() {
   const [posts, setPosts] = useState(null);
 
   useSeo({
-    title: "Technology & Career Blog | Simatrix Academy",
-    description: "Practical technology guides, learning insights and career preparation resources from Simatrix Academy.",
+    title: "Technology & Career Blog | IT Training Virudhunagar | Simatrix Academy",
+    description: "Practical technology guides, career tips and learning resources from Simatrix Academy — the best software training institute in Virudhunagar.",
     canonical: "/blog",
   });
 

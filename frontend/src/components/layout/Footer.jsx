@@ -1,56 +1,9 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useSettings } from "../../lib/useSettings";
 
-function getFogColor(ratio) {
-  const clamped = Math.max(0, Math.min(1, ratio));
-  let r, g, b;
-  if (clamped <= 0.5) {
-    const t = clamped / 0.5;
-    // Cyan: 56, 189, 248 -> Electric Indigo: 99, 102, 241
-    r = Math.round(56 + (99 - 56) * t);
-    g = Math.round(189 + (102 - 189) * t);
-    b = Math.round(248 + (241 - 248) * t);
-  } else {
-    const t = (clamped - 0.5) / 0.5;
-    // Electric Indigo: 99, 102, 241 -> Rich Purple / Fuchsia: 192, 38, 211
-    r = Math.round(99 + (192 - 99) * t);
-    g = Math.round(102 + (38 - 102) * t);
-    b = Math.round(241 + (211 - 241) * t);
-  }
-  return `${r}, ${g}, ${b}`;
-}
-
 export default function Footer() {
-  const watermarkRef = useRef(null);
   const year = new Date().getFullYear();
   const s = useSettings();
-
-  const handleMouseMove = (e) => {
-    if (!watermarkRef.current) return;
-    const rect = watermarkRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const ratio = rect.width ? x / rect.width : 0.5;
-    const fogRgb = getFogColor(ratio);
-
-    watermarkRef.current.style.setProperty("--mouse-x", `${x}px`);
-    watermarkRef.current.style.setProperty("--mouse-y", `${y}px`);
-    watermarkRef.current.style.setProperty("--fog-rgb", fogRgb);
-    watermarkRef.current.style.setProperty("--mouse-active", "1");
-  };
-
-  const handleMouseEnter = () => {
-    if (watermarkRef.current) {
-      watermarkRef.current.style.setProperty("--mouse-active", "1");
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (watermarkRef.current) {
-      watermarkRef.current.style.setProperty("--mouse-active", "0");
-    }
-  };
 
   const phone = "+91 93637 93954";
   const rawEmail = s.contact_email || "info@simatrixacademy.com";
@@ -85,15 +38,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-24 overflow-hidden bg-[#050811] text-slate-300">
-      {/* Top Hairline Gradient Accent */}
-      <div
-        className="absolute inset-x-0 top-0 h-px"
-        style={{
-          background: "linear-gradient(90deg, transparent, #38BDF8 25%, #6366F1 50%, #C026D3 75%, transparent)",
-        }}
-      />
-
+    <footer className="relative overflow-hidden bg-[#050811] text-slate-300">
       {/* Ambient Top Glow Orbs */}
       <div
         aria-hidden="true"
@@ -201,63 +146,68 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ================================================================= */}
-      {/* GRAND ARCHITECTURAL WATERMARK (Refined 50% scale)                */}
-      {/* ================================================================= */}
-      <div
-        ref={watermarkRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="relative w-full overflow-hidden border-t border-white/[0.06] pt-6 pb-2 select-none cursor-default"
-        style={{
-          "--mouse-x": "50%",
-          "--mouse-y": "50%",
-          "--fog-rgb": "99, 102, 241",
-          "--mouse-active": "0",
-        }}
-      >
-        {/* Soft persistent ambient backlighting beam */}
-        <div
-          className="pointer-events-none absolute bottom-0 left-1/2 h-28 w-[50rem] -translate-x-1/2 rounded-full opacity-15 blur-[100px]"
-          style={{
-            background: "linear-gradient(90deg, #38BDF8, #6366F1, #C026D3)",
-          }}
-          aria-hidden="true"
-        />
+      {/* SEO Link Network — keyword-rich internal links for PageRank distribution */}
+      <div className="border-t border-white/[.06] py-8">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
+          {/* Training Locations */}
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Software Training Locations</p>
+          <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+            {[
+              ["Software Training in Virudhunagar", "/software-training-in-virudhunagar"],
+              ["Software Training in Sivakasi", "/software-training-in-sivakasi"],
+              ["Software Training in Rajapalayam", "/software-training-in-rajapalayam"],
+              ["Software Training in Srivilliputhur", "/software-training-in-srivilliputhur"],
+              ["Software Training in Aruppukottai", "/software-training-in-aruppukottai"],
+              ["Software Training in Sattur", "/software-training-in-sattur"],
+            ].map(([label, to], i, arr) => (
+              <span key={to}>
+                <Link to={to} className="transition hover:text-sky-400">{label}</Link>
+                {i < arr.length - 1 && <span className="ml-3 text-white/10">|</span>}
+              </span>
+            ))}
+          </div>
 
-        {/* Subtle Ambient Fog Glow behind SIMATRIX (Smoothly follows cursor, shifts color across X-axis) */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-700 ease-out"
-          style={{
-            opacity: "var(--mouse-active, 0)",
-            background:
-              "radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--fog-rgb), 0.12) 0%, rgba(var(--fog-rgb), 0.03) 45%, transparent 75%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
-            maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
-          }}
-          aria-hidden="true"
-        />
+          {/* Popular Courses */}
+          <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Popular Courses</p>
+          <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+            {[
+              ["Python Full Stack Course", "/courses/python-full-stack"],
+              ["Java Full Stack Course", "/courses/java-full-stack"],
+              ["MERN Full Stack Course", "/courses/mern-full-stack"],
+              ["Data Analytics Course", "/courses/data-analytics"],
+              ["Cloud & DevOps Course", "/courses/devops"],
+              ["AI & Machine Learning Course", "/courses/machine-learning"],
+            ].map(([label, to], i, arr) => (
+              <span key={to}>
+                <Link to={to} className="transition hover:text-sky-400">{label}</Link>
+                {i < arr.length - 1 && <span className="ml-3 text-white/10">|</span>}
+              </span>
+            ))}
+          </div>
 
-        <div className="relative mx-auto flex flex-col items-center justify-center text-center">
-          <span
-            className="simatrix-grand-watermark block font-sans font-black leading-none tracking-[-0.03em] text-transparent"
-            style={{
-              fontSize: "clamp(2.5rem, 8vw, 6.5rem)",
-            }}
-          >
-            SIMATRIX
-          </span>
-
-          <div className="-mt-1 sm:-mt-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.35em] text-slate-500">
-            <span className="h-px w-6 bg-slate-700" />
-            <span>Excellence in Technology Education</span>
-            <span className="h-px w-6 bg-slate-700" />
+          {/* Student Resources */}
+          <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Student Resources</p>
+          <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+            {[
+              ["Career Guidance", "/career-guidance"],
+              ["Interview Preparation", "/interview-resources"],
+              ["Resume Building", "/resume-building"],
+              ["Help Center", "/help-center"],
+              ["Book Appointment", "/appointment"],
+              ["Branches", "/branches"],
+            ].map(([label, to], i, arr) => (
+              <span key={to}>
+                <Link to={to} className="transition hover:text-sky-400">{label}</Link>
+                {i < arr.length - 1 && <span className="ml-3 text-white/10">|</span>}
+              </span>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* Bottom Legal / Copyright Row */}
-        <div className="relative mx-auto mt-8 flex max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] flex-col items-center justify-between gap-4 border-t border-white/5 px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 text-xs text-slate-500 sm:flex-row">
+      {/* Bottom Legal / Copyright Row */}
+      <div className="border-t border-white/10 bg-brand-950/60 py-6">
+        <div className="mx-auto flex max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] flex-col items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 xl:px-10 text-xs text-slate-500 sm:flex-row">
           <p>&copy; {year} Simatrix Academy. All rights reserved.</p>
 
           <div className="flex items-center gap-5">
@@ -279,33 +229,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        .simatrix-grand-watermark {
-          background-image: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.22) 0%,
-            rgba(255, 255, 255, 0.08) 55%,
-            rgba(255, 255, 255, 0.01) 100%
-          );
-          background-clip: text;
-          -webkit-background-clip: text;
-          filter: drop-shadow(0 0 35px rgba(99, 102, 241, 0.15));
-          animation: watermark-shimmer 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes watermark-shimmer {
-          0% {
-            filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.1));
-          }
-          50% {
-            filter: drop-shadow(0 0 45px rgba(99, 102, 241, 0.25));
-          }
-          100% {
-            filter: drop-shadow(0 0 35px rgba(192, 38, 211, 0.18));
-          }
-        }
-      `}</style>
     </footer>
   );
 }

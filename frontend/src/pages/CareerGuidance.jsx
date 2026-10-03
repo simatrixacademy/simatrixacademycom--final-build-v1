@@ -86,9 +86,9 @@ const faqs = [
 
 export default function CareerGuidance() {
   useSeo({
-    title: "Free Career Guidance for Students | Simatrix Academy",
+    title: "Job Oriented Courses in Virudhunagar | Career Guidance | Simatrix Academy",
     description:
-      "Book a free Saturday career-guidance session for school students, college students and freshers. Explore suitable paths, skills and practical next steps.",
+      "Explore job oriented and career oriented courses in Virudhunagar. Book a free career-guidance session for students and freshers at Simatrix Academy — discover suitable learning paths with placement support.",
     canonical: "/career-guidance",
   });
 

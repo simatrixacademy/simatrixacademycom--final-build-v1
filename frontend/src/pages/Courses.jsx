@@ -17,7 +17,7 @@ export default function Courses() {
 
   const activeName = active && categories.find((category) => category.slug === active)?.name;
   const setCategory = (slug) => setParams(slug ? { category: slug } : {});
-  useSeo({ title: `${activeName ? `${activeName} Courses` : "Courses"} | Simatrix Academy`, description: "Compare practical software-learning paths by domain and choose a course aligned with your current goals.", canonical: active ? `/courses?category=${active}` : "/courses" });
+  useSeo({ title: `${activeName ? `${activeName} Courses in Virudhunagar` : "Software Courses in Virudhunagar"} | IT Training | Simatrix Academy`, description: "Explore job-oriented software courses in Virudhunagar — Python, Java, Full Stack, Data Analytics, Cloud & AI. Compare practical learning paths with placement support at Simatrix Academy.", canonical: active ? `/courses?category=${active}` : "/courses" });
 
   return (
     <main id="main-content">
