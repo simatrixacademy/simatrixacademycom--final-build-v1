@@ -1,6 +1,12 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # Enforce WWW canonical domain (301 Permanent Redirect)
+  RewriteCond %{HTTP_HOST} ^simatrixacademy\.com$ [NC]
+  RewriteRule ^(.*)$ https://www.simatrixacademy.com/$1 [R=301,L]
+
+  # SPA Routing Fallback
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

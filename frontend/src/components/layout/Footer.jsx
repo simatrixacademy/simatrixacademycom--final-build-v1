@@ -153,12 +153,12 @@ export default function Footer() {
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Software Training Locations</p>
           <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
             {[
-              ["Software Training in Virudhunagar", "/software-training-in-virudhunagar"],
-              ["Software Training in Sivakasi", "/software-training-in-sivakasi"],
-              ["Software Training in Rajapalayam", "/software-training-in-rajapalayam"],
-              ["Software Training in Srivilliputhur", "/software-training-in-srivilliputhur"],
-              ["Software Training in Aruppukottai", "/software-training-in-aruppukottai"],
-              ["Software Training in Sattur", "/software-training-in-sattur"],
+              ["Software Training in Virudhunagar", "/"],
+              ["Software Training in Sivakasi", "/"],
+              ["Software Training in Rajapalayam", "/"],
+              ["Software Training in Srivilliputhur", "/"],
+              ["Software Training in Aruppukottai", "/"],
+              ["Software Training in Sattur", "/"],
             ].map(([label, to], i, arr) => (
               <span key={to}>
                 <Link to={to} className="transition hover:text-sky-400">{label}</Link>
@@ -171,12 +171,12 @@ export default function Footer() {
           <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Popular Courses</p>
           <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
             {[
-              ["Python Full Stack Course", "/courses/python-full-stack"],
-              ["Java Full Stack Course", "/courses/java-full-stack"],
-              ["MERN Full Stack Course", "/courses/mern-full-stack"],
-              ["Data Analytics Course", "/courses/data-analytics"],
-              ["Cloud & DevOps Course", "/courses/devops"],
-              ["AI & Machine Learning Course", "/courses/machine-learning"],
+              ["Python Full Stack Course", "/"],
+              ["Java Full Stack Course", "/"],
+              ["MERN Full Stack Course", "/"],
+              ["Data Analytics Course", "/"],
+              ["Cloud & DevOps Course", "/"],
+              ["AI & Machine Learning Course", "/"],
             ].map(([label, to], i, arr) => (
               <span key={to}>
                 <Link to={to} className="transition hover:text-sky-400">{label}</Link>

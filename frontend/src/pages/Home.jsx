@@ -12,12 +12,12 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const HERO_BANNERS = [
   {
-    id: "banner-offer-20",
-    src: "/banner/REF1.png",
+    id: "banner-learn-fullstack-ai",
+    src: "/banner/REF1_R.png",
     mobileSrc: "/banner/REF1_MOBILE.png",
-    alt: "September Special Offer: Get 20% OFF Full Stack & AI Courses with hands-on projects and expert mentors",
+    alt: "Learn Full Stack & AI Skills: Industry-ready training with hands-on projects, expert mentors, and career support",
     to: "/courses",
-    title: "Get 20% OFF Full Stack & AI Courses",
+    title: "Learn Full Stack & AI Skills",
   },
   {
     id: "banner-learn-build",
