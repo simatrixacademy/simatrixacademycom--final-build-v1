@@ -19,18 +19,18 @@ class DatabaseSeeder extends Seeder
         ];
         foreach ($features as $i=>$f) DB::table('features')->updateOrInsert(['title'=>$f[0]],['description'=>$f[1],'icon'=>$f[2],'order'=>$i]);
         $courseImages = [
-            'MERN Full Stack' => '/courses/FullStackDevelopmentCourseWithAiTools310.webp',
-            'MEAN Full Stack' => '/courses/FullStackDevelopmentCourseWithAiTools310.webp',
-            'Python Full Stack' => '/courses/GenAiSoftwareDevelopmentProgramCertifiedByMongodbIitmPravartak334.webp',
-            'Java Full Stack' => '/courses/FullStackDevelopmentCourseWithAiTools310.webp',
-            'Data Science with Python' => '/courses/MasterDataScienceCourseWithIitmPravartakCertification310.webp',
-            'Machine Learning' => '/courses/ArtificialIntelligenceMachineLearningCertifiedByIntelIitmPravartak334.webp',
-            'Data Analytics' => '/courses/MasterDataScienceCourseWithIitmPravartakCertification310.webp',
-            'DevOps' => '/courses/DevopsCourse310.webp',
-            'AWS Solutions Architect' => '/courses/DevopsCourse310.webp',
-            'Digital Marketing' => '/courses/BusinessAndMarketingAnalyticsWithAiTools310.webp',
-            'Flutter Development' => '/courses/UiuxDesignCourse310.webp',
-            'Android Development' => '/courses/UiuxDesignCourse310.webp',
+            'MERN Full Stack' => '/courses2/mern-full-stack.jpeg',
+            'MEAN Full Stack' => '/courses2/mean-full-stack.jpeg',
+            'Python Full Stack' => '/courses2/python-full-stack.jpeg',
+            'Java Full Stack' => '/courses2/java-full-stack.jpeg',
+            'Data Science with Python' => '/courses2/ai-machine-learning.jpeg',
+            'Machine Learning' => '/courses2/ai-machine-learning.jpeg',
+            'Data Analytics' => '/courses2/data-analytics.jpeg',
+            'DevOps' => '/courses2/cloud-devops.jpeg',
+            'AWS Solutions Architect' => '/courses2/cloud-devops.jpeg',
+            'Digital Marketing' => '/courses2/data-analytics.jpeg',
+            'Flutter Development' => '/courses2/mern-full-stack.jpeg',
+            'Android Development' => '/courses2/mern-full-stack.jpeg',
         ];
 
         $catalog = [
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             $categoryId=DB::table('course_categories')->where('slug',$slug)->value('id');
             foreach ($cat[2] as $i=>$title) {
                 $content = $this->courseContent($title, $slug);
-                $courseImg = $courseImages[$title] ?? null;
+                $courseImg = $courseImages[$title] ?? '/courses2/mern-full-stack.jpeg';
                 DB::table('courses')->updateOrInsert(['slug'=>Str::slug($title)],[
                     'category_id'=>$categoryId,'title'=>$title,
                     'image'=>$courseImg,

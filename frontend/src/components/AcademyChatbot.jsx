@@ -20,6 +20,19 @@ export default function AcademyChatbot() {
   const [messages, setMessages] = useState([welcome]);
   const [input, setInput] = useState("");
   const endRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      setScrolled(y > 30);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, open]);
 
@@ -30,7 +43,16 @@ export default function AcademyChatbot() {
     setInput("");
   };
 
-  return <div className="fixed bottom-20 right-5 z-[80] sm:right-6 lg:bottom-6">
+  const isVisible = scrolled || open;
+
+  return (
+    <div
+      className={`fixed bottom-20 right-5 z-[80] sm:right-6 lg:bottom-6 transition-all duration-300 ease-out ${
+        isVisible
+          ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+          : "opacity-0 translate-y-8 scale-90 pointer-events-none invisible"
+      }`}
+    >
     {open && <section role="dialog" aria-label="Simatrix course assistant" className="mb-4 flex h-[min(520px,calc(100vh-110px))] w-[min(380px,calc(100vw-40px))] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl shadow-slate-950/25">
       <header className="flex items-center gap-3 bg-gradient-to-r from-brand-950 to-brand-700 p-4 text-white">
         <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-white/10 text-xl"><i className="ti ti-message-chatbot" /><span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-brand-800 bg-emerald-400" /></span>
@@ -63,5 +85,6 @@ export default function AcademyChatbot() {
       <i className="ti ti-message-chatbot transition group-hover:scale-110" />
       <span className="absolute right-0 top-0 h-4 w-4 rounded-full border-2 border-white bg-emerald-400" />
     </button>
-  </div>;
+  </div>
+  );
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import * as THREE from "three";
 import { mediaUrl } from "../api/client";
 import { courseLogo, courseIcon } from "../lib/courseLogo";
+import { getCourseImage } from "../lib/courseImage";
 
 // Palette
 const NAVY = "#0A0A1F";
@@ -304,7 +305,8 @@ export default function CourseCard({ course }) {
   const ref = useRef(null);
 
   const logo = courseLogo(course);
-  const showUploaded = course.image && !imgError;
+  const courseImg = getCourseImage(course);
+  const showUploaded = courseImg && !imgError;
   const showLogo = !showUploaded && logo && !logoError;
   const iconClass = !showUploaded && !showLogo ? courseIcon(course) : null;
 
@@ -364,7 +366,7 @@ export default function CourseCard({ course }) {
       {showUploaded ? (
         <div className="relative aspect-[16/9] overflow-hidden bg-slate-100">
           <img
-            src={mediaUrl(course.image)}
+            src={courseImg}
             alt={course.title}
             onError={() => setImgError(true)}
             className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"

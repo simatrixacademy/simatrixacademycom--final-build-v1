@@ -11,6 +11,7 @@ import avatar3 from "../assets/avatar3.png";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import CareerAdvisorModal from "../components/CareerAdvisorModal";
 import TieUpsMarquee from "../components/TieUpsMarquee";
+import { getCourseImage } from "../lib/courseImage";
 
 const HERO_BANNERS = [
   {
@@ -297,40 +298,6 @@ function SectionTitle({ eyebrow, title, description, dark = false, left = false 
   </div>;
 }
 
-function getCourseImage(course) {
-  if (course?.image) {
-    if (course.image.startsWith("/") || course.image.startsWith("http")) {
-      return course.image;
-    }
-    return mediaUrl(course.image);
-  }
-  const slug = (course?.slug || "").toLowerCase();
-  const title = (course?.title || "").toLowerCase();
-
-  if (slug.includes("data-science") || title.includes("data science") || slug.includes("data-analytics")) {
-    return "/courses/MasterDataScienceCourseWithIitmPravartakCertification310.webp";
-  }
-  if (slug.includes("ai") || slug.includes("artificial") || title.includes("machine learning") || slug.includes("machine-learning")) {
-    return "/courses/ArtificialIntelligenceMachineLearningCertifiedByIntelIitmPravartak334.webp";
-  }
-  if (slug.includes("gen-ai") || slug.includes("python") || slug.includes("software")) {
-    return "/courses/GenAiSoftwareDevelopmentProgramCertifiedByMongodbIitmPravartak334.webp";
-  }
-  if (slug.includes("mern") || slug.includes("mean") || slug.includes("full-stack") || title.includes("full stack")) {
-    return "/courses/FullStackDevelopmentCourseWithAiTools310.webp";
-  }
-  if (slug.includes("uiux") || slug.includes("ui-ux") || slug.includes("design") || slug.includes("mobile") || slug.includes("flutter") || slug.includes("android") || slug.includes("react-native")) {
-    return "/courses/UiuxDesignCourse310.webp";
-  }
-  if (slug.includes("devops") || slug.includes("cloud") || slug.includes("aws") || slug.includes("azure") || slug.includes("security") || slug.includes("cyber") || slug.includes("ccna")) {
-    return "/courses/DevopsCourse310.webp";
-  }
-  if (slug.includes("marketing") || slug.includes("business") || slug.includes("analytics") || slug.includes("sap")) {
-    return "/courses/BusinessAndMarketingAnalyticsWithAiTools310.webp";
-  }
-
-  return "/courses/FullStackDevelopmentCourseWithAiTools310.webp";
-}
 
 function CourseTile({ course }) {
   const courseImg = getCourseImage(course);
@@ -2073,110 +2040,7 @@ export default function Home() {
         </>
       )}
 
-      {/* Free Full-Stack Internship Section */}
-      <section id="internship" className="scroll-mt-32 bg-white py-20 sm:py-28">
-        <div className="mx-auto grid max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] gap-10 px-4 sm:px-6 lg:px-8 xl:px-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3.5 py-1 text-xs font-bold uppercase tracking-[.18em] text-amber-800">
-              <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-              Free Full-Stack Internship Program
-            </div>
-            <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-slate-950 sm:text-4xl lg:text-5xl">
-              Bridge the gap between college theory and your first tech job.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-              Designed specifically for pre-final, final-year college students and freshers. Gain real industry exposure, build deployable software, and master technical interview defense without paying course fees.
-            </p>
 
-            {/* Quick highlight metrics */}
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-700">
-              <span className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5">
-                <i className="ti ti-clock text-amber-600 text-sm" /> 4–8 Weeks Duration
-              </span>
-              <span className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5">
-                <i className="ti ti-device-laptop text-blue-600 text-sm" /> Classroom Lab or Live Online
-              </span>
-              <span className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5">
-                <i className="ti ti-coin-off text-emerald-600 text-sm" /> 100% Free • Selection Based
-              </span>
-            </div>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => toEnquiry("internship")}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-900 px-6 py-3 font-bold text-white shadow-md shadow-brand-950/20 transition hover:bg-brand-800 active:scale-[0.99]"
-              >
-                <span>Apply for Free Internship</span>
-                <i className="ti ti-arrow-right" />
-              </button>
-              <button
-                type="button"
-                onClick={() => toEnquiry("internship")}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-bold text-slate-800 shadow-xs transition hover:bg-slate-50"
-              >
-                <i className="ti ti-checklist text-brand-700" />
-                <span>Check Eligibility</span>
-              </button>
-            </div>
-            <p className="mt-4 flex items-center gap-2 text-xs text-slate-500">
-              <i className="ti ti-shield-check text-emerald-600" />
-              Zero fee • Batches are limited per campus to ensure 1-on-1 mentor guidance.
-            </p>
-          </div>
-
-          {/* Right card: What you actually take away */}
-          <div className="rounded-3xl border border-amber-200/90 bg-gradient-to-br from-amber-50/70 via-white to-slate-50 p-6 shadow-xl shadow-amber-900/5 sm:p-8">
-            <div className="flex items-center justify-between pb-4 border-b border-amber-200/60">
-              <h3 className="font-display text-xl font-bold text-slate-950 sm:text-2xl">
-                What you actually take away:
-              </h3>
-              <span className="rounded-full bg-amber-500/10 px-3 py-1 text-[11px] font-bold text-amber-800">
-                Verified Outcomes
-              </span>
-            </div>
-
-            <ul className="mt-6 space-y-4">
-              {[
-                {
-                  icon: "ti-folders",
-                  title: "2–3 Completed Industry Projects",
-                  desc: "Build real frontend & backend workflows rather than tutorial clones.",
-                },
-                {
-                  icon: "ti-brand-github",
-                  title: "Active GitHub Repo with Deployments",
-                  desc: "Live URLs on Vercel / Render with proper commit messages & documentation.",
-                },
-                {
-                  icon: "ti-messages",
-                  title: "Mock Interview Project Defense",
-                  desc: "Learn how to explain your database schema, API design, and bugs to recruiters.",
-                },
-                {
-                  icon: "ti-certificate",
-                  title: "Internship Certificate & Performance Letter",
-                  desc: "Official Simatrix Academy verifiable credential to validate your practical training.",
-                },
-              ].map((item) => (
-                <li key={item.title} className="flex gap-4">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-lg text-amber-700 shadow-xs border border-amber-100">
-                    <i className={`ti ${item.icon}`} />
-                  </span>
-                  <div>
-                    <strong className="block text-sm font-bold text-slate-950">{item.title}</strong>
-                    <span className="mt-0.5 block text-xs leading-relaxed text-slate-600">{item.desc}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 rounded-2xl bg-amber-100/60 p-4 text-xs leading-relaxed text-amber-900 border border-amber-200/50">
-              <strong>Ideal For:</strong> BE / B.Tech / BCA / MCA / B.Sc CS final-year students and fresh graduates wanting real software experience before campus or off-campus drives.
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Where Learning Leads / Tangible Outcomes */}
       <section id="outcomes" className="scroll-mt-32 border-y border-slate-200/80 bg-gradient-to-b from-white to-slate-50/50 py-20 sm:py-24">

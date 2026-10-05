@@ -33,19 +33,34 @@ export default function CareerAdvisorModal({
   const isControlled = typeof controlledIsOpen === "boolean";
   const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
 
-  // Sync internal state if controlled from outside
+  // Sync internal state if controlled from outside (e.g. manual button click)
   useEffect(() => {
     if (isControlled) {
       setInternalIsOpen(controlledIsOpen);
     }
   }, [isControlled, controlledIsOpen]);
 
-  // Clear stale session block so scroll testing always works in current session
+  const [mounted, setMounted] = useState(false);
+  const [animate, setAnimate] = useState(false);
+
+  // Smooth entrance and exit animation
   useEffect(() => {
-    try {
-      sessionStorage.removeItem("simatrix_career_popup_seen");
-    } catch (_) {}
-  }, []);
+    if (isOpen) {
+      setMounted(true);
+      const id = requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimate(true);
+        });
+      });
+      return () => cancelAnimationFrame(id);
+    } else {
+      setAnimate(false);
+      const timer = setTimeout(() => {
+        setMounted(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   // Lock background scroll when open
   useEffect(() => {
@@ -57,57 +72,78 @@ export default function CareerAdvisorModal({
     };
   }, [isOpen]);
 
-  const openModal = () => {
-    if (hasDismissedRef.current) return;
+  const openModal = (isManual = false) => {
+    if (!isManual) {
+      if (hasDismissedRef.current) return;
+      try {
+        if (localStorage.getItem("simatrix_career_advisor_dismissed") === "true") return;
+      } catch (_) {}
+    }
     setInternalIsOpen(true);
     if (onOpen) onOpen();
   };
 
   const closeModal = () => {
     hasDismissedRef.current = true;
+    try {
+      localStorage.setItem("simatrix_career_advisor_dismissed", "true");
+    } catch (_) {}
     setInternalIsOpen(false);
     if (onClose) onClose();
   };
 
-  // Reliable scroll trigger: triggers when user scrolls down past the hero or into course slide show
+  // Only trigger on scroll if user has NEVER closed/dismissed it before
   useEffect(() => {
+    try {
+      if (localStorage.getItem("simatrix_career_advisor_dismissed") === "true") {
+        return;
+      }
+    } catch (_) {}
+
+    let isReady = false;
+
+    // Guard: wait 1.5s after load so browser refresh and scroll-restoration never auto-trigger
+    const readyTimer = setTimeout(() => {
+      isReady = true;
+    }, 1500);
+
     const handleScroll = () => {
+      if (!isReady) return;
       if (hasTriggeredRef.current || hasDismissedRef.current) return;
+      try {
+        if (localStorage.getItem("simatrix_career_advisor_dismissed") === "true") return;
+      } catch (_) {}
 
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-      const target =
-        document.getElementById("tie-ups") ||
-        document.getElementById("popular-programs") ||
-        document.getElementById("learning-paths");
 
+      // Must be scrolled down past the hero & tie-ups (at least 500px)
+      if (scrollY < 500) return;
+
+      const target = document.getElementById("popular-programs");
       let shouldTrigger = false;
 
       if (target) {
         const rect = target.getBoundingClientRect();
-        // Triggers as soon as the course section enters the viewport
-        if (rect.top <= window.innerHeight * 0.85) {
+        // Triggers as user scrolls into the course slideshow section
+        if (rect.top <= window.innerHeight * 0.75) {
           shouldTrigger = true;
         }
-      }
-
-      // Also trigger if user scrolls past hero (~400px down)
-      if (scrollY >= 400) {
+      } else if (scrollY >= 700) {
         shouldTrigger = true;
       }
 
       if (shouldTrigger) {
         hasTriggeredRef.current = true;
-        openModal();
+        openModal(false);
         window.removeEventListener("scroll", handleScroll);
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Run an initial check in case page is already scrolled
-    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      clearTimeout(readyTimer);
     };
   }, []);
 
@@ -161,7 +197,7 @@ export default function CareerAdvisorModal({
     }
   };
 
-  if (!isOpen) return null;
+  if (!mounted) return null;
   if (typeof document === "undefined") return null;
 
   return createPortal(
@@ -178,13 +214,21 @@ export default function CareerAdvisorModal({
         height: "100vh",
         zIndex: 999999,
       }}
-      className="flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity duration-200 overflow-y-auto"
+      className={`flex items-center justify-center p-4 overflow-y-auto transition-all duration-300 ease-out ${
+        animate
+          ? "bg-black/60 backdrop-blur-xs opacity-100"
+          : "bg-black/0 opacity-0 pointer-events-none"
+      }`}
       onClick={(e) => {
         if (e.target === e.currentTarget) closeModal();
       }}
     >
       <div
-        className="relative w-full max-w-[420px] rounded-2xl bg-white p-7 sm:p-9 shadow-2xl transition-all duration-200 my-auto text-left"
+        className={`relative w-full max-w-[420px] rounded-2xl bg-white p-7 sm:p-9 shadow-2xl text-left my-auto transition-all duration-300 ease-out transform ${
+          animate
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-95 opacity-0 translate-y-4"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

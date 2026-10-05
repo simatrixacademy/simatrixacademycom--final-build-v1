@@ -7,6 +7,7 @@ import { useSeo } from "../lib/useSeo";
 import EnquiryForm from "../components/EnquiryForm";
 import CourseQuiz from "../components/CourseQuiz";
 import CourseCard from "../components/CourseCard";
+import { getCourseImage } from "../lib/courseImage";
 
 const sections = [
   ["overview", "Overview"],
@@ -185,7 +186,7 @@ export default function CourseDetail() {
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_390px]">
         <main className="min-w-0 space-y-14">
           <section id="overview" className="scroll-mt-36">
-            {course.image ? <div className="group relative mb-8 aspect-[16/9] overflow-hidden rounded-3xl bg-slate-100 shadow-lg"><img src={mediaUrl(course.image)} alt={course.title} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent" /><span className="absolute bottom-5 left-5 rounded-full border border-white/20 bg-white/15 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">{course.category?.name || "Technology program"}</span></div>
+            {getCourseImage(course) ? <div className="group relative mb-8 aspect-[16/9] overflow-hidden rounded-3xl bg-slate-100 shadow-lg"><img src={getCourseImage(course)} alt={course.title} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent" /><span className="absolute bottom-5 left-5 rounded-full border border-white/20 bg-white/15 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">{course.category?.name || "Technology program"}</span></div>
             : <div className="mb-8 grid aspect-[16/7] place-items-center rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-50 to-slate-100 text-6xl text-brand-600"><i className={courseIcon(course)} /></div>}
             <SectionTitle eyebrow="Course overview" title="About this course" />
             <p className="mt-5 text-base leading-8 text-slate-600">{course.description}</p>

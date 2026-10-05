@@ -41,7 +41,12 @@ async function request(path, { method = "GET", body, auth = false } = {}) {
 export function mediaUrl(path) {
   if (!path) return "";
   if (/^https?:\/\//i.test(path)) return path;
-  if (path.startsWith("/courses/") || path.startsWith("courses/")) {
+  if (
+    path.startsWith("/courses/") ||
+    path.startsWith("courses/") ||
+    path.startsWith("/courses2/") ||
+    path.startsWith("courses2/")
+  ) {
     return path.startsWith("/") ? path : `/${path}`;
   }
   return `${BASE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
