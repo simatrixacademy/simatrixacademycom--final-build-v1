@@ -27,6 +27,7 @@ const Contact = lazy(() => import("../pages/Contact"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Branches = lazy(() => import("../pages/Branches"));
 const CityTraining = lazy(() => import("../pages/CityTraining"));
+const SoftwareTraining = lazy(() => import("../pages/SoftwareTraining"));
 
 // Dashboard v2 (EfferdDashboard2 — standalone shell)
 const EfferdDashboard2 = lazy(() => import("../components/ui/efferd-dashboard-2"));
@@ -86,6 +87,9 @@ export default function AppRoutes() {
 
           {/* City-specific SEO landing pages */}
           <Route path="/software-training-in-:citySlug" element={<CityTraining />} />
+
+          {/* Standalone ghosted regional training hub page */}
+          <Route path="/software-training" element={<SoftwareTraining />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>

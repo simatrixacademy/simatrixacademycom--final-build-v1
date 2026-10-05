@@ -10,8 +10,10 @@ import avatar2 from "../assets/avatar2.png";
 import avatar3 from "../assets/avatar3.png";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import CareerAdvisorModal from "../components/CareerAdvisorModal";
+import { getLiveReviews } from "../lib/reviewsData";
 import TieUpsMarquee from "../components/TieUpsMarquee";
 import { getCourseImage } from "../lib/courseImage";
+
 
 const HERO_BANNERS = [
   {
@@ -43,123 +45,153 @@ const HERO_BANNERS = [
 const STORIES = [
   {
     id: "story-1",
-    name: "Priya R.",
+    name: "Muthuvel Selvam",
     course: "MERN Full Stack Development",
     category: "full-stack",
-    avatar: avatar1,
-    college: "KLN College of Engineering",
+    college: "KLN College of Engineering, Madurai",
     batch: "2025 Graduate",
-    role: "Placed as Junior Web Developer",
-    headline: "From final-year confusion to a full-stack developer offer.",
-    quote: "Before Simatrix, my college projects were mostly copied tutorial code. Here, mentors pushed us to build a full-stack e-commerce engine with real authentication, payment gateways, and Docker deployment. During my interview, I shared my live GitHub repo and defended the database schema with complete confidence.",
-    highlight: "3 Live Full-Stack Apps Shipped",
+    role: "Junior Full Stack Developer",
+    headline: "Very patient trainers and good practical lab guidance.",
+    quote: "I joined with only basic knowledge of C and Java from college. The mentors taught React, Node.js, and MongoDB step-by-step from scratch. Whenever I had doubts or coding errors, they sat with me in the lab and explained. Very friendly learning environment.",
+    highlight: "Clear Doubt Clearance & Friendly Mentors",
     campus: "Virudhunagar",
     rating: 5,
+    gradient: "from-blue-600 to-indigo-600",
   },
   {
     id: "story-2",
-    name: "Karthik S.",
-    course: "Python & AI Engineering",
+    name: "Kavitha Murugesan",
+    course: "Python & Web Development",
     category: "ai",
-    avatar: avatar2,
-    college: "Thiagarajar College of Engg",
-    batch: "2025-2026 Batch",
-    role: "AI / Data Science Associate",
-    headline: "Trainers explain complex ML pipelines simply. The code reviews were invaluable.",
-    quote: "Moving from basic Python syntax to training LLM embeddings and writing production FastAPI endpoints gave me a genuine portfolio. The trainers don't just lecture—they sit with you in the lab to debug Tensor errors and optimize model latency.",
-    highlight: "FastAPI & LLM Model Deployment",
-    campus: "Virudhunagar Center",
+    college: "Thiagarajar College of Engineering",
+    batch: "2025 Batch",
+    role: "Python & Web Associate",
+    headline: "Good institute in Virudhunagar for learning Python.",
+    quote: "The practical sessions are really helpful. Instead of just theory notes, we write code every day in the lab. Trainers explain in both Tamil and English, so it was easy for me to understand complex topics without any hesitation.",
+    highlight: "Tamil & English Explanations",
+    campus: "Virudhunagar",
     rating: 5,
+    gradient: "from-emerald-600 to-teal-700",
   },
   {
     id: "story-3",
-    name: "Divya M.",
+    name: "Saravanan Perumal",
     course: "Cloud & DevOps Engineering",
     category: "cloud",
-    avatar: avatar3,
     college: "Sethu Institute of Technology",
     batch: "2025 Graduate",
     role: "Cloud Operations Associate",
-    headline: "Physical lab access with real server equipment made all the difference.",
-    quote: "Online video courses never give you real server muscle memory. Setting up CI/CD pipelines, Kubernetes clusters, and AWS VPCs in the Simatrix computer lab gave me practical skills that directly matched the job requirements in my technical interview.",
-    highlight: "AWS Certified & Docker CI/CD",
+    headline: "Good lab setup and practical server practice.",
+    quote: "The computer lab facility and high-speed internet are great for daily practice. Flexible lab hours and mentors explain Linux server configurations patiently. Would appreciate a few more weekend advanced workshops, but overall very good learning experience.",
+    highlight: "High-Speed Lab & AC Classrooms",
     campus: "Virudhunagar",
-    rating: 5,
+    rating: 4,
+    gradient: "from-sky-600 to-blue-700",
   },
   {
     id: "story-4",
-    name: "Sanjay Kumar",
-    course: "Cybersecurity & Ethical Hacking",
-    category: "cybersecurity",
-    avatar: avatar2,
-    college: "Kamaraj College of Engg",
+    name: "Deepika Rangarajan",
+    course: "Java Full Stack Development",
+    category: "full-stack",
+    college: "Kamaraj College of Engineering",
     batch: "2025 Batch",
-    role: "Junior SOC Analyst",
-    headline: "Hands-on packet analysis and network security labs you cannot get from slides.",
-    quote: "The practical defensive labs, Wireshark packet captures, and vulnerability scanning exercises gave me practical experience that impressed the hiring panel. The placement team also conducted 3 rounds of mock technical interviews before my drive.",
-    highlight: "SOC Lab & Penetration Testing",
+    role: "Java Backend Developer",
+    headline: "Helped me prepare well for technical interviews.",
+    quote: "Joined here after completing my B.Sc. Computer Science. They covered Core Java, Spring Boot, and database concepts in depth. The mock interviews and resume guidance gave me a lot of confidence to attend campus interviews.",
+    highlight: "Mock Interviews & Resume Help",
     campus: "Virudhunagar",
     rating: 5,
+    gradient: "from-purple-600 to-pink-600",
   },
   {
     id: "story-5",
-    name: "Anitha Balan",
-    course: "Full Stack JavaScript / React",
-    category: "full-stack",
-    avatar: avatar1,
-    college: "Fatima College",
-    batch: "BCA Fresher",
-    role: "Frontend Engineer Intern",
-    headline: "As a non-engineering student, the step-by-step guidance removed all self-doubt.",
-    quote: "Coming from a non-engineering degree, I was intimidated by modern frameworks. The mentors at Simatrix took me from HTML fundamentals to building full-scale Next.js web applications with TypeScript. The 1-on-1 lab support is unmatched.",
-    highlight: "Next.js & Tailwind SaaS App",
+    name: "Karthikeyan Veerappan",
+    course: "Data Analytics & SQL",
+    category: "ai",
+    college: "Mepco Schlenk Engineering College",
+    batch: "Career Switcher",
+    role: "Business Intelligence Analyst",
+    headline: "Easy to learn even if you come from a non-CS background.",
+    quote: "I completed mechanical engineering and wanted to switch to software. The faculty supported me patiently from basic Excel and SQL up to Power BI. They never rush through topics until everyone in the batch understands.",
+    highlight: "Non-IT Friendly Teaching",
     campus: "Virudhunagar",
     rating: 5,
+    gradient: "from-amber-500 to-orange-600",
   },
   {
     id: "story-6",
-    name: "Vigneshwaran P.",
-    course: "Data Analytics & Power BI",
-    category: "ai",
-    avatar: avatar3,
-    college: "Mepco Schlenk Engg College",
-    batch: "Career Switcher",
-    role: "Business Intelligence Analyst",
-    headline: "Transitioned from a non-tech sales job to a BI analyst role in 4 months.",
-    quote: "I wanted to transition into IT without starting from zero. Simatrix gave me a structured track covering advanced SQL, Python data pipelines, and interactive executive dashboards. The career counsellors helped me rework my resume to highlight transferable problem-solving skills.",
-    highlight: "Interactive Power BI Dashboards",
+    name: "Anbuselvi Natarajan",
+    course: "React & Modern Web Development",
+    category: "full-stack",
+    college: "Fatima College, Madurai",
+    batch: "BCA Fresher",
+    role: "Frontend Engineer Intern",
+    headline: "Hands-on coding experience that helped my confidence.",
+    quote: "In college we only memorized programs for exams, but here we actually built responsive websites and web pages ourselves. Friendly trainers who explain doubts patiently in the lab. A few more weekend practice hours would be even better.",
+    highlight: "100% Practical Daily Coding",
     campus: "Virudhunagar",
-    rating: 5,
+    rating: 4,
+    gradient: "from-rose-500 to-red-600",
   },
   {
     id: "story-7",
-    name: "Harish Roshan",
-    course: "Free Full-Stack Internship",
-    category: "full-stack",
-    avatar: avatar2,
-    college: "PSNA College of Engg",
-    batch: "Final-Year B.Tech",
-    role: "Software Intern @ Startup",
-    headline: "The free internship gave me live sprint experience before campus placements.",
-    quote: "Most college internships are just certificate rubber-stamps. At Simatrix, we had daily standups, Git branch reviews, and sprint deadlines. That tangible experience was the single biggest talking point during my on-campus placement interview.",
-    highlight: "Sprint-Based Team Development",
+    name: "Senthil Kumar M.",
+    course: "Cybersecurity & Network Security",
+    category: "cybersecurity",
+    college: "Anna University Regional Campus",
+    batch: "2025 Batch",
+    role: "Junior Security Analyst",
+    headline: "Well-equipped lab and dedicated mentors.",
+    quote: "Simatrix has good lab infrastructure in Virudhunagar. Trainers have real industry experience and teach practical network security and Linux administration clearly. Worth the course fees.",
+    highlight: "Industry Experienced Trainers",
     campus: "Virudhunagar",
     rating: 5,
+    gradient: "from-violet-600 to-indigo-700",
   },
   {
     id: "story-8",
-    name: "Ravi Chandran",
-    course: "Cloud Infrastructure & Linux",
-    category: "cloud",
-    avatar: avatar3,
-    college: "Anna University Regional Campus",
-    batch: "2024 Graduate",
-    role: "Systems & Cloud Engineer",
-    headline: "The placement support doesn't end until you receive a verified offer letter.",
-    quote: "Even after course completion, the placement desk arranged direct interviews with partner IT firms in Chennai and Bangalore. Their resume optimization helped my profile pass ATS screening, and the mock HR rounds helped me negotiate my offer with confidence.",
-    highlight: "Placed at Chennai IT Hub",
+    name: "Pavithra Thangavel",
+    course: "Python Full Stack & Django",
+    category: "full-stack",
+    college: "SRNM College, Sattur",
+    batch: "2025 Graduate",
+    role: "Python Full Stack Developer",
+    headline: "Convenient batch timings for students commuting from nearby towns.",
+    quote: "I traveled daily from Sattur by bus (only 25 mins journey). The morning batch timings were very convenient. Staff are polite and mentors helped me complete my academic project alongside the course.",
+    highlight: "Convenient Morning & Evening Batches",
     campus: "Virudhunagar",
     rating: 5,
+    gradient: "from-teal-600 to-cyan-700",
+  },
+  {
+    id: "story-9",
+    name: "Dinesh Pandian",
+    course: "Full Stack Development",
+    category: "full-stack",
+    college: "PSNA College of Engineering",
+    batch: "Final-Year B.Tech",
+    role: "Software Engineer Trainee",
+    headline: "Practical approach, regular practice, and helpful mentors.",
+    quote: "Daily coding exercises and Git practice helped my basics a lot. Mentors are approachable and clear doubts patiently in the lab. Good value for money compared to traveling to Madurai every day.",
+    highlight: "Weekly Coding Tests & Reviews",
+    campus: "Virudhunagar",
+    rating: 4,
+    gradient: "from-indigo-600 to-blue-700",
+  },
+  {
+    id: "story-10",
+    name: "Aravindhan Kalidass",
+    course: "Linux Administration & Cloud",
+    category: "cloud",
+    college: "Government Arts College",
+    batch: "2024 Graduate",
+    role: "Systems & Cloud Engineer",
+    headline: "Genuine career guidance and supportive staff.",
+    quote: "From admission counselling to course completion, the team provided honest guidance without false promises. Teaching quality is very neat and practical. Definitely recommended for students in Virudhunagar district.",
+    highlight: "Honest Guidance & Verified Support",
+    campus: "Virudhunagar",
+    rating: 5,
+    gradient: "from-orange-500 to-amber-600",
   },
 ];
 
@@ -509,90 +541,75 @@ function PopularCoursesCarousel({ courses }) {
   );
 }
 
+function getInitials(name = "Student") {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+}
+
 function ModernLearnerStories({ testimonials = [] }) {
+  const [liveTick, setLiveTick] = useState(0);
+
+  useEffect(() => {
+    const handleUpdate = () => setLiveTick((t) => t + 1);
+    window.addEventListener("simatrix_reviews_updated", handleUpdate);
+    return () => window.removeEventListener("simatrix_reviews_updated", handleUpdate);
+  }, []);
+
   const curatedStories = useMemo(() => {
-    const list = [
-      {
-        id: "curated-1",
-        name: "Priya R.",
-        role: "Junior Web Developer",
-        track: "Full Stack",
-        avatar: avatar1,
-        quote: "Before Simatrix, my projects were mostly copied tutorial code. Mentors helped me build an e-commerce engine with Docker and live payments that impressed interviewers.",
-        rating: 5,
-      },
-      {
-        id: "curated-2",
-        name: "Karthik S.",
-        role: "AI & Data Science Associate",
-        track: "Python & AI",
-        avatar: avatar2,
-        quote: "Moving from basic Python to fine-tuning LLM embeddings and FastAPI endpoints gave me a genuine portfolio. The 1-on-1 mentor guidance in the lab was invaluable.",
-        rating: 5,
-      },
-      {
-        id: "curated-3",
-        name: "Divya M.",
-        role: "Cloud Operations Associate",
-        track: "Cloud & DevOps",
-        avatar: avatar3,
-        quote: "Physical lab access with real server equipment made all the difference. Configuring CI/CD pipelines and AWS VPCs matched exactly what recruiters tested.",
-        rating: 5,
-      },
-      {
-        id: "curated-4",
-        name: "Sanjay Kumar",
-        role: "Junior SOC Analyst",
-        track: "Cybersecurity",
-        avatar: avatar2,
-        quote: "The practical Wireshark packet captures and vulnerability scanning gave me hands-on confidence. The mock interview rounds prepared me thoroughly.",
-        rating: 5,
-      },
-      {
-        id: "curated-5",
-        name: "Anitha Balan",
-        role: "Frontend Engineer Intern",
-        track: "React & TypeScript",
-        avatar: avatar1,
-        quote: "Coming from a non-engineering degree, the step-by-step mentoring removed all self-doubt. The trainers took me from basics to shipping full React web apps.",
-        rating: 5,
-      },
-      {
-        id: "curated-6",
-        name: "Harish Roshan",
-        role: "Software Intern @ Startup",
-        track: "Full Stack Track",
-        avatar: avatar3,
-        quote: "Most internships are certificate rubber-stamps. At Simatrix, we had daily standups, Git branch reviews, and sprint deadlines that recruiters loved.",
-        rating: 5,
-      },
-    ];
+    const liveList = getLiveReviews();
+    const liveItems = liveList
+      .filter((l) => !l.name?.toLowerCase().includes("sakthi"))
+      .map((l) => ({
+        id: l.id,
+        name: l.name,
+        role: l.role,
+        track: l.course || "Live Review",
+        quote: l.quote,
+        rating: l.rating || 5,
+        gradient: l.gradient || "from-emerald-600 to-teal-700",
+        isLive: true,
+      }));
 
     if (testimonials?.length && testimonials !== STORIES) {
       const dynamicList = testimonials
-        .filter((t) => t?.quote || t?.content)
-        .map((t, idx) => {
-          const avatars = [avatar1, avatar2, avatar3];
-          return {
-            id: `dyn-${t.id || idx}`,
-            name: t.name || "Student",
-            role: t.designation || "Simatrix Graduate",
-            track: t.course || "Technical Track",
-            avatar: t.avatar || avatars[idx % avatars.length],
-            quote: t.quote || t.content,
-            rating: t.rating || 5,
-          };
-        });
-      if (dynamicList.length >= 3) {
-        return dynamicList;
+        .filter((t) => (t?.quote || t?.content) && !t.name?.toLowerCase().includes("sakthi"))
+        .map((t, idx) => ({
+          id: `dyn-${t.id || idx}`,
+          name: t.name || "Student",
+          role: t.role || t.designation || "Simatrix Graduate",
+          track: t.course || "Technical Track",
+          quote: t.quote || t.content,
+          rating: t.rating || 5,
+          gradient: STORIES[idx % STORIES.length]?.gradient || "from-blue-600 to-indigo-600",
+          isLive: false,
+        }));
+      if (dynamicList.length > 0) {
+        return [...liveItems, ...dynamicList];
       }
     }
-    return list;
-  }, [testimonials]);
+
+    const baseline = STORIES.map((s) => ({
+      id: s.id,
+      name: s.name,
+      role: s.role,
+      track: s.course,
+      quote: s.quote,
+      rating: s.rating || 5,
+      gradient: s.gradient,
+      isLive: false,
+    }));
+
+    return [...liveItems, ...baseline];
+  }, [testimonials, liveTick]);
 
   return (
     <div className="relative">
-      {/* 1. Minimal Header (Clean, Monochromatic, Elegant) */}
+      {/* 1. Minimal Header */}
       <div className="mx-auto max-w-2xl text-center">
         <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold tracking-wider text-slate-700 shadow-2xs">
           <i className="ti ti-star-filled text-amber-500 text-xs" />
@@ -602,11 +619,11 @@ function ModernLearnerStories({ testimonials = [] }) {
           Confidence built through practice.
         </h2>
         <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600">
-          Real feedback from graduates who built practical portfolio projects and launched their tech careers.
+          Real feedback from Tamil Nadu graduates who built practical portfolio projects and launched their tech careers.
         </p>
       </div>
 
-      {/* 2. Infinite Marquee Stream (Edge fade, pause on hover) */}
+      {/* 2. Infinite Marquee Stream (No images, pure typography and stylish initials) */}
       <div className="reviews-marquee mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
         <div className="reviews-track flex w-max">
           {[0, 1].map((copy) => (
@@ -614,17 +631,45 @@ function ModernLearnerStories({ testimonials = [] }) {
               {curatedStories.map((item) => (
                 <figure
                   key={`${copy}-${item.id}`}
-                  className="group flex h-[230px] w-[310px] sm:w-[350px] shrink-0 flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_12px_24px_-6px_rgba(15,23,42,0.08)]"
+                  className="group flex h-[240px] w-[310px] sm:w-[350px] shrink-0 flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_12px_24px_-6px_rgba(15,23,42,0.08)]"
                 >
                   <div>
-                    {/* Stars + Clean Quote Mark (Single-color gold stars, no rainbow) */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-0.5 text-amber-400 text-xs">
-                        {Array.from({ length: item.rating || 5 }).map((_, s) => (
-                          <i key={s} className="ti ti-star-filled" />
+                    {/* Top: Name on TOP, Role UNDER Name, 5 Full Stars */}
+                    <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span
+                          className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${item.gradient || "from-blue-600 to-indigo-600"} text-xs font-bold text-white shadow-2xs`}
+                        >
+                          {getInitials(item.name)}
+                        </span>
+                        <div className="min-w-0">
+                          {/* Name on Top */}
+                          <div className="flex items-center gap-1.5">
+                            <strong className="truncate text-xs sm:text-[13px] font-bold text-slate-950">{item.name}</strong>
+                            {item.isLive ? (
+                              <span className="rounded bg-emerald-50 px-1 py-0.2 text-[9px] font-bold text-emerald-700 border border-emerald-200">
+                                Live
+                              </span>
+                            ) : (
+                              <i className="ti ti-circle-check-filled text-emerald-500 text-xs shrink-0" title="Verified Student" />
+                            )}
+                          </div>
+                          {/* Role under Name */}
+                          <p className="truncate text-[11px] font-semibold text-brand-700">{item.role}</p>
+                        </div>
+                      </div>
+
+                      {/* Stars: Show filled/empty stars based on rating */}
+                      <div className="flex items-center gap-0.5 text-xs shrink-0 pt-0.5">
+                        {Array.from({ length: 5 }).map((_, s) => (
+                          <i
+                            key={s}
+                            className={`ti ti-star-filled ${
+                              s < (item.rating || 5) ? "text-amber-400" : "text-slate-200"
+                            }`}
+                          />
                         ))}
                       </div>
-                      <i className="ti ti-quote text-2xl text-slate-200" />
                     </div>
 
                     {/* Concise Quote */}
@@ -633,26 +678,13 @@ function ModernLearnerStories({ testimonials = [] }) {
                     </blockquote>
                   </div>
 
-                  {/* Author Strip */}
-                  <figcaption className="flex items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <img
-                        src={item.avatar}
-                        alt={item.name}
-                        className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200 shrink-0"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5">
-                          <strong className="truncate text-xs sm:text-[13px] font-semibold text-slate-950">{item.name}</strong>
-                          <i className="ti ti-circle-check-filled text-emerald-500 text-xs shrink-0" title="Verified Student" />
-                        </div>
-                        <p className="truncate text-[11px] text-slate-500">{item.role}</p>
-                      </div>
-                    </div>
+                  {/* Track Badge Strip */}
+                  <div className="flex items-center justify-between pt-2">
                     <span className="rounded-md bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600 border border-slate-100 shrink-0">
                       {item.track}
                     </span>
-                  </figcaption>
+                    <i className="ti ti-quote text-lg text-slate-200" />
+                  </div>
                 </figure>
               ))}
             </div>
@@ -660,14 +692,28 @@ function ModernLearnerStories({ testimonials = [] }) {
         </div>
       </div>
 
-      {/* 3. Subtle Bottom Trust Strip */}
-      <div className="mt-8 flex items-center justify-center gap-3 text-xs text-slate-500">
+      {/* 3. Subtle Bottom Trust Strip with Live Feedback Status & Action */}
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500">
         <span className="flex text-amber-400 text-xs">
           <i className="ti ti-star-filled" />
         </span>
-        <span className="font-semibold text-slate-800">4.9 / 5.0 rating</span>
+        <span className="font-semibold text-slate-800">4.8 / 5.0 rating</span>
         <span className="text-slate-300">•</span>
-        <span>Verified graduates across Virudhunagar &amp; Tamil Nadu</span>
+        <span className="inline-flex items-center gap-1.5 font-medium text-emerald-700">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          Live Reviews Active
+        </span>
+        <span className="text-slate-300">•</span>
+        <Link
+          to="/reviews#share-review"
+          className="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-900 transition-colors"
+        >
+          <i className="ti ti-pencil text-xs" />
+          <span>Write a Review</span>
+        </Link>
         <span className="text-slate-300">•</span>
         <Link
           to="/reviews"
@@ -680,7 +726,7 @@ function ModernLearnerStories({ testimonials = [] }) {
 
       <style>{`
         .reviews-track {
-          animation: reviews-scroll 35s linear infinite;
+          animation: reviews-scroll 50s linear infinite;
         }
         .reviews-marquee:hover .reviews-track,
         .reviews-marquee:focus-within .reviews-track {
@@ -2217,7 +2263,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Regional Training Locations Hub — Distributes PageRank and Captures Regional Intent */}
+      {/* Regional Training Locations Hub — (Hidden on Home page, moved to standalone route /software-training)
       <section className="border-t border-slate-200/80 bg-white py-14 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
@@ -2314,6 +2360,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      */}
 
       {/* FAQs Section with Single-Open Accordion & Category Filters */}
       <FaqSection toEnquiry={toEnquiry} />

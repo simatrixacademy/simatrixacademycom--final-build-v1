@@ -15,11 +15,15 @@ async function request(path, { method = "GET", body, auth = false } = {}) {
 
   let res;
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
     res = await fetch(`${BASE_URL}${path}`, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
   } catch {
     throw new Error("Cannot reach the server. Is the backend running?");
   }
