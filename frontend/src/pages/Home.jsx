@@ -9,6 +9,7 @@ import avatar1 from "../assets/avatar1.png";
 import avatar2 from "../assets/avatar2.png";
 import avatar3 from "../assets/avatar3.png";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import CareerAdvisorModal from "../components/CareerAdvisorModal";
 
 const HERO_BANNERS = [
   {
@@ -1606,6 +1607,68 @@ function HeroCarousel({ onEnquiry }) {
   );
 }
 
+function HeroActionHub({ onEnquiry }) {
+  return (
+    <section className="bg-slate-50/70 border-b border-slate-200/80 py-6 sm:py-7">
+      <div className="mx-auto max-w-5xl px-4 text-center">
+        {/* Action Buttons: Clean, Human-Crafted, On-Brand */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          {/* 1. Primary Solid Brand Button */}
+          <Link
+            to="/courses"
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-[0.98]"
+          >
+            <span>Explore All Courses</span>
+            <i className="ti ti-arrow-right text-xs" />
+          </Link>
+
+          {/* 2. Secondary White Demo Button */}
+          <button
+            type="button"
+            onClick={() => onEnquiry("demo")}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-2xs transition hover:bg-slate-50 hover:border-slate-400 active:scale-[0.98] cursor-pointer"
+          >
+            <i className="ti ti-calendar text-slate-500" />
+            <span>Book Free 1:1 Demo</span>
+          </button>
+
+          {/* 3. Placement Records */}
+          <Link
+            to="/placement"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-2xs transition hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98]"
+          >
+            <i className="ti ti-trophy text-amber-600" />
+            <span>Placement Records</span>
+          </Link>
+        </div>
+
+        {/* Clean, Non-distracting Trust Bar */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs font-medium text-slate-500">
+          <span className="inline-flex items-center gap-1.5">
+            <i className="ti ti-code text-slate-400 text-sm" />
+            100% Practical Labs
+          </span>
+          <span className="hidden sm:inline text-slate-300">•</span>
+          <span className="inline-flex items-center gap-1.5">
+            <i className="ti ti-users text-slate-400 text-sm" />
+            1-on-1 Mentor Guidance
+          </span>
+          <span className="hidden sm:inline text-slate-300">•</span>
+          <span className="inline-flex items-center gap-1.5">
+            <i className="ti ti-circle-check text-emerald-600 text-sm" />
+            500+ Students Placed
+          </span>
+          <span className="hidden sm:inline text-slate-300">•</span>
+          <span className="inline-flex items-center gap-1.5">
+            <i className="ti ti-map-pin text-slate-400 text-sm" />
+            Virudhunagar Campus
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FaqSection({ toEnquiry }) {
   const [openId, setOpenId] = useState("faq-1");
   const [activeCategory, setActiveCategory] = useState("All Questions");
@@ -1932,13 +1995,27 @@ export default function Home() {
   }, [courses]);
 
   const testimonials = data?.testimonials?.length ? data.testimonials : STORIES;
+  const [advisorModalOpen, setAdvisorModalOpen] = useState(false);
+
   const toEnquiry = (intent = "guidance") => {
+    if (intent === "demo") {
+      setAdvisorModalOpen(true);
+      return;
+    }
     setEnquiryIntent(typeof intent === "string" ? intent : "guidance");
     window.requestAnimationFrame(() => enquiryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
   return (
     <main ref={mainRef} id="main-content" className="overflow-hidden bg-white">
+      {/* Career Advisory Modal (Scroll-triggered + Demo button) */}
+      <CareerAdvisorModal
+        isOpen={advisorModalOpen}
+        onOpen={() => setAdvisorModalOpen(true)}
+        onClose={() => setAdvisorModalOpen(false)}
+        courses={courses}
+      />
+
       <div className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-1 bg-transparent" aria-hidden="true">
         <span
           className="block h-full origin-left bg-gradient-to-r from-amber-400 via-orange-500 to-brand-600 shadow-[0_0_12px_rgba(245,158,11,.45)]"
@@ -1946,7 +2023,7 @@ export default function Home() {
         />
       </div>
       <HeroCarousel onEnquiry={toEnquiry} />
-      <CommunitySection data={data} courses={courses} testimonials={testimonials} />
+      <HeroActionHub onEnquiry={toEnquiry} />
 
       {error && !data ? (
         <section className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10 py-20 text-center">
@@ -2364,6 +2441,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Why Simatrix - Community & Mentors Section */}
+      <CommunitySection data={data} courses={courses} testimonials={testimonials} />
 
       {/* Learner Stories / Testimonials */}
       <section id="learner-stories" className="scroll-mt-32 relative bg-slate-50/40 py-16 sm:py-20 overflow-hidden border-y border-slate-100">
