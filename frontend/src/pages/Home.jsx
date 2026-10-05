@@ -1315,7 +1315,7 @@ function HeroCarousel({ onEnquiry }) {
     }
   }, [current]);
 
-  // Autoplay (only when multiple slides exist)
+  // Autoplay (only when multiple slides exist) - swipe each 3 seconds, stop on hover
   useEffect(() => {
     if (isSingle || paused || tabHidden || isDragging || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setInterval(() => {
@@ -1323,7 +1323,7 @@ function HeroCarousel({ onEnquiry }) {
       isAnimating.current = true;
       setWithTransition(true);
       setCurrent((val) => val + 1);
-    }, 6000);
+    }, 2000);
     return () => window.clearInterval(timer);
   }, [isSingle, paused, tabHidden, isDragging]);
 
@@ -1438,6 +1438,8 @@ function HeroCarousel({ onEnquiry }) {
           }}
           onMouseEnter={() => !isSingle && setPaused(true)}
           onMouseLeave={() => !isSingle && setPaused(false)}
+          onPointerEnter={() => !isSingle && setPaused(true)}
+          onPointerLeave={() => !isSingle && setPaused(false)}
           onFocusCapture={() => !isSingle && setPaused(true)}
           onBlurCapture={(e) => {
             if (!isSingle && !e.currentTarget.contains(e.relatedTarget)) setPaused(false);
