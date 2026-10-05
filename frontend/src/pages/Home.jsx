@@ -10,6 +10,7 @@ import avatar2 from "../assets/avatar2.png";
 import avatar3 from "../assets/avatar3.png";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import CareerAdvisorModal from "../components/CareerAdvisorModal";
+import TieUpsMarquee from "../components/TieUpsMarquee";
 
 const HERO_BANNERS = [
   {
@@ -1609,7 +1610,7 @@ function HeroCarousel({ onEnquiry }) {
 
 function HeroActionHub({ onEnquiry }) {
   return (
-    <section className="bg-slate-50/70 border-b border-slate-200/80 py-6 sm:py-7">
+    <section className="bg-slate-50/50 pt-4 pb-3 sm:pt-5 sm:pb-3.5 border-b border-slate-100">
       <div className="mx-auto max-w-5xl px-4 text-center">
         {/* Action Buttons: Clean, Human-Crafted, On-Brand */}
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
@@ -2034,39 +2035,8 @@ export default function Home() {
         </section>
       ) : (
         <>
-          <section id="learning-paths" className="scroll-mt-32 w-full bg-white py-20 sm:py-28">
-            <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-              <SectionTitle
-                eyebrow="Find your path"
-                title="Choose the skill you want to build"
-                description="Start with a field that matches your goals. Each path takes you from essential concepts to practical application."
-              />
-              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {!data ? (
-                  Array.from({ length: 6 }).map((_, i) => <CategorySkeleton key={i} />)
-                ) : (
-                  data.categories?.slice(0, 6).map((category) => (
-                    <Link
-                      key={category.id}
-                      to={`/courses?category=${category.slug}`}
-                      className="group flex items-center gap-4 rounded-2xl border border-slate-200 p-5 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg"
-                    >
-                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl text-brand-700">
-                        <i className={icon(category.icon)} />
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <strong className="block text-slate-950">{category.name}</strong>
-                        <span className="mt-1 block text-sm text-slate-500">
-                          {(category.courses || []).length} courses
-                        </span>
-                      </span>
-                      <i className="ti ti-chevron-right text-slate-400 transition group-hover:translate-x-1" />
-                    </Link>
-                  ))
-                )}
-              </div>
-            </div>
-          </section>
+          {/* Academic & Corporate Tie-Ups Marquee */}
+          <TieUpsMarquee />
 
           {(!data || featured.length > 0) && (
             <section id="popular-programs" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">

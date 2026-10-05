@@ -22,8 +22,59 @@ export default function Courses() {
   return (
     <main id="main-content">
       <PageHero eyebrow="Practical learning paths" title="Find the course that fits your next step." subtitle="Compare available technology programs by domain, then review the course details, prerequisites and learning outcomes before enquiring.">
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row"><Link to="/career-guidance" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 py-3 font-bold text-[#0d1b32] hover:bg-amber-300">Help me choose<i className="ti ti-compass" /></Link><a href="#course-list" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-3 font-bold text-white hover:bg-white/10">Browse programs<i className="ti ti-arrow-down" /></a></div>
+        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <Link to="/career-guidance" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 py-3 font-bold text-[#0d1b32] hover:bg-amber-300">
+            Help me choose<i className="ti ti-compass" />
+          </Link>
+          <a href="#find-your-path" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-3 font-bold text-white hover:bg-white/10">
+            Browse programs<i className="ti ti-arrow-down" />
+          </a>
+        </div>
       </PageHero>
+
+      {/* Find Your Path - Choose the skill you want to build */}
+      <section id="find-your-path" className="scroll-mt-24 w-full bg-white py-14 sm:py-20 border-b border-slate-200/80">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">Find your path</p>
+            <h2 className="mt-2 font-display text-3xl sm:text-4xl font-bold text-slate-950">
+              Choose the skill you want to build
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Start with a field that matches your goals. Each path takes you from essential concepts to practical application.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() => {
+                  setCategory(category.slug);
+                  document.getElementById("course-list")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className={`group flex items-center gap-4 rounded-2xl border p-5 text-left transition hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+                  active === category.slug
+                    ? "border-brand-500 bg-brand-50/60 shadow-sm"
+                    : "border-slate-200 bg-white hover:border-brand-300"
+                }`}
+              >
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl text-brand-700">
+                  <i className={icon(category.icon)} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <strong className="block text-slate-950 font-bold">{category.name}</strong>
+                  <span className="mt-1 block text-sm text-slate-500">
+                    {(category.courses || []).length || ""} courses
+                  </span>
+                </span>
+                <i className="ti ti-chevron-right text-slate-400 transition group-hover:translate-x-1" />
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Section id="course-list" className="scroll-mt-24 py-16 sm:py-20">
         <div className="grid gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-3">

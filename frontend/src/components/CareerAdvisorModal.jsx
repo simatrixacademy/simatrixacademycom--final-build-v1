@@ -76,6 +76,7 @@ export default function CareerAdvisorModal({
 
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
       const target =
+        document.getElementById("tie-ups") ||
         document.getElementById("popular-programs") ||
         document.getElementById("learning-paths");
 
