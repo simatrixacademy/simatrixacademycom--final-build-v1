@@ -55,8 +55,10 @@ class ApiController
             return $this->no('Invalid email or password', 401, 'invalid_credentials');
         }
 
-        $email = strtolower(trim($r->email));
-        $a = Admin::where('email', $email)->first();
+        $loginInput = strtolower(trim($r->email));
+        $a = Admin::where('email', $loginInput)
+            ->orWhereRaw('LOWER(name) = ?', [$loginInput])
+            ->first();
 
         // 2. Timing attack defense against user enumeration
         if (!$a) {

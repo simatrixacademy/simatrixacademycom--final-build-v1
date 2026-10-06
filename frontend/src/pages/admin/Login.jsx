@@ -113,16 +113,16 @@ export default function Login() {
             </div>
 
             <label className="block">
-              <span className="mb-2 block text-xs font-bold text-slate-700">Email address</span>
+              <span className="mb-2 block text-xs font-bold text-slate-700">Username or Email</span>
               <div className="relative">
-                <i className="ti ti-mail absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <i className="ti ti-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   autoComplete="username"
                   required
-                  placeholder="admin@simatrixacademy.com"
+                  placeholder="Username or email address"
                   className="min-h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-xs sm:text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
                 />
               </div>

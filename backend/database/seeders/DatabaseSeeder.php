@@ -9,13 +9,18 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        if (env('ADMIN_EMAIL') && env('ADMIN_PASSWORD')) {
+        $defaultAdmins = [
+            ['name' => 'faseed', 'email' => 'faseed@simatrixacademy.com', 'password' => 'faseedsimatrix@2026', 'role' => 'super_admin'],
+            ['name' => 'Sakthi', 'email' => 'sakthi@simatrixacademy.com', 'password' => 'sakthisimatrix@2026', 'role' => 'admin'],
+            ['name' => 'Mathi', 'email' => 'mathi@simatrixacademy.com', 'password' => 'mathisimatrix@2026', 'role' => 'admin'],
+        ];
+        foreach ($defaultAdmins as $u) {
             DB::table('admins')->updateOrInsert(
-                ['email' => strtolower(trim(env('ADMIN_EMAIL')))],
+                ['email' => $u['email']],
                 [
-                    'name' => env('ADMIN_NAME', 'Administrator'),
-                    'password_hash' => Hash::make(env('ADMIN_PASSWORD')),
-                    'role' => 'super_admin',
+                    'name' => $u['name'],
+                    'password_hash' => Hash::make($u['password']),
+                    'role' => $u['role'],
                     'created_at' => now(),
                 ]
             );
