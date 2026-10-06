@@ -562,22 +562,20 @@ function ModernLearnerStories({ testimonials = [] }) {
 
   const curatedStories = useMemo(() => {
     const liveList = getLiveReviews();
-    const liveItems = liveList
-      .filter((l) => !l.name?.toLowerCase().includes("sakthi"))
-      .map((l) => ({
-        id: l.id,
-        name: l.name,
-        role: l.role,
-        track: l.course || "Live Review",
-        quote: l.quote,
-        rating: l.rating || 5,
-        gradient: l.gradient || "from-emerald-600 to-teal-700",
-        isLive: true,
-      }));
+    const liveItems = liveList.map((l) => ({
+      id: l.id,
+      name: l.name,
+      role: l.role,
+      track: l.course || "Live Review",
+      quote: l.quote,
+      rating: l.rating || 5,
+      gradient: l.gradient || "from-emerald-600 to-teal-700",
+      isLive: true,
+    }));
 
     if (testimonials?.length && testimonials !== STORIES) {
       const dynamicList = testimonials
-        .filter((t) => (t?.quote || t?.content) && !t.name?.toLowerCase().includes("sakthi"))
+        .filter((t) => t?.quote || t?.content)
         .map((t, idx) => ({
           id: `dyn-${t.id || idx}`,
           name: t.name || "Student",
@@ -631,7 +629,7 @@ function ModernLearnerStories({ testimonials = [] }) {
               {curatedStories.map((item) => (
                 <figure
                   key={`${copy}-${item.id}`}
-                  className="group flex h-[240px] w-[310px] sm:w-[350px] shrink-0 flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_12px_24px_-6px_rgba(15,23,42,0.08)]"
+                  className="group flex h-[240px] w-[310px] sm:w-[350px] shrink-0 flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.04)] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-slate-300 hover:shadow-[0_18px_36px_-8px_rgba(15,23,42,0.12)] hover:ring-1 hover:ring-slate-900/10"
                 >
                   <div>
                     {/* Top: Name on TOP, Role UNDER Name, 5 Full Stars */}

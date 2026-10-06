@@ -7,7 +7,8 @@ import ReviewForm from "../components/ReviewForm";
 import { mergeReviewsWithStories, initials, deleteLiveReview } from "../lib/reviewsData";
 
 function Stars({ n = 5, className = "" }) {
-  const rounded = Math.round(Number(n) || 5);
+  const num = Number(n);
+  const rounded = Number.isNaN(num) ? 5 : Math.round(num);
   return (
     <div className={`flex items-center gap-0.5 text-amber-400 ${className}`} aria-label={`${n} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
@@ -25,6 +26,7 @@ export default function Reviews() {
   const location = useLocation();
   const [backendReviews, setBackendReviews] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [selectedStarRating, setSelectedStarRating] = useState(null);
   const [updateTick, setUpdateTick] = useState(0);
 
   const load = () =>
@@ -34,18 +36,6 @@ export default function Reviews() {
       .catch(() => setBackendReviews([]));
 
   useEffect(() => {
-    // Purge any review containing 'sakthi' from localStorage
-    try {
-      const raw = localStorage.getItem("simatrix_live_reviews");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        const cleaned = parsed.filter((r) => !r.name?.toLowerCase().includes("sakthi"));
-        if (cleaned.length !== parsed.length) {
-          localStorage.setItem("simatrix_live_reviews", JSON.stringify(cleaned));
-        }
-      }
-    } catch {}
-
     load();
     const handleLiveUpdate = () => {
       setUpdateTick((t) => t + 1);
@@ -83,18 +73,76 @@ export default function Reviews() {
   });
 
   const allReviews = useMemo(() => {
-    return mergeReviewsWithStories(backendReviews || []).filter(
-      (r) => !r.name?.toLowerCase().includes("sakthi")
-    );
+    return mergeReviewsWithStories(backendReviews || []);
   }, [backendReviews, updateTick]);
+
+  // Dynamically calculate rating breakdown and stats from all verified & live reviews
+  const ratingStats = useMemo(() => {
+    const total = allReviews.length;
+    if (total === 0) {
+      return {
+        average: "5.0",
+        roundedAvg: 5,
+        total: 0,
+        counts: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+        breakdown: [5, 4, 3, 2, 1].map((star) => ({
+          star,
+          count: 0,
+          pct: 0,
+        })),
+      };
+    }
+
+    const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    let sum = 0;
+
+    allReviews.forEach((r) => {
+      const rawRating = Number(r.rating);
+      const star = Number.isNaN(rawRating) ? 5 : Math.max(1, Math.min(5, Math.round(rawRating)));
+      counts[star] = (counts[star] || 0) + 1;
+      sum += Number.isNaN(rawRating) ? 5 : Math.max(1, Math.min(5, rawRating));
+    });
+
+    const averageNum = sum / total;
+    const average = averageNum.toFixed(1);
+    const roundedAvg = Math.round(averageNum);
+
+    const breakdown = [5, 4, 3, 2, 1].map((star) => {
+      const count = counts[star] || 0;
+      const pct = Math.round((count / total) * 100);
+      return {
+        star,
+        count,
+        pct,
+      };
+    });
+
+    return {
+      average,
+      roundedAvg,
+      total,
+      counts,
+      breakdown,
+    };
+  }, [allReviews]);
 
   const liveCount = useMemo(() => allReviews.filter((r) => r.isLive).length, [allReviews]);
 
   const filteredReviews = useMemo(() => {
-    if (activeCategory === "all") return allReviews;
-    if (activeCategory === "live") return allReviews.filter((r) => r.isLive);
-    return allReviews.filter((r) => r.category === activeCategory);
-  }, [allReviews, activeCategory]);
+    let list = allReviews;
+    if (activeCategory === "live") {
+      list = list.filter((r) => r.isLive);
+    } else if (activeCategory !== "all") {
+      list = list.filter((r) => r.category === activeCategory);
+    }
+    if (selectedStarRating !== null) {
+      list = list.filter((r) => {
+        const star = Math.max(1, Math.min(5, Math.round(Number(r.rating) || 5)));
+        return star === selectedStarRating;
+      });
+    }
+    return list;
+  }, [allReviews, activeCategory, selectedStarRating]);
 
   const CATEGORIES = [
     { id: "all", label: "All Reviews", count: allReviews.length },
@@ -114,11 +162,11 @@ export default function Reviews() {
       >
         <div className="reveal mt-8 flex flex-wrap items-center gap-3" style={{ "--d": "160ms" }}>
           <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-5 py-3.5 text-white backdrop-blur-md shadow-xs">
-            <span className="font-display text-3xl font-bold">4.8</span>
+            <span className="font-display text-3xl font-bold">{ratingStats.average}</span>
             <div className="border-l border-white/20 pl-4">
-              <Stars n={5} className="text-sm" />
+              <Stars n={ratingStats.roundedAvg} className="text-sm" />
               <p className="mt-1 text-xs text-slate-300">
-                From {allReviews.length}+ verified learner stories
+                From {ratingStats.total}+ verified learner stories
               </p>
             </div>
           </div>
@@ -234,6 +282,26 @@ export default function Reviews() {
           })}
         </div>
 
+        {/* Active Star Filter Banner */}
+        {selectedStarRating !== null && (
+          <div className="mb-6 flex items-center justify-between rounded-2xl bg-amber-50/90 border border-amber-200/80 px-4 py-2.5 text-xs text-amber-900">
+            <div className="flex items-center gap-2">
+              <i className="ti ti-filter text-amber-600 font-bold" />
+              <span>
+                Filtering by <strong>{selectedStarRating}-star</strong> student ratings ({filteredReviews.length} found)
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSelectedStarRating(null)}
+              className="font-bold underline hover:text-amber-950 flex items-center gap-1"
+            >
+              <span>Show all ratings</span>
+              <i className="ti ti-x text-xs" />
+            </button>
+          </div>
+        )}
+
         {/* Reviews Grid & Rating Breakdown Layout */}
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
           {/* Left Column: Review Cards */}
@@ -244,14 +312,21 @@ export default function Reviews() {
                   <i className="ti ti-message-2-star" />
                 </span>
                 <p className="mt-4 font-display text-lg font-bold text-slate-950">
-                  No stories found in this category yet
+                  {selectedStarRating !== null
+                    ? `No ${selectedStarRating}-star reviews found`
+                    : "No stories found in this category yet"}
                 </p>
                 <p className="mt-1 text-xs text-slate-500">
-                  Be the first student to share your journey in this category.
+                  {selectedStarRating !== null
+                    ? "Try clearing the star rating filter or submit a review for this rating below."
+                    : "Be the first student to share your journey in this category."}
                 </p>
                 <button
                   type="button"
-                  onClick={() => setActiveCategory("all")}
+                  onClick={() => {
+                    setActiveCategory("all");
+                    setSelectedStarRating(null);
+                  }}
                   className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 underline"
                 >
                   View all reviews
@@ -262,10 +337,8 @@ export default function Reviews() {
                 {filteredReviews.map((review, index) => (
                   <div
                     key={review.id || `${review.name}-${index}`}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 shadow-[0_4px_25px_-4px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_16px_32px_-8px_rgba(15,23,42,0.08)] sm:p-7"
+                    className="group relative flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.04)] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-slate-300 hover:shadow-[0_20px_40px_-12px_rgba(15,23,42,0.12)] hover:ring-1 hover:ring-slate-900/10"
                   >
-                    <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-amber-400 via-brand-500 to-indigo-600 transition-transform duration-500 group-hover:scale-x-100" />
-
                     <div>
                       {/* Author Header: Name on TOP, Role UNDER Name */}
                       <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-4">
@@ -274,7 +347,7 @@ export default function Reviews() {
                             <span
                               className={`grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${
                                 review.gradient || "from-brand-600 to-indigo-700"
-                              } text-sm font-bold text-white shadow-xs`}
+                              } text-sm font-bold text-white shadow-xs transition-transform duration-300 group-hover:scale-105`}
                             >
                               {initials(review.name)}
                             </span>
@@ -288,7 +361,7 @@ export default function Reviews() {
 
                           <div className="min-w-0">
                             {/* Name on Top */}
-                            <h4 className="truncate font-display text-base font-bold text-slate-950">
+                            <h4 className="truncate font-display text-base font-bold text-slate-950 transition-colors group-hover:text-black">
                               {review.name}
                             </h4>
                             {/* Role on Under Name */}
@@ -359,7 +432,7 @@ export default function Reviews() {
                       )}
 
                       {/* Quote */}
-                      <blockquote className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-[13px] sm:leading-6">
+                      <blockquote className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-[13px] sm:leading-6 transition-colors duration-200 group-hover:text-slate-800">
                         “{review.quote || review.content}”
                       </blockquote>
                     </div>
@@ -382,37 +455,79 @@ export default function Reviews() {
           {/* Right Column: Rating Breakdown Card */}
           <aside className="space-y-6 lg:sticky lg:top-28">
             <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xs sm:p-7">
-              <h4 className="font-display text-base font-bold text-slate-950">
-                Rating Breakdown
-              </h4>
+              <div className="flex items-center justify-between">
+                <h4 className="font-display text-base font-bold text-slate-950">
+                  Rating Breakdown
+                </h4>
+                {selectedStarRating !== null && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedStarRating(null)}
+                    className="text-[11px] font-bold text-brand-700 hover:underline"
+                  >
+                    Reset filter
+                  </button>
+                )}
+              </div>
+
               <div className="mt-3 flex items-baseline gap-3">
-                <span className="font-display text-4xl font-bold text-slate-950">4.8</span>
+                <span className="font-display text-4xl font-bold text-slate-950">
+                  {ratingStats.average}
+                </span>
                 <div>
-                  <Stars n={5} className="text-sm" />
-                  <p className="mt-0.5 text-xs text-slate-500">Based on 500+ student evaluations</p>
+                  <Stars n={ratingStats.roundedAvg} className="text-sm" />
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Based on {ratingStats.total} student evaluation{ratingStats.total === 1 ? "" : "s"}
+                  </p>
                 </div>
               </div>
 
               <div className="mt-5 space-y-2 text-xs">
-                {[
-                  { star: 5, pct: "82%", count: "82%" },
-                  { star: 4, pct: "16%", count: "16%" },
-                  { star: 3, pct: "2%", count: "2%" },
-                  { star: 2, pct: "0%", count: "0%" },
-                  { star: 1, pct: "0%", count: "0%" },
-                ].map((row) => (
-                  <div key={row.star} className="flex items-center gap-3">
-                    <span className="w-12 font-medium text-slate-600">{row.star} stars</span>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
-                      <div
-                        className="h-full rounded-full bg-amber-400"
-                        style={{ width: row.pct }}
-                      />
-                    </div>
-                    <span className="w-8 text-right font-medium text-slate-500">{row.count}</span>
-                  </div>
-                ))}
+                {ratingStats.breakdown.map((row) => {
+                  const isSelected = selectedStarRating === row.star;
+                  return (
+                    <button
+                      key={row.star}
+                      type="button"
+                      onClick={() =>
+                        setSelectedStarRating((prev) => (prev === row.star ? null : row.star))
+                      }
+                      title={`Click to filter by ${row.star} star${row.star > 1 ? "s" : ""}`}
+                      className={`group/row flex w-full items-center gap-3 rounded-xl p-1.5 text-left transition-all duration-150 ${
+                        isSelected
+                          ? "bg-amber-100/70 ring-1 ring-amber-300 font-bold"
+                          : "hover:bg-slate-50"
+                      }`}
+                    >
+                      <span className="w-12 shrink-0 font-medium text-slate-600 group-hover/row:text-slate-950">
+                        {row.star} star{row.star > 1 ? "s" : ""}
+                      </span>
+                      <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                        <div
+                          className="h-full rounded-full bg-amber-400 transition-all duration-500 ease-out"
+                          style={{ width: `${row.pct}%` }}
+                        />
+                      </div>
+                      <span className="w-14 shrink-0 text-right font-medium text-slate-600">
+                        {row.count} <span className="text-[10px] text-slate-400">({row.pct}%)</span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
+
+              {selectedStarRating !== null && (
+                <div className="mt-3 flex items-center justify-between rounded-xl bg-amber-50 p-2.5 text-xs text-amber-900 border border-amber-200/80">
+                  <span>Filtered to <strong>{selectedStarRating} star</strong> reviews</span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedStarRating(null)}
+                    className="font-bold underline hover:text-amber-950"
+                  >
+                    Show all
+                  </button>
+                </div>
+              )}
 
               <div className="mt-5 rounded-2xl bg-blue-50/70 p-4 border border-blue-100/80 text-xs leading-relaxed text-blue-900">
                 <i className="ti ti-shield-check mr-1.5 text-blue-700 font-bold" />

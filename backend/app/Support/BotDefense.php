@@ -20,11 +20,11 @@ final class BotDefense
             }
         }
 
-        // 2. Submission speed check: Real users take at least 1.5 - 2 seconds
+        // 2. Submission speed check: Real users take at least 1.5 - 2 seconds (safely handle clock skew)
         $submissionTime = (int)$request->input('_submission_time');
         if ($submissionTime > 0) {
             $elapsedSeconds = time() - $submissionTime;
-            if ($elapsedSeconds < 2) {
+            if ($elapsedSeconds >= 0 && $elapsedSeconds < 1) {
                 return true;
             }
         }

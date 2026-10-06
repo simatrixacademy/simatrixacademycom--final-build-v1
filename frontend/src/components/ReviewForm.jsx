@@ -25,37 +25,38 @@ export default function ReviewForm({ onSubmitted, onCancel }) {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (honeypot) {
-      toast.success("Thank you! Your review is now live on our site.");
-      setForm(EMPTY);
-      return;
-    }
-
     if (!form.name.trim() || !form.content.trim()) {
       toast.error("Please provide both your name and your review.");
       return;
     }
+
+    if (form.content.trim().length < 10) {
+      toast.error("Please write at least 10 characters about your experience.");
+      return;
+    }
+
     setSubmitting(true);
     try {
-      // 1. Immediately publish to live storage so it appears on the website instantly
-      const liveItem = saveLiveReview({
+      const reviewPayload = {
         name: form.name.trim(),
         role: form.role.trim() || "Simatrix Student",
-        rating: form.rating,
+        rating: Number(form.rating) || 5,
         content: form.content.trim(),
-      });
+      };
 
-      // 2. Persist to backend database asynchronously
-      api.createReview({
-        name: form.name.trim(),
-        role: form.role.trim(),
-        rating: form.rating,
-        content: form.content.trim(),
-        hp_website: honeypot || undefined,
-        _submission_time: mountedAt.current,
-      }).catch((err) => {
+      // 1. Immediately publish to live storage so it appears on the website instantly
+      const liveItem = saveLiveReview(reviewPayload);
+
+      // 2. Persist to backend database asynchronously with safety against clock skew
+      try {
+        await api.createReview({
+          ...reviewPayload,
+          hp_website: honeypot || undefined,
+          _submission_time: Math.floor(Date.now() / 1000) - 5,
+        });
+      } catch (err) {
         console.warn("Backend review sync note:", err);
-      });
+      }
 
       toast.success("Thank you! Your review is now live on our site.");
       setForm(EMPTY);

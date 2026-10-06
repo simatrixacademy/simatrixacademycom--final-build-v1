@@ -204,15 +204,7 @@ export function getLiveReviews() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    // Automatically filter out any reviews containing "sakthi"
-    const cleaned = parsed.filter(
-      (item) => !item.name?.toLowerCase().includes("sakthi")
-    );
-    if (cleaned.length !== parsed.length) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
-    }
-    return cleaned;
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
@@ -274,6 +266,33 @@ export function getAdminReviews(backendList = []) {
     is_active: l.is_active !== false,
   }));
 
+  const formattedBackend = [];
+  if (backendList && backendList.length) {
+    backendList.forEach((b) => {
+      const bId = b.id ? `backend-${b.id}` : `backend-${Math.random()}`;
+      if (deleted.includes(bId) || deleted.includes(String(b.id))) return;
+      const isAlready = formattedLive.some(
+        (l) => l.name?.toLowerCase() === b.name?.toLowerCase() && (l.quote === (b.content || b.quote))
+      );
+      if (!isAlready) {
+        const override = overrides[bId] || overrides[String(b.id)] || {};
+        formattedBackend.push({
+          id: bId,
+          name: override.name || b.name,
+          role: override.role || b.role || "Student",
+          quote: override.quote || override.content || b.content || b.quote,
+          content: override.content || override.quote || b.content || b.quote,
+          rating: Number(override.rating || b.rating) || 5,
+          source: "live",
+          isLive: true,
+          is_active: override.is_active !== undefined ? override.is_active : (b.is_active !== false),
+          headline: override.headline || b.headline || "",
+          campus: override.campus || b.campus || "Virudhunagar Center",
+        });
+      }
+    });
+  }
+
   const formattedCurated = STORIES.filter((s) => !deleted.includes(s.id)).map((s) => {
     const override = overrides[s.id] || {};
     return {
@@ -285,7 +304,7 @@ export function getAdminReviews(backendList = []) {
     };
   });
 
-  return [...formattedLive, ...formattedCurated];
+  return [...formattedLive, ...formattedBackend, ...formattedCurated];
 }
 
 export function saveAdminReview(formData) {
@@ -316,11 +335,12 @@ export function saveAdminReview(formData) {
     return formData;
   }
 
-  if (id && id.startsWith("story-")) {
-    // Save override for curated baseline story in localStorage
+  if (id && (id.startsWith("story-") || id.startsWith("backend-") || typeof id === "number")) {
+    const strId = String(id);
+    // Save override in localStorage for instant live site sync
     const overrides = getCustomStoriesOverrides();
-    overrides[id] = {
-      ...(overrides[id] || {}),
+    overrides[strId] = {
+      ...(overrides[strId] || {}),
       name: formData.name?.trim(),
       role: formData.role?.trim(),
       course: formData.course?.trim() || formData.role?.trim(),
@@ -333,7 +353,7 @@ export function saveAdminReview(formData) {
     };
     localStorage.setItem(CUSTOM_STORIES_KEY, JSON.stringify(overrides));
     window.dispatchEvent(new CustomEvent("simatrix_reviews_updated"));
-    return { ...formData, id };
+    return { ...formData, id: strId };
   }
 
   // Create new live review
@@ -349,40 +369,36 @@ export function saveAdminReview(formData) {
 
 export function deleteAdminReview(id) {
   if (typeof window === "undefined") return;
-  if (id.startsWith("live-")) {
-    deleteLiveReview(id);
+  const strId = String(id);
+  if (strId.startsWith("live-")) {
+    deleteLiveReview(strId);
     return;
   }
-  if (id.startsWith("story-")) {
-    const deleted = getDeletedStories();
-    if (!deleted.includes(id)) {
-      deleted.push(id);
-      localStorage.setItem(DELETED_STORIES_KEY, JSON.stringify(deleted));
-      window.dispatchEvent(new CustomEvent("simatrix_reviews_updated"));
-    }
-    return;
+  const deleted = getDeletedStories();
+  if (!deleted.includes(strId)) {
+    deleted.push(strId);
+    localStorage.setItem(DELETED_STORIES_KEY, JSON.stringify(deleted));
+    window.dispatchEvent(new CustomEvent("simatrix_reviews_updated"));
   }
 }
 
 export function toggleAdminReviewVisibility(id) {
   if (typeof window === "undefined") return;
-  if (id.startsWith("live-")) {
+  const strId = String(id);
+  if (strId.startsWith("live-")) {
     const current = getLiveReviews();
     const updated = current.map((r) =>
-      r.id === id ? { ...r, is_active: r.is_active === false ? true : false } : r
+      r.id === strId ? { ...r, is_active: r.is_active === false ? true : false } : r
     );
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     window.dispatchEvent(new CustomEvent("simatrix_reviews_updated"));
     return;
   }
-  if (id.startsWith("story-")) {
-    const overrides = getCustomStoriesOverrides();
-    const currentActive = overrides[id]?.is_active !== undefined ? overrides[id].is_active : true;
-    overrides[id] = { ...(overrides[id] || {}), is_active: !currentActive };
-    localStorage.setItem(CUSTOM_STORIES_KEY, JSON.stringify(overrides));
-    window.dispatchEvent(new CustomEvent("simatrix_reviews_updated"));
-    return;
-  }
+  const overrides = getCustomStoriesOverrides();
+  const currentActive = overrides[strId]?.is_active !== undefined ? overrides[strId].is_active : true;
+  overrides[strId] = { ...(overrides[strId] || {}), is_active: !currentActive };
+  localStorage.setItem(CUSTOM_STORIES_KEY, JSON.stringify(overrides));
+  window.dispatchEvent(new CustomEvent("simatrix_reviews_updated"));
 }
 
 export function mergeReviewsWithStories(backendReviews = []) {
@@ -390,14 +406,19 @@ export function mergeReviewsWithStories(backendReviews = []) {
   const overrides = getCustomStoriesOverrides();
   const deleted = getDeletedStories();
 
-  const list = [...liveList];
+  const userBackendReviews = [];
 
   // Add backend reviews if not already present in liveList
   if (backendReviews?.length) {
     backendReviews.forEach((item, idx) => {
-      const name = item.name || "";
-      const quote = item.quote || item.content || "";
-      if (name.toLowerCase().includes("sakthi")) return;
+      const name = (item.name || "").trim();
+      const quote = (item.quote || item.content || "").trim();
+      if (!name || !quote) return;
+
+      const rawId = item.id ? `backend-${item.id}` : `backend-${idx}`;
+      if (deleted.includes(rawId) || deleted.includes(String(item.id))) return;
+      const override = overrides[rawId] || overrides[String(item.id)] || {};
+      if (override.is_active === false) return;
 
       const isAlreadyInLive = liveList.some(
         (l) => l.name.toLowerCase() === name.toLowerCase() && l.quote === quote
@@ -408,26 +429,30 @@ export function mergeReviewsWithStories(backendReviews = []) {
       if (foundInStories) {
         if (quote) foundInStories.quote = quote;
         if (item.rating) foundInStories.rating = item.rating;
-      } else if (name && quote) {
-        list.push({
-          id: `backend-${item.id || idx}`,
-          name: name,
-          course: item.course || item.role || item.designation || "Software Training",
-          category: "full-stack",
-          college: "Simatrix Academy Alum",
-          batch: "Verified Student",
-          role: item.role || item.designation || "Simatrix Graduate",
-          headline: item.headline || (quote.length > 60 ? `“${quote.slice(0, 57)}...”` : `“${quote}”`),
-          quote: quote,
-          highlight: "Verified Student",
-          campus: "Virudhunagar",
-          rating: item.rating || 5,
+      } else {
+        userBackendReviews.push({
+          id: rawId,
+          name: override.name || name,
+          course: override.course || item.course || item.role || item.designation || "Software Training",
+          category: override.category || item.category || "full-stack",
+          college: item.college || "Verified Student",
+          batch: item.batch || "Verified Learner",
+          role: override.role || item.role || item.designation || "Simatrix Graduate",
+          headline: override.headline || item.headline || (quote.length > 60 ? `“${quote.slice(0, 57)}...”` : `“${quote}”`),
+          quote: override.quote || override.content || quote,
+          highlight: item.highlight || "Student Feedback",
+          campus: override.campus || item.campus || "Virudhunagar",
+          rating: Number(override.rating || item.rating) || 5,
           gradient: GRADIENTS[idx % GRADIENTS.length],
-          isLive: false,
+          isLive: true,
+          created_at: item.created_at || new Date().toISOString(),
         });
       }
     });
   }
+
+  // Put all live reviews (both local storage and backend synced community reviews) at the TOP
+  const list = [...liveList, ...userBackendReviews];
 
   // Append default baseline stories with overrides and deletions respected
   STORIES.forEach((story) => {
