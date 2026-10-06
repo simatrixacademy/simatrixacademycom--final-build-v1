@@ -9,7 +9,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('admins')->updateOrInsert(['email'=>'admin@elysiumacademy.org'], ['name'=>'Academy Admin','password_hash'=>Hash::make('Admin@123'),'role'=>'admin','created_at'=>now()]);
+        if (env('ADMIN_EMAIL') && env('ADMIN_PASSWORD')) {
+            DB::table('admins')->updateOrInsert(
+                ['email' => strtolower(trim(env('ADMIN_EMAIL')))],
+                [
+                    'name' => env('ADMIN_NAME', 'Administrator'),
+                    'password_hash' => Hash::make(env('ADMIN_PASSWORD')),
+                    'role' => 'super_admin',
+                    'created_at' => now(),
+                ]
+            );
+        }
         $features = [
             ['Comprehensive Curriculum','Industry-aligned syllabus covering fundamentals to advanced topics.','book'],
             ['Real-World Projects','Hands-on projects that mirror the work you will do on the job.','code'],

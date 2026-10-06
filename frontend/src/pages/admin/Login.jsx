@@ -11,14 +11,27 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [lockoutMsg, setLockoutMsg] = useState("");
+  const [honeypot, setHoneypot] = useState("");
 
   const submit = async (event) => {
     event.preventDefault();
+    if (honeypot) return; // Silent drop for bots
     if (!email.trim() || !password) return toast.error("Enter your email and password.");
     setLoading(true);
-    try { await login(email.trim().toLowerCase(), password); toast.success("Welcome back!"); navigate("/admin"); }
-    catch (error) { toast.error(error.message); }
-    finally { setLoading(false); }
+    setLockoutMsg("");
+    try {
+      await login(email.trim().toLowerCase(), password);
+      toast.success("Welcome back!");
+      navigate("/admin");
+    } catch (error) {
+      if (error?.code === "account_locked" || error?.status === 423 || error?.message?.toLowerCase().includes("locked")) {
+        setLockoutMsg(error.message);
+      }
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,6 +90,28 @@ export default function Login() {
           </p>
 
           <form onSubmit={submit} className="mt-8 space-y-4">
+            {lockoutMsg && (
+              <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs sm:text-sm text-rose-800 flex items-start gap-3">
+                <i className="ti ti-shield-x text-lg text-rose-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-bold">Access Temporarily Suspended</p>
+                  <p className="mt-0.5 text-rose-700">{lockoutMsg}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Invisible honeypot field for bot trapping */}
+            <div style={{ position: 'absolute', opacity: 0, zIndex: -1, pointerEvents: 'none', height: 0, overflow: 'hidden' }}>
+              <input
+                type="text"
+                name="hp_website"
+                value={honeypot}
+                onChange={(event) => setHoneypot(event.target.value)}
+                tabIndex="-1"
+                autoComplete="off"
+              />
+            </div>
+
             <label className="block">
               <span className="mb-2 block text-xs font-bold text-slate-700">Email address</span>
               <div className="relative">

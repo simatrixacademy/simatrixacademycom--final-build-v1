@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { api } from "../api/client";
 import { useToast, Button, Field, inputClass } from "./ui";
 import { saveLiveReview } from "../lib/reviewsData";
@@ -15,6 +15,8 @@ const RATING_LABELS = {
 
 export default function ReviewForm({ onSubmitted, onCancel }) {
   const toast = useToast();
+  const mountedAt = useRef(Math.floor(Date.now() / 1000));
+  const [honeypot, setHoneypot] = useState("");
   const [form, setForm] = useState(EMPTY);
   const [hover, setHover] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -23,6 +25,12 @@ export default function ReviewForm({ onSubmitted, onCancel }) {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (honeypot) {
+      toast.success("Thank you! Your review is now live on our site.");
+      setForm(EMPTY);
+      return;
+    }
+
     if (!form.name.trim() || !form.content.trim()) {
       toast.error("Please provide both your name and your review.");
       return;
@@ -43,6 +51,8 @@ export default function ReviewForm({ onSubmitted, onCancel }) {
         role: form.role.trim(),
         rating: form.rating,
         content: form.content.trim(),
+        hp_website: honeypot || undefined,
+        _submission_time: mountedAt.current,
       }).catch((err) => {
         console.warn("Backend review sync note:", err);
       });
@@ -61,6 +71,17 @@ export default function ReviewForm({ onSubmitted, onCancel }) {
 
   return (
     <form onSubmit={submit} className="space-y-5">
+      {/* Invisible honeypot field for bot trapping */}
+      <div style={{ position: 'absolute', opacity: 0, zIndex: -1, pointerEvents: 'none', height: 0, overflow: 'hidden' }}>
+        <input
+          type="text"
+          name="hp_website"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex="-1"
+          autoComplete="off"
+        />
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Your Full Name" required>
           <input

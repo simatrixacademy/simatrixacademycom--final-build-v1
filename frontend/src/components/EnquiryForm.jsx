@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { api } from "../api/client";
 import { useToast } from "./ui";
 
@@ -14,6 +14,8 @@ const EMPTY = {
 
 export default function EnquiryForm({ courses = [], compact = false, type = "contact" }) {
   const toast = useToast();
+  const mountedAt = useRef(Math.floor(Date.now() / 1000));
+  const [honeypot, setHoneypot] = useState("");
   const [form, setForm] = useState(() => ({
     ...EMPTY,
     course_id: courses.length === 1 ? String(courses[0]?.id || "") : "",
@@ -30,6 +32,13 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
 
   const submit = async (e) => {
     e.preventDefault();
+    if (honeypot) {
+      // Fake success for bots
+      toast.success("Enquiry submitted! A counsellor will contact you shortly.");
+      setForm(EMPTY);
+      return;
+    }
+
     if (!form.name.trim() || !form.phone.trim()) {
       toast.error("Please enter your name and phone number.");
       return;
@@ -48,6 +57,8 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
         course_id: form.course_id || null,
         message: enrichedMessage,
         type,
+        hp_website: honeypot || undefined,
+        _submission_time: mountedAt.current,
       });
       toast.success(res.message || "Enquiry submitted! A counsellor will contact you shortly.");
       setForm(EMPTY);
@@ -60,6 +71,17 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
 
   return (
     <form onSubmit={submit} className="space-y-4">
+      {/* Invisible honeypot field for bot trapping */}
+      <div style={{ position: 'absolute', opacity: 0, zIndex: -1, pointerEvents: 'none', height: 0, overflow: 'hidden' }}>
+        <input
+          type="text"
+          name="hp_website"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex="-1"
+          autoComplete="off"
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         {/* Full Name */}
         <label className="block">

@@ -1,31 +1,80 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-const TOKEN_KEY = "elysium_token";
+const TOKEN_KEY = "simatrix_token";
 
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
-export const setToken = (t) => localStorage.setItem(TOKEN_KEY, t);
-export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
+export const getToken = () => localStorage.getItem(TOKEN_KEY) || localStorage.getItem("elysium_token");
+export const setToken = (t) => {
+  if (t) {
+    localStorage.setItem(TOKEN_KEY, t);
+  }
+  localStorage.removeItem("elysium_token");
+};
+export const clearToken = () => {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem("elysium_token");
+};
 
-async function request(path, { method = "GET", body, auth = false } = {}) {
+let refreshPromise = null;
+
+async function refreshSession() {
+  if (refreshPromise) return refreshPromise;
+
+  refreshPromise = (async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.status === 1) {
+        if (data?.data?.token) {
+          setToken(data.data.token);
+        }
+        return true;
+      }
+      clearToken();
+      return false;
+    } catch {
+      clearToken();
+      return false;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+}
+
+async function request(path, { method = "GET", body, auth = false, isRetry = false } = {}) {
   const headers = { "Content-Type": "application/json" };
-  if (auth) {
-    const token = getToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
+  const token = getToken();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
   let res;
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
     res = await fetch(`${BASE_URL}${path}`, {
       method,
       headers,
+      credentials: "include",
       body: body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
-  } catch {
+  } catch (err) {
     throw new Error("Cannot reach the server. Is the backend running?");
+  }
+
+  // Transparent token refresh on 401
+  if (res.status === 401 && !isRetry && !path.includes("/auth/login") && !path.includes("/auth/refresh")) {
+    const refreshed = await refreshSession();
+    if (refreshed) {
+      return request(path, { method, body, auth, isRetry: true });
+    }
   }
 
   let json = null;
@@ -36,8 +85,11 @@ async function request(path, { method = "GET", body, auth = false } = {}) {
   }
 
   if (!res.ok || (json && json.status === 0)) {
-    const message = (json && json.message) || `Request failed (${res.status})`;
-    throw new Error(message);
+    const message = (json && (json.message || json.error)) || `Request failed (${res.status})`;
+    const err = new Error(message);
+    err.status = res.status;
+    err.code = json?.code;
+    throw err;
   }
   return json;
 }
@@ -64,6 +116,7 @@ async function uploadFile(file) {
   try {
     res = await fetch(`${BASE_URL}/api/admin/upload`, {
       method: "POST",
+      credentials: "include",
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body,
     });
@@ -96,7 +149,6 @@ export const api = {
 
   // ---- public ----
   getSite: async () => {
-    // Return cached data immediately if available, then revalidate in background
     if (siteCache) {
       request("/api/site")
         .then((fresh) => {
@@ -136,9 +188,11 @@ export const api = {
 
   uploadImage: (file) => uploadFile(file),
 
-  // ---- auth ----
+  // ---- auth (Phase 2 HTTP-only cookie + refresh tokens) ----
   login: (email, password) =>
     request("/api/auth/login", { method: "POST", body: { email, password } }),
+  refresh: () => refreshSession(),
+  logout: () => request("/api/auth/logout", { method: "POST" }),
   me: () => request("/api/auth/me", { auth: true }),
 
   // ---- admin (generic CRUD) ----

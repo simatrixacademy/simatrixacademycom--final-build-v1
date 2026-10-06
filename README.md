@@ -28,8 +28,20 @@ python -m src.seed               # create tables + seed catalog + default admin
 python app.py                    # dev server on http://localhost:5000
 ```
 
-Default admin (from seed): `admin@elysiumacademy.org` / `Admin@123`
-Create more admins: `python -m src.create_admin <email> <password> [name]`
+Create an admin account:
+```bash
+php artisan admin:create
+# or specify inline: php artisan admin:create admin@simatrixacademy.com --name="Super Admin"
+```
+List admin accounts:
+```bash
+php artisan admin:list
+```
+Delete an admin account:
+```bash
+php artisan admin:delete admin@simatrixacademy.com
+# or purge all: php artisan admin:delete --all
+```
 
 ### Frontend
 ```bash
