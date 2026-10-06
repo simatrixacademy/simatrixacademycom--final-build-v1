@@ -482,14 +482,14 @@ function PopularCoursesCarousel({ courses }) {
         ))}
       </div>
 
-      {/* Navigation Controls in Simatrix Blue/Dark Style */}
-      <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      {/* Navigation Controls Centered with Matching Blue Buttons */}
+      <div className="mt-8 flex flex-col items-center justify-center gap-5 sm:relative">
+        <div className="flex items-center justify-center gap-3">
           <button
             type="button"
             onClick={() => move(-1)}
             aria-label="Previous courses"
-            className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-xs transition hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95 cursor-pointer"
           >
             <i className="ti ti-arrow-left text-sm" />
           </button>
@@ -520,20 +520,22 @@ function PopularCoursesCarousel({ courses }) {
             type="button"
             onClick={() => move(1)}
             aria-label="Next courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-[#0b1528] text-white shadow-md shadow-brand-950/20 transition hover:bg-blue-600 active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95 cursor-pointer"
           >
             <i className="ti ti-arrow-right text-sm" />
           </button>
         </div>
 
         {/* Explore All Courses Button */}
-        <Link
-          to="/courses"
-          className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b1528] px-6 text-xs font-bold text-white shadow-sm transition hover:bg-blue-600"
-        >
-          <span>Explore All 20+ Courses</span>
-          <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-1" />
-        </Link>
+        <div className="sm:absolute sm:right-0">
+          <Link
+            to="/courses"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b1528] px-6 text-xs font-bold text-white shadow-sm transition hover:bg-blue-600"
+          >
+            <span>Explore All 20+ Courses</span>
+            <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
     </div>
   );
