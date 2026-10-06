@@ -827,390 +827,192 @@ const TECH_ROW_2 = [
   },
 ];
 
-function CommunitySection({ data, courses, testimonials }) {
-  const people = [avatar1, avatar2, avatar3];
+const SIMATRIX_PRINCIPLES = [
+  {
+    number: "01",
+    label: "Foundations First",
+    title: "We teach the terminal before the framework.",
+    description:
+      "Frameworks and libraries change every two years. Fundamentals don't. You will understand how memory works, how HTTP cycles execute, how git trees branch, and how the Linux shell behaves before you write a single line of React or Python.",
+    point: "Foundational durability over temporary trends",
+  },
+  {
+    number: "02",
+    label: "Clean Architecture",
+    title: "Code is written once, but read a hundred times.",
+    description:
+      "Anyone can copy-paste code that compiles. We train you to write code that teams can maintain. Every project undergoes real pull request reviews, clean architecture scrutiny, and refactoring sessions with senior developers.",
+    point: "Pull requests · Code readability · Maintainability",
+  },
+  {
+    number: "03",
+    label: "Real Debugging",
+    title: "You learn by breaking production, not tutorials.",
+    description:
+      "Tutorials create the illusion of competence because everything works on the first try. In our labs, we deliberately hand you broken builds, failing database migrations, and edge-case errors so you develop genuine debugging muscle.",
+    point: "Root-cause analysis · Live bug fixing · Zero tutorial debt",
+  },
+];
+
+function CommunitySection() {
+  const cardsRef = useRef([]);
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    let rafId = null;
+
+    const updateCardStack = () => {
+      const cards = cardsRef.current;
+      if (!cards || cards.length === 0) return;
+
+      let highestActive = 0;
+
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        if (!card) continue;
+
+        const currentRect = card.getBoundingClientRect();
+
+        // Mark active step based on which card is near its sticky position
+        if (currentRect.top <= 200) {
+          highestActive = i;
+        }
+
+        // Calculate overlap from all subsequent cards
+        let overlapWeight = 0;
+        for (let j = i + 1; j < cards.length; j++) {
+          const higherCard = cards[j];
+          if (!higherCard) continue;
+          const higherRect = higherCard.getBoundingClientRect();
+
+          const overlapRange = currentRect.height || 260;
+          const dist = (currentRect.top + overlapRange) - higherRect.top;
+          const progress = Math.max(0, Math.min(1, dist / overlapRange));
+          overlapWeight += progress;
+        }
+
+        // Scale and depth styling
+        const scale = Math.max(0.90, 1 - overlapWeight * 0.045);
+        const brightness = Math.max(0.88, 1 - overlapWeight * 0.06);
+        const shadowOpacity = Math.min(0.2, 0.07 + overlapWeight * 0.05);
+
+        card.style.transform = `scale(${scale})`;
+        card.style.filter = `brightness(${brightness})`;
+        card.style.boxShadow = `0 14px 45px -8px rgba(15, 23, 42, ${shadowOpacity})`;
+      }
+
+      setActiveStep(highestActive);
+    };
+
+    const onScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateCardStack);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateCardStack();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   return (
-    <section className="bg-white pb-6 pt-2 sm:pb-8 sm:pt-4" aria-labelledby="community-title">
+    <section
+      id="why-simatrix"
+      className="scroll-mt-32 border-y border-slate-200/80 bg-white py-16 sm:py-24"
+      aria-label="The Simatrix Standard"
+    >
       <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-        {/* Header - Kept clean and authoritative */}
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[.22em] text-amber-700">Why Simatrix</p>
-          <h2 id="community-title" className="mt-3 font-display text-4xl font-semibold text-slate-950 sm:text-5xl">
-            You don’t have to learn alone.
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-7 text-slate-600">
-            Connect practical learning with 1-on-1 mentor guidance, production-style projects and verified career preparation.
-          </p>
-          <div className="mt-8 flex justify-center -space-x-3" aria-label="Simatrix learner community">
-            {people.map((src) => (
-              <img key={src} src={src} alt="" className="h-14 w-14 rounded-full border-4 border-white object-cover shadow-md" />
-            ))}
-            {["AK", "RS", "MP", "VK", "SN"].map((name, index) => (
-              <span
-                key={name}
-                className={`grid h-14 w-14 place-items-center rounded-full border-4 border-white text-xs font-bold text-white shadow-md ${["bg-brand-700", "bg-amber-600", "bg-emerald-700", "bg-violet-700", "bg-slate-800"][index]
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.25fr] lg:gap-16 xl:gap-24 items-start">
+          {/* Left Column: Permanent Sticky Brand Statement */}
+          <div className="lg:sticky lg:top-32 self-start pb-6">
+            <p className="inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs font-bold uppercase tracking-[0.24em] text-amber-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+              THE SIMATRIX STANDARD
+            </p>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl leading-[1.12]">
+              Software engineering cannot be learned through slides.
+            </h2>
+            <p className="mt-5 text-sm sm:text-base leading-relaxed text-slate-600 max-w-lg">
+              Most courses optimize for quick quizzes and certificates. Simatrix is built around the actual friction of software craftsmanship: debugging live errors, architecting clean code, and shipping work you can defend in interviews.
+            </p>
+
+            {/* Active Stack Step Indicators */}
+            <div className="mt-8 flex items-center gap-2">
+              {SIMATRIX_PRINCIPLES.map((p, idx) => (
+                <div
+                  key={p.number}
+                  className={`h-1.5 transition-all duration-300 rounded-full ${
+                    idx === activeStep
+                      ? "w-8 bg-amber-600"
+                      : idx < activeStep
+                      ? "w-4 bg-slate-400"
+                      : "w-3 bg-slate-200"
                   }`}
-              >
-                {name}
+                />
+              ))}
+              <span className="ml-2 font-mono text-xs text-slate-400">
+                Principle 0{activeStep + 1} of 0{SIMATRIX_PRINCIPLES.length}
               </span>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* 1. Four Specific Differentiator Cards */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {/* 01: Industry-Aligned Curriculum */}
-          <Link
-            to="/courses"
-            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-300/80 hover:shadow-xl"
-          >
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-600 text-2xl text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                  <i className="ti ti-school" />
-                </span>
-                <span className="font-mono text-sm font-semibold text-blue-400">01</span>
-              </div>
-              <h3 className="mt-4 font-display text-lg font-bold text-slate-900">
-                Industry-Aligned Curriculum
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                Learn modern tech stacks, Git workflows, and CI/CD pipelines used by engineering teams.
-              </p>
-            </div>
-            <div className="relative z-10 mt-6 flex items-center justify-between pt-1">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition-colors group-hover:text-blue-700">
-                Explore Curriculum
-                <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
-              </span>
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-blue-50 text-blue-600 shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white">
-                <i className="ti ti-arrow-right text-xs" />
-              </span>
-            </div>
-          </Link>
-
-          {/* 02: Real-World Projects */}
-          <Link
-            to="/courses"
-            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/80 hover:shadow-xl"
-          >
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-600 text-2xl text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                  <i className="ti ti-code" />
-                </span>
-                <span className="font-mono text-sm font-semibold text-emerald-400">02</span>
-              </div>
-              <h3 className="mt-4 font-display text-lg font-bold text-slate-900">
-                Build a Real Portfolio
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                Graduate with 3+ live GitHub applications you can demo and explain during technical interviews.
-              </p>
-            </div>
-            <div className="relative z-10 mt-6 flex items-center justify-between pt-1">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 transition-colors group-hover:text-emerald-700">
-                View Project Tracks
-                <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
-              </span>
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-emerald-50 text-emerald-600 shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white">
-                <i className="ti ti-arrow-right text-xs" />
-              </span>
-            </div>
-          </Link>
-
-          {/* 03: 1-on-1 Mentor Guidance */}
-          <Link
-            to="/career-guidance"
-            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-purple-300/80 hover:shadow-xl"
-          >
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-600 text-2xl text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                  <i className="ti ti-users" />
-                </span>
-                <span className="font-mono text-sm font-semibold text-purple-400">03</span>
-              </div>
-              <h3 className="mt-4 font-display text-lg font-bold text-slate-900">
-                1-on-1 Mentor Guidance
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                Direct code reviews, live bug-fixing sessions and personalized learning roadmaps without passive watching.
-              </p>
-            </div>
-            <div className="relative z-10 mt-6 flex items-center justify-between pt-1">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-purple-600 transition-colors group-hover:text-purple-700">
-                Meet Our Mentors
-                <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
-              </span>
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-purple-50 text-purple-600 shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white">
-                <i className="ti ti-arrow-right text-xs" />
-              </span>
-            </div>
-          </Link>
-
-          {/* 04: Career & Placement Support */}
-          <Link
-            to="/placement"
-            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-amber-300/80 hover:shadow-xl"
-          >
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-500 text-2xl text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                  <i className="ti ti-briefcase" />
-                </span>
-                <span className="font-mono text-sm font-semibold text-amber-500">04</span>
-              </div>
-              <h3 className="mt-4 font-display text-lg font-bold text-slate-900">
-                Placement &amp; Interview Support
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                ATS tech resume optimization, technical mock interview drill-downs, and verified employer connections.
-              </p>
-            </div>
-            <div className="relative z-10 mt-6 flex items-center justify-between pt-1">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-600 transition-colors group-hover:text-amber-700">
-                Placement Support
-                <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
-              </span>
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-amber-50 text-amber-600 shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white">
-                <i className="ti ti-arrow-right text-xs" />
-              </span>
-            </div>
-          </Link>
-        </div>
-
-        {/* 2. Four Stats Cards */}
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="flex items-center gap-4 rounded-3xl border border-slate-200/70 bg-white p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] sm:p-6">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-blue-50 text-2xl text-blue-600">
-              <i className="ti ti-users" />
-            </span>
-            <div>
-              <strong className="font-display text-3xl font-bold text-slate-950">500+</strong>
-              <p className="mt-0.5 text-xs font-medium text-slate-500">Learners guided</p>
+            {/* Small line of supporting points at the bottom */}
+            <div className="mt-10 pt-6 border-t border-slate-200/80 flex items-center gap-3 font-mono text-[11px] sm:text-xs text-slate-500">
+              <i className="ti ti-terminal text-slate-700 text-sm" />
+              <span>Terminal-first · Peer-reviewed · Production standards</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 rounded-3xl border border-slate-200/70 bg-white p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] sm:p-6">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-purple-50 text-2xl text-purple-600">
-              <i className="ti ti-folders" />
-            </span>
-            <div>
-              <strong className="font-display text-3xl font-bold text-slate-950">50+</strong>
-              <p className="mt-0.5 text-xs font-medium text-slate-500">Real-world projects</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 rounded-3xl border border-slate-200/70 bg-white p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] sm:p-6">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-600">
-              <i className="ti ti-stack-2" />
-            </span>
-            <div>
-              <strong className="font-display text-3xl font-bold text-slate-950">10+</strong>
-              <p className="mt-0.5 text-xs font-medium text-slate-500">Technology domains</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 rounded-3xl border border-slate-200/70 bg-white p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] sm:p-6">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-50 text-2xl text-amber-600">
-              <i className="ti ti-certificate" />
-            </span>
-            <div>
-              <strong className="font-display text-3xl font-bold text-slate-950">100%</strong>
-              <p className="mt-0.5 text-xs font-medium text-slate-500">Practical lab training</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. Two Big Bento Cards: Support (with Lottie) & Tech Stacks */}
-        <div className="mt-5 grid gap-5 lg:grid-cols-2">
-          {/* Support Card with Lottie */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/70 bg-white p-7 shadow-[0_4px_25px_-4px_rgba(0,0,0,0.04)] sm:p-8">
-            <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-[1.1fr_0.9fr]">
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600">
-                  Always-on learning support
-                </p>
-                <h3 className="mt-3 font-display text-2xl font-bold leading-snug text-slate-950 sm:text-3xl">
-                  Questions become progress when you can discuss them.
-                </h3>
-                <p className="mt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                  Learn through mentor feedback, peer conversations, project reviews and structured career preparation.
-                </p>
-                <div className="mt-6">
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#0b1528] px-6 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-brand-900"
-                  >
-                    <span>Get Started</span>
-                    <i className="ti ti-arrow-right text-xs" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Lottie Animation (Share.lottie) */}
-              <div className="flex items-center justify-center">
-                <div className="relative h-48 w-full max-w-[280px] sm:h-56">
-                  <DotLottieReact
-                    src="/Lottie/Share.lottie"
-                    loop
-                    autoplay
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-col justify-between gap-4 border-t border-slate-100 pt-6 sm:flex-row sm:items-center">
-              <div>
-                <p className="mb-2.5 text-xs font-bold text-slate-800">Connect with our community</p>
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://discord.gg"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Discord"
-                    className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200/80 bg-white text-[#5865F2] shadow-xs transition hover:border-[#5865F2] hover:bg-[#5865F2]/10"
-                  >
-                    <i className="ti ti-brand-discord text-lg" />
-                  </a>
-                  <a
-                    href="https://wa.me/919363793954"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="WhatsApp"
-                    className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200/80 bg-white text-[#25D366] shadow-xs transition hover:border-[#25D366] hover:bg-[#25D366]/10"
-                  >
-                    <i className="ti ti-brand-whatsapp text-lg" />
-                  </a>
-                  <a
-                    href="https://instagram.com/simatrixacademy"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Instagram"
-                    className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200/80 bg-white text-[#E4405F] shadow-xs transition hover:border-[#E4405F] hover:bg-[#E4405F]/10"
-                  >
-                    <i className="ti ti-brand-instagram text-lg" />
-                  </a>
-                  <a
-                    href="https://linkedin.com/company/simatrixacademy"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="LinkedIn"
-                    className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200/80 bg-white text-[#0A66C2] shadow-xs transition hover:border-[#0A66C2] hover:bg-[#0A66C2]/10"
-                  >
-                    <i className="ti ti-brand-linkedin text-lg" />
-                  </a>
-                  <a
-                    href="https://youtube.com/@simatrixacademy"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="YouTube"
-                    className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200/80 bg-white text-[#FF0000] shadow-xs transition hover:border-[#FF0000] hover:bg-[#FF0000]/10"
-                  >
-                    <i className="ti ti-brand-youtube text-lg" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50/50 px-4 py-2.5">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-blue-600 text-white shadow-xs">
-                  <i className="ti ti-shield-check text-lg" />
-                </span>
-                <div className="text-[11px] leading-tight">
-                  <p className="font-semibold text-slate-700">Mentor-guided • Peer-driven • Project-focused</p>
-                  <p className="mt-0.5 font-bold text-blue-700">Career-ready</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Dark Tech Stack Card */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-800 bg-[#050b18] p-7 text-white shadow-2xl sm:p-8">
-            {/* Ambient Glows */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-blue-600/20 blur-3xl"
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-indigo-600/10 blur-3xl"
-            />
-
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-500 sm:text-[11px]">
-                Build with relevant tools
-              </p>
-              <h3 className="mt-2 font-display text-xl font-bold text-white sm:text-2xl">
-                From foundations to modern technology stacks.
-              </h3>
-              <p className="mt-2 max-w-xl text-xs leading-relaxed text-slate-300 sm:text-sm">
-                Explore technologies through guided courses and combine them into portfolio-ready projects.
-              </p>
-            </div>
-
-            <div className="mt-6 flex flex-col gap-2.5">
-              {/* Row 1: 7 technologies */}
-              <div className="grid grid-cols-7 gap-2 sm:gap-2.5">
-                {TECH_ROW_1.map((item) => (
-                  <div
-                    key={item.name}
-                    title={`${item.name} — ${item.detail}`}
-                    className="group/tech flex h-16 cursor-default flex-col items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] p-1 transition-all duration-200 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.09] sm:h-18"
-                  >
-                    <span className="flex h-7 w-7 items-center justify-center text-xl sm:text-2xl">
-                      {item.icon}
-                    </span>
-                    <span className="mt-1 text-[10px] font-medium tracking-tight text-slate-300 group-hover/tech:text-white">
-                      {item.name}
+          {/* Right Column: Scroll Stacking Cards */}
+          <div className="relative pb-8">
+            {SIMATRIX_PRINCIPLES.map((item, index) => {
+              // Stacking offsets (110px base + 24px per card)
+              const topOffset = 110 + index * 24;
+              return (
+                <div
+                  key={item.number}
+                  ref={(el) => (cardsRef.current[index] = el)}
+                  style={{
+                    top: `${topOffset}px`,
+                    transformOrigin: "top center",
+                    zIndex: index + 10,
+                  }}
+                  className="sticky rounded-3xl border border-slate-200/90 bg-white p-7 sm:p-9 shadow-md transition-all duration-200 ease-out mb-24 sm:mb-32 last:mb-4"
+                >
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-xs font-bold uppercase tracking-widest text-amber-700">
+                        Principle {item.number}
+                      </span>
+                      <span className="h-1 w-1 rounded-full bg-slate-300" />
+                      <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
+                        {item.label}
+                      </span>
+                    </div>
+                    <span className="font-mono text-xs text-slate-400">
+                      0{index + 1} / 0{SIMATRIX_PRINCIPLES.length}
                     </span>
                   </div>
-                ))}
-              </div>
 
-              {/* Row 2: 7 technologies */}
-              <div className="grid grid-cols-7 gap-2 sm:gap-2.5">
-                {TECH_ROW_2.map((item) => (
-                  <div
-                    key={item.name}
-                    title={`${item.name} — ${item.detail}`}
-                    className="group/tech flex h-16 cursor-default flex-col items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] p-1 transition-all duration-200 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.09] sm:h-18"
-                  >
-                    <span className="flex h-7 w-7 items-center justify-center text-xl sm:text-2xl">
-                      {item.icon}
-                    </span>
-                    <span className="mt-1 text-[10px] font-medium tracking-tight text-slate-300 group-hover/tech:text-white">
-                      {item.name}
-                    </span>
+                  <h3 className="mt-4 font-display text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 leading-snug">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-600">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-6 flex items-center gap-2 pt-4 border-t border-slate-100 text-xs font-medium text-slate-500">
+                    <i className="ti ti-check text-emerald-600 font-bold text-sm" />
+                    <span>{item.point}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-7 flex items-center justify-between">
-              <Link
-                to="/courses"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.03] px-6 py-2.5 text-xs font-semibold text-white backdrop-blur-sm transition-all hover:border-white/40 hover:bg-white/10"
-              >
-                <span>Explore All Technologies</span>
-                <i className="ti ti-arrow-right text-xs" />
-              </Link>
-
-              {/* Handwritten "Learn Build Belong ↗" watermark */}
-              <div className="select-none text-right font-caveat text-sm leading-tight text-slate-300 sm:text-base -rotate-3">
-                <p className="tracking-wide">Learn</p>
-                <p className="tracking-wide pl-1">Build</p>
-                <p className="flex items-center justify-end gap-1 font-bold tracking-wide text-white">
-                  <span>Belong</span>
-                  <span className="text-base sm:text-lg">↗</span>
-                </p>
-              </div>
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-
       </div>
     </section>
   );
@@ -1977,7 +1779,7 @@ export default function Home() {
   };
 
   return (
-    <main ref={mainRef} id="main-content" className="overflow-hidden bg-white">
+    <main ref={mainRef} id="main-content" className="overflow-x-clip bg-white">
       {/* Career Advisory Modal (Scroll-triggered + Demo button) */}
       <CareerAdvisorModal
         isOpen={advisorModalOpen}
@@ -2049,22 +1851,22 @@ export default function Home() {
         <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-700">Where learning leads</p>
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-700">Skills That Get You Hired</p>
               <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-                Build real capability, not just another completion certificate.
+                Learn to build real software. Not just collect paper certificates.
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600">
-                Freshers in today&apos;s market are judged by what they have built and how fluently they defend their code. Every program at Simatrix is structured around tangible career readiness.
+                Companies don&apos;t hire pieces of paper. They hire people who know how to build apps and solve problems. At Simatrix Academy in Virudhunagar, you don&apos;t just watch theory—you build real projects that prove you are ready for a tech job.
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-xl text-blue-700">
-                    <i className="ti ti-brand-github" />
+                    <i className="ti ti-device-desktop" />
                   </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Production GitHub Portfolios</h4>
+                  <h4 className="mt-3 font-bold text-slate-950">Real Apps You Can Show Online</h4>
                   <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Ship 3+ full-stack applications to live URLs with clean git commit histories that tech interviewers respect.
+                    Build 3 live websites and apps that open on any phone or laptop. Show interviewers real proof that your code works.
                   </p>
                 </div>
 
@@ -2072,9 +1874,9 @@ export default function Home() {
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-purple-50 text-xl text-purple-700">
                     <i className="ti ti-messages" />
                   </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Technical Mock Interviews</h4>
+                  <h4 className="mt-3 font-bold text-slate-950">Practice Job Interviews</h4>
                   <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Rigorous 1-on-1 code defense, Data Structures drills, and system design basics to eliminate interview anxiety.
+                    Practice face-to-face coding interviews with our trainers before the real test. Speak clearly with zero fear.
                   </p>
                 </div>
 
@@ -2082,9 +1884,9 @@ export default function Home() {
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-xl text-emerald-700">
                     <i className="ti ti-user-check" />
                   </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Working Tech Mentors</h4>
+                  <h4 className="mt-3 font-bold text-slate-950">Learn From Real Software Engineers</h4>
                   <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Trained directly by software engineers from active tech companies, not academic theory readers.
+                    Learn directly from engineers who work in tech companies. They sit beside you and help you fix bugs every day.
                   </p>
                 </div>
 
@@ -2092,9 +1894,9 @@ export default function Home() {
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-xl text-amber-700">
                     <i className="ti ti-briefcase" />
                   </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Placement Pipeline</h4>
+                  <h4 className="mt-3 font-bold text-slate-950">Job &amp; Placement Support</h4>
                   <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Resume optimization, ATS matching, and local + regional company connection drives across Tamil Nadu.
+                    We build your resume, prepare you for company tests, and connect you with hiring IT companies across Tamil Nadu.
                   </p>
                 </div>
               </div>
@@ -2104,23 +1906,23 @@ export default function Home() {
             <div className="rounded-3xl border border-brand-200/70 bg-gradient-to-br from-brand-900 to-[#0b1528] p-7 text-white shadow-2xl sm:p-9">
               <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3.5 py-1 text-xs font-semibold text-amber-300">
                 <i className="ti ti-certificate" />
-                Graduate Readiness Standard
+                What You Walk Away With
               </div>
               <h3 className="mt-4 font-display text-2xl font-bold sm:text-3xl">
-                What every Simatrix graduate leaves with:
+                Everything you hold in your hands when you finish:
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-slate-300 sm:text-sm">
-                We measure our success not by enrollments, but by the tangible assets in your career portfolio:
+                You don&apos;t just finish a class. You leave with real proof that companies look for:
               </p>
 
               <ul className="mt-6 space-y-3.5 text-xs sm:text-sm">
                 {[
-                  "3+ Live, deployed full-stack or domain applications",
-                  "Active GitHub profile with clear documentation & READMEs",
-                  "ATS-tailored technical resume reviewed by hiring leads",
-                  "Technical interview problem-solving muscle & code defense",
-                  "Simatrix Course Completion Certificate & Performance Endorsement",
-                  "Direct entry to our alumni hiring network & partner job drives",
+                  "3+ Live, working apps running on your own web link",
+                  "Your own GitHub profile full of real code you wrote",
+                  "A clean software resume checked by senior tech leads",
+                  "Real confidence to explain your code in any company interview",
+                  "Official Simatrix Course Certificate + mentor recommendation",
+                  "Direct entry to company job drives and our student hiring network",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-500/20 text-emerald-400">
@@ -2137,14 +1939,14 @@ export default function Home() {
                   onClick={() => toEnquiry("guidance")}
                   className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 text-xs font-bold text-slate-950 transition hover:bg-amber-400"
                 >
-                  <span>Discuss Your Learning Plan</span>
+                  <span>Talk to a Mentor</span>
                   <i className="ti ti-arrow-right text-xs" />
                 </button>
                 <Link
                   to="/placement"
                   className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 text-xs font-semibold text-white transition hover:bg-white/10"
                 >
-                  <span>Explore Placement Support</span>
+                  <span>See Placement Support</span>
                 </Link>
               </div>
             </div>
