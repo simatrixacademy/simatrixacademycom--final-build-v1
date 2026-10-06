@@ -79,8 +79,21 @@ export default function Contact() {
 
         <Reveal delay={100} className="scroll-mt-24 lg:sticky lg:top-24">
           <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
-            <div className="border-b border-slate-100 p-7"><p className="text-xs font-bold uppercase tracking-[.18em] text-brand-600">Course enquiry</p><h2 className="mt-2 font-display text-3xl font-semibold text-slate-950">Send us a message</h2><p className="mt-2 text-sm leading-6 text-slate-500">Tell us what you want to learn. Our Virudhunagar team will get back to you.</p></div>
-            <div className="p-7"><EnquiryForm courses={courses} /></div>
+            <div className="border-b border-slate-100 p-6 sm:p-7">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-[.18em] text-brand-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-600" />
+                Quick Enquiry
+              </span>
+              <h2 className="mt-3 font-display text-2xl sm:text-3xl font-semibold text-slate-950">
+                Leave your details — we’ll help you
+              </h2>
+              <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-slate-500">
+                Takes 10 seconds. Our Virudhunagar mentors will reach out to guide you and answer your questions.
+              </p>
+            </div>
+            <div className="p-6 sm:p-7">
+              <EnquiryForm courses={courses} compact type="contact" />
+            </div>
           </div>
         </Reveal>
       </div>

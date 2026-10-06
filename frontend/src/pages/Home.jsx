@@ -5,14 +5,12 @@ import { icon } from "../lib/icons";
 import { ResponsiveImage } from "../components/ui";
 import EnquiryForm from "../components/EnquiryForm";
 import { useSeo } from "../lib/useSeo";
-import avatar1 from "../assets/avatar1.png";
-import avatar2 from "../assets/avatar2.png";
-import avatar3 from "../assets/avatar3.png";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import CareerAdvisorModal from "../components/CareerAdvisorModal";
 import { getLiveReviews } from "../lib/reviewsData";
 import TieUpsMarquee from "../components/TieUpsMarquee";
 import { getCourseImage } from "../lib/courseImage";
+import { Mascot } from "page-mascot";
 
 
 const HERO_BANNERS = [
@@ -1485,208 +1483,149 @@ function HeroActionHub({ onEnquiry }) {
   );
 }
 
-function FaqSection({ toEnquiry }) {
-  const [openId, setOpenId] = useState("faq-1");
-  const [activeCategory, setActiveCategory] = useState("All Questions");
+const TOP_FAQS = [
+  {
+    id: "faq-1",
+    num: "01",
+    question: "Am I eligible to join if I don't have a CS background?",
+    answer: "Yes! Our programs start with foundational concepts and build up to advanced modules. They are designed for beginners, engineering and arts & science graduates, and working professionals switching to IT.",
+    actionText: "Explore Courses & Syllabi",
+    actionTo: "/courses",
+  },
+  {
+    id: "faq-2",
+    num: "02",
+    question: "Do you offer offline lab sessions as well as online classes?",
+    answer: "Yes. We offer fully equipped physical computer labs at our Virudhunagar campus with daily trainer mentoring, as well as live interactive online batches with recorded sessions.",
+  },
+  {
+    id: "faq-3",
+    num: "03",
+    question: "Is there a free internship program available?",
+    answer: "Yes! We offer a Free Full-Stack Internship for eligible college students and freshers focusing on practical exercises, guided project exposure, and interview readiness.",
+    actionText: "Apply for Free Internship",
+    actionEnquiry: "internship",
+  },
+  {
+    id: "faq-4",
+    num: "04",
+    question: "What kind of placement support do students receive?",
+    answer: "Every student builds 2–4 verified GitHub portfolio projects, goes through technical mock interviews and resume reviews, and gets direct interview referrals with hiring partners.",
+    actionText: "View Placement Assistance",
+    actionTo: "/placement",
+  },
+  {
+    id: "faq-5",
+    num: "05",
+    question: "Where is Simatrix Academy located and how do I visit?",
+    answer: "Our campus is at 1/2A, 1st Floor, AA Road, Near Head Post Office, Virudhunagar – 626001. You can walk in for a lab tour or meet our mentors in person.",
+  },
+];
 
-  const filteredFaqs = useMemo(() => {
-    if (activeCategory === "All Questions") return FAQ_ITEMS;
-    return FAQ_ITEMS.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+function FaqSection({ toEnquiry }) {
+  const [openId, setOpenId] = useState(null);
 
   const toggleFaq = (id) => {
     setOpenId((prev) => (prev === id ? null : id));
   };
 
   return (
-    <section id="faqs" className="scroll-mt-32 border-t border-slate-200/80 bg-slate-50/70 py-10 sm:py-14">
-      <div className="mx-auto max-w-6xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-        <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
-          {/* Left Column: Heading & Enhanced Quick Help Desk */}
-          <div>
-            <SectionTitle
-              left
-              eyebrow="Before you decide"
-              title="Frequently asked questions"
-              description="Clear expectations make it easier to choose your learning path with confidence."
-            />
+    <section id="faqs" className="scroll-mt-24 border-t border-slate-200/80 bg-white py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr] items-start">
+          {/* Left Column: Editorial Style Header */}
+          <div className="lg:sticky lg:top-32">
+            <p className="text-xs font-bold uppercase tracking-[.25em] text-amber-700">
+              Support &amp; Help
+            </p>
 
-            {/* Quick Contact Card for unresolved questions */}
-            <div className="mt-8 rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xs transition hover:shadow-md">
-              <div className="flex items-center justify-between">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-50 text-xl text-brand-700 shadow-2xs">
-                  <i className="ti ti-help" />
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Counsellors Active
-                </span>
-              </div>
+            <h2 className="mt-3 font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-slate-950 leading-none">
+              Common
+              <span className="block font-serif italic text-3xl sm:text-4xl text-amber-600 font-normal capitalize mt-1">
+                queries
+              </span>
+            </h2>
 
-              <h4 className="mt-4 font-display text-lg font-bold text-slate-950">Have a different question?</h4>
-              <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                Our counsellors are available to answer fee queries, batch timings, or syllabus details directly.
-              </p>
+            <p className="mt-5 text-sm leading-relaxed text-slate-600 max-w-sm">
+              Find answers to the most frequent questions about our courses, booking a campus tour, and placement support.
+            </p>
 
-              <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-                <a
-                  href="https://wa.me/919363793954?text=Hi%20Simatrix%20Academy%2C%20I%20have%20a%20question%20about%20your%20courses."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-xs transition hover:bg-emerald-700"
-                >
-                  <i className="ti ti-brand-whatsapp text-sm" />
-                  <span>WhatsApp Us</span>
-                </a>
-                <a
-                  href="tel:+919363793954"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200/90 bg-slate-50 px-4 py-2.5 text-xs font-bold text-slate-800 transition hover:bg-slate-100"
-                >
-                  <i className="ti ti-phone text-sm text-brand-700" />
-                  <span>+91 93637 93954</span>
-                </a>
-              </div>
-
-              <div className="mt-5 border-t border-slate-100 pt-3.5 space-y-2">
-                <p className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                  <i className="ti ti-clock text-xs text-amber-600 shrink-0" />
-                  <span>Avg response: &lt;20 mins (9:00 AM – 7:30 PM IST)</span>
-                </p>
-                <p className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                  <i className="ti ti-map-pin text-xs text-blue-600 shrink-0" />
-                  <span>Walk-in lab tour at Virudhunagar center.</span>
-                </p>
-              </div>
+            <div className="mt-8">
+              <a
+                href="https://wa.me/919363793954?text=Hi%20Simatrix%20Academy%2C%20I%20have%20a%20question%20about%20your%20courses."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-950 bg-white px-5 py-3 text-xs font-bold uppercase tracking-[.18em] text-slate-950 transition hover:bg-slate-950 hover:text-white shadow-2xs"
+              >
+                <span>Ask a unique question</span>
+                <i className="ti ti-arrow-up-right text-xs" />
+              </a>
             </div>
           </div>
 
-          {/* Right Column: Category Tabs + Accordion */}
-          <div>
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2 pb-5">
-              {FAQ_CATEGORIES.map((cat) => {
-                const isActive = activeCategory === cat;
-                const count = cat === "All Questions" ? FAQ_ITEMS.length : FAQ_ITEMS.filter((i) => i.category === cat).length;
-                return (
+          {/* Right Column: Clean Numbered Questions */}
+          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
+            {TOP_FAQS.map((faq) => {
+              const isOpen = openId === faq.id;
+              return (
+                <div key={faq.id} className="transition-colors">
                   <button
-                    key={cat}
                     type="button"
-                    onClick={() => {
-                      setActiveCategory(cat);
-                    }}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${isActive
-                        ? "bg-brand-900 text-white shadow-xs"
-                        : "border border-slate-200/90 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
-                      }`}
+                    onClick={() => toggleFaq(faq.id)}
+                    className="flex w-full items-start justify-between gap-4 py-5 sm:py-6 text-left cursor-pointer group"
+                    aria-expanded={isOpen}
                   >
-                    <span>{cat}</span>
-                    <span
-                      className={`grid h-4 min-w-4 place-items-center rounded-full px-1 text-[10px] font-bold ${isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
-                        }`}
-                    >
-                      {count}
+                    <div className="flex items-baseline gap-4 sm:gap-6">
+                      <span className="font-mono text-xs sm:text-sm font-semibold text-slate-400 group-hover:text-amber-600 transition">
+                        {faq.num}
+                      </span>
+                      <h3 className="text-sm sm:text-base font-bold uppercase tracking-wider text-slate-900 group-hover:text-amber-700 transition leading-snug">
+                        {faq.question}
+                      </h3>
+                    </div>
+                    <span className="ml-4 shrink-0 text-xl font-light text-slate-400 group-hover:text-slate-900 transition-colors">
+                      <i className={isOpen ? "ti ti-minus" : "ti ti-plus"} />
                     </span>
                   </button>
-                );
-              })}
-            </div>
 
-            {/* Accordion Items */}
-            <div className="space-y-3">
-              {filteredFaqs.map((faq) => {
-                const isOpen = openId === faq.id;
-                return (
+                  {/* Smooth Animated Accordion Body */}
                   <div
-                    key={faq.id}
-                    className={`rounded-2xl border transition-all duration-200 ${isOpen
-                        ? "border-brand-500/50 bg-white shadow-md shadow-brand-900/5 ring-1 ring-brand-500/15"
-                        : "border-slate-200/90 bg-white hover:border-slate-300 hover:shadow-2xs"
-                      }`}
+                    className={`grid transition-all duration-200 ease-in-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100 pb-5" : "grid-rows-[0fr] opacity-0"
+                    }`}
                   >
-                    <button
-                      type="button"
-                      onClick={() => toggleFaq(faq.id)}
-                      className="flex w-full items-start justify-between gap-4 p-5 text-left cursor-pointer group"
-                      aria-expanded={isOpen}
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className="mt-0.5 font-mono text-xs font-bold text-slate-400 group-hover:text-brand-600 transition">
-                          {faq.num}
-                        </span>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                              {faq.tag}
-                            </span>
-                          </div>
-                          <h4 className="text-sm font-bold text-slate-900 sm:text-base leading-snug group-hover:text-brand-800 transition">
-                            {faq.question}
-                          </h4>
-                        </div>
-                      </div>
-                      <span
-                        className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full transition-all duration-300 ${isOpen
-                            ? "bg-brand-700 text-white rotate-180 shadow-xs"
-                            : "bg-slate-100 text-slate-500 group-hover:bg-brand-50 group-hover:text-brand-700"
-                          }`}
-                      >
-                        <i className="ti ti-chevron-down text-sm" />
-                      </span>
-                    </button>
+                    <div className="overflow-hidden pl-8 sm:pl-12">
+                      <p className="text-xs sm:text-sm leading-relaxed text-slate-600 pr-6">
+                        {faq.answer}
+                      </p>
 
-                    {/* Smooth Animated Accordion Body */}
-                    <div
-                      className={`grid transition-all duration-300 ease-in-out ${isOpen
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0"
-                        }`}
-                    >
-                      <div className="overflow-hidden">
-                        <div className="px-5 pb-5 pt-1 border-t border-slate-100 ml-8">
-                          <p className="text-xs sm:text-sm leading-relaxed text-slate-600">
-                            {faq.answer}
-                          </p>
-
-                          {/* Contextual Action Pill if provided */}
-                          {faq.actionText && (
-                            <div className="mt-3.5 pt-2 flex items-center">
-                              {faq.actionTo ? (
-                                <Link
-                                  to={faq.actionTo}
-                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-800 hover:underline"
-                                >
-                                  <span>{faq.actionText}</span>
-                                  <i className="ti ti-arrow-right text-xs" />
-                                </Link>
-                              ) : faq.actionEnquiry ? (
-                                <button
-                                  type="button"
-                                  onClick={() => toEnquiry?.(faq.actionEnquiry)}
-                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-800 hover:underline cursor-pointer"
-                                >
-                                  <span>{faq.actionText}</span>
-                                  <i className="ti ti-arrow-right text-xs" />
-                                </button>
-                              ) : faq.actionHref ? (
-                                <a
-                                  href={faq.actionHref}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-800 hover:underline"
-                                >
-                                  <span>{faq.actionText}</span>
-                                  <i className="ti ti-arrow-up-right text-xs" />
-                                </a>
-                              ) : null}
-                            </div>
-                          )}
+                      {faq.actionText && (
+                        <div className="mt-3">
+                          {faq.actionTo ? (
+                            <Link
+                              to={faq.actionTo}
+                              className="inline-flex items-center gap-1 text-xs font-bold text-amber-700 hover:text-amber-800 hover:underline"
+                            >
+                              <span>{faq.actionText}</span>
+                              <i className="ti ti-arrow-right text-[11px]" />
+                            </Link>
+                          ) : faq.actionEnquiry ? (
+                            <button
+                              type="button"
+                              onClick={() => toEnquiry?.(faq.actionEnquiry)}
+                              className="inline-flex items-center gap-1 text-xs font-bold text-amber-700 hover:text-amber-800 hover:underline cursor-pointer"
+                            >
+                              <span>{faq.actionText}</span>
+                              <i className="ti ti-arrow-right text-[11px]" />
+                            </button>
+                          ) : null}
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -2073,7 +2012,15 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+            <div className="relative mt-8 md:mt-0 rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+              <div className="absolute -top-16 right-6 z-10">
+                <Mascot
+                  directions="/mascots/glasses-directions.webp"
+                  reactions="/mascots/glasses-reactions.webp"
+                  size={84}
+                  label="Glasses Mascot"
+                />
+              </div>
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-700">
                 <i className="ti ti-devices" />
               </span>
@@ -2134,128 +2081,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Enquiry Form Section - Modern Elegant Lounge */}
+      {/* 1-on-1 Career Guidance Section - Clean Editorial 2-Column Split */}
       <section
         ref={enquiryRef}
         id="enquiry"
-        className="scroll-mt-32 relative overflow-hidden bg-gradient-to-b from-white via-slate-50/70 to-slate-100/80 py-12 sm:py-16"
+        className="scroll-mt-28 border-t border-slate-200/80 bg-slate-50/70 py-16 sm:py-24"
       >
-        {/* Subtle Ambient Radial Lighting */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-24 right-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-brand-100/40 via-amber-100/30 to-indigo-100/30 blur-3xl opacity-70"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-24 left-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-sky-100/30 via-brand-100/20 to-purple-100/20 blur-3xl opacity-60"
-        />
-
-        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-          <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_1.15fr]">
-            {/* Left Column: Authoritative Value Proposition & Direct Contact */}
-            <div className="lg:sticky lg:top-32">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/80 bg-amber-50 px-3.5 py-1 text-xs font-bold uppercase tracking-[.18em] text-amber-900 shadow-2xs">
-                <i className="ti ti-headset text-amber-600" />
-                {enquiryIntent === "internship" ? "Free Internship Admissions" : "1-on-1 Career Guidance Desk"}
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] px-4 sm:px-6 lg:px-8 xl:px-10">
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+            {/* Left Column: Reassurance & Context */}
+            <div className="lg:col-span-6 xl:col-span-7">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-bold uppercase tracking-[.20em] text-slate-700 shadow-2xs">
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-600" />
+                {enquiryIntent === "internship" ? "Internship Admissions" : "1-on-1 Career Guidance"}
               </div>
 
-              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl leading-tight">
+              <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-slate-950 leading-[1.15]">
                 {enquiryIntent === "internship"
                   ? "Take the first step toward practical software experience."
                   : "Not sure which tech path matches your goal?"}
               </h2>
 
-              <p className="mt-4 text-base leading-relaxed text-slate-600 max-w-xl">
+              <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-600 max-w-xl">
                 {enquiryIntent === "internship"
-                  ? "Share your details so our academic leads can verify eligibility, walk you through the live project roadmap, and reserve your batch seat."
-                  : "Speak directly with an experienced tech trainer, not a sales representative. We analyze your background, answer syllabus and fee questions, and help you chart a realistic career roadmap—completely pressure-free."}
+                  ? "Share your details so our academic leads can verify eligibility, walk you through the syllabus, and reserve your batch seat."
+                  : "Just leave your details — we’ll help you choose. Speak directly with an experienced tech trainer to chart a realistic, pressure-free career roadmap."}
               </p>
 
-              {/* 3 Value Pillars */}
-              <div className="mt-8 space-y-3.5">
-                {[
-                  {
-                    icon: "ti-compass",
-                    title: enquiryIntent === "internship" ? "Verified Eligibility & Batch Options" : "Personalized Skills Assessment",
-                    desc: enquiryIntent === "internship"
-                      ? "Pre-final, final-year, or fresher status confirmed with flexible campus lab slots."
-                      : "Honest advice based on whether you are CS, non-CS, a fresher, or switching from another field.",
-                  },
-                  {
-                    icon: "ti-device-desktop",
-                    title: "Campus Lab & Syllabus Walkthrough",
-                    desc: "Inspect our computer labs in Virudhunagar, project deliverables, and class schedule.",
-                  },
-                  {
-                    icon: "ti-bolt",
-                    title: "Fast Mentor Callback (Under 24 Hours)",
-                    desc: "Our technical mentors reach out by phone or WhatsApp to answer all questions before you decide.",
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white/80 p-4 shadow-2xs backdrop-blur-xs transition hover:border-slate-300 hover:bg-white"
-                  >
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl text-brand-700">
-                      <i className={`ti ${item.icon}`} />
+              {/* Trust Points */}
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs">
+                  <div className="flex items-center gap-2.5 text-slate-900 font-bold text-xs sm:text-sm">
+                    <span className="grid h-6 w-6 place-items-center rounded-lg bg-slate-100 text-slate-900 text-xs">
+                      <i className="ti ti-user-check" />
                     </span>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-950">{item.title}</h4>
-                      <p className="mt-0.5 text-xs leading-relaxed text-slate-600">{item.desc}</p>
-                    </div>
+                    <span>Trainer, Not Sales Rep</span>
                   </div>
-                ))}
-              </div>
-
-              {/* Mentor Presence & Direct Hotline Strip */}
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2 overflow-hidden">
-                    <img src={avatar1} alt="Mentor" className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" />
-                    <img src={avatar2} alt="Mentor" className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" />
-                    <img src={avatar3} alt="Mentor" className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                      Mentors Active
-                    </div>
-                    <p className="text-[11px] text-slate-500">Virudhunagar Campus</p>
-                  </div>
+                  <p className="mt-1.5 text-xs text-slate-500 leading-relaxed">
+                    Honest advice whether you are in college, non-IT switching, or upskilling.
+                  </p>
                 </div>
 
+                <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs">
+                  <div className="flex items-center gap-2.5 text-slate-900 font-bold text-xs sm:text-sm">
+                    <span className="grid h-6 w-6 place-items-center rounded-lg bg-slate-100 text-slate-900 text-xs">
+                      <i className="ti ti-file-text" />
+                    </span>
+                    <span>Syllabus &amp; Fee Clarity</span>
+                  </div>
+                  <p className="mt-1.5 text-xs text-slate-500 leading-relaxed">
+                    Clear answers on course modules, batch schedules, and flexible payment plans.
+                  </p>
+                </div>
+              </div>
+
+              {/* Immediate Contact Reassurance */}
+              <div className="mt-8 pt-6 border-t border-slate-200/80 flex flex-wrap items-center gap-4 text-xs text-slate-600">
+                <span className="font-medium">Prefer an immediate conversation?</span>
                 <a
                   href="tel:+919363793954"
-                  className="inline-flex items-center gap-2 rounded-xl bg-slate-100/90 px-3.5 py-2 text-xs font-bold text-slate-800 transition hover:bg-slate-200"
+                  className="inline-flex items-center gap-1.5 font-bold text-slate-950 hover:text-brand-700 transition"
                 >
-                  <i className="ti ti-phone text-brand-700" />
+                  <i className="ti ti-phone text-brand-600 text-sm" />
                   <span>+91 93637 93954</span>
                 </a>
+                <span className="text-slate-300">·</span>
+                <span className="text-slate-500">Virudhunagar Campus</span>
               </div>
             </div>
 
-            {/* Right Column: High-Converting Card */}
-            <div className="relative rounded-3xl border border-slate-200/90 bg-white p-7 sm:p-9 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.12)]">
-              {/* Subtle top accent highlight */}
-              <span className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-400 via-brand-600 to-indigo-600" />
-
-              <div className="mb-6 pb-5 border-b border-slate-100 flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="font-display text-2xl font-bold text-slate-950">
-                    {enquiryIntent === "internship" ? "Register Your Interest" : "Request a Callback"}
+            {/* Right Column: Clean Focused Form Card */}
+            <div className="lg:col-span-6 xl:col-span-5">
+              <div className="relative rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+                <div className="mb-6 pb-4 border-b border-slate-100">
+                  <h3 className="font-display text-lg sm:text-xl font-bold text-slate-950">
+                    {enquiryIntent === "internship" ? "Register Your Interest" : "Request a Mentor Callback"}
                   </h3>
-                  <p className="mt-1 text-xs text-slate-500 sm:text-sm">
-                    {enquiryIntent === "internship"
-                      ? "Complete the quick form below to check eligibility for the free batch."
-                      : "Complete the form and our mentors will contact you within 24 hours."}
+                  <p className="mt-1 text-xs text-slate-500">
+                    Quick 10-second request · Free callback within 24 hours
                   </p>
                 </div>
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-amber-50 text-amber-700 text-lg">
-                  <i className="ti ti-pencil" />
-                </span>
-              </div>
 
-              <EnquiryForm courses={courses} compact type={enquiryIntent} />
+                <EnquiryForm courses={courses} compact type={enquiryIntent} />
+              </div>
             </div>
           </div>
         </div>

@@ -281,8 +281,13 @@ class ApiController
             return $this->no('Please provide a valid contact phone number.');
         }
 
-        $type = ['internship' => 'govt_intern', 'career-guidance' => 'career_guidance'][$r->program] ?? ($r->type ?: 'contact');
-        foreach (in_array($type, ['govt_intern', 'career_guidance']) ? ['email', 'college', 'degree'] : [] as $f) {
+        $typeMap = [
+            'internship' => 'govt_intern',
+            'career-guidance' => 'career_guidance',
+            'guidance' => 'career_guidance',
+        ];
+        $type = $typeMap[$r->program ?? $r->type] ?? ($r->type ?: 'contact');
+        foreach (in_array($type, ['govt_intern']) ? ['email', 'college', 'degree'] : [] as $f) {
             if (!$r->$f) return $this->no("Missing field: $f");
         }
 
