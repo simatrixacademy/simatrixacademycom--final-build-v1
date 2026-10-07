@@ -335,7 +335,7 @@ function CourseTile({ course }) {
   return (
     <Link
       to={`/courses/${course.slug}`}
-      className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/80 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1E0295]/40 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-[#1E0295]"
     >
       {/* Top Banner with Clean Normal Image */}
       <div className="relative aspect-[16/8] w-full overflow-hidden bg-slate-100">
@@ -370,7 +370,7 @@ function CourseTile({ course }) {
             </span>
           </div>
 
-          <h3 className="mt-2.5 font-display text-base sm:text-lg font-bold leading-snug text-slate-950 transition-colors group-hover:text-blue-600 line-clamp-1">
+          <h3 className="mt-2.5 font-display text-base sm:text-lg font-bold leading-snug text-slate-950 transition-colors group-hover:text-[#1E0295] line-clamp-1">
             {course.title}
           </h3>
 
@@ -380,11 +380,11 @@ function CourseTile({ course }) {
         </div>
 
         {/* Explore Program CTA Bar */}
-        <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-blue-600">
-          <span className="transition-colors group-hover:text-blue-700">
+        <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-[#1E0295]">
+          <span className="transition-colors group-hover:text-[#2804a8]">
             Explore Program
           </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-blue-50 text-blue-600 shadow-2xs transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#1E0295]/10 text-[#1E0295] shadow-2xs transition-all duration-300 group-hover:scale-105 group-hover:bg-[#1E0295] group-hover:text-white">
             <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
@@ -482,19 +482,19 @@ function PopularCoursesCarousel({ courses }) {
         ))}
       </div>
 
-      {/* Navigation Controls Centered with Matching Blue Buttons */}
+      {/* Navigation Controls Centered with Matching Centered Purple Buttons */}
       <div className="mt-8 flex flex-col items-center justify-center gap-5 sm:relative">
         <div className="flex items-center justify-center gap-3">
           <button
             type="button"
             onClick={() => move(-1)}
             aria-label="Previous courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full bg-[#1E0295] text-white shadow-md shadow-[#1E0295]/25 transition hover:bg-[#2804a8] active:scale-95 cursor-pointer"
           >
             <i className="ti ti-arrow-left text-sm" />
           </button>
 
-          {/* Dots Indicator in Simatrix Blue */}
+          {/* Dots Indicator in Simatrix Centered Purple */}
           <div className="flex items-center gap-1 sm:gap-1.5 px-1" role="tablist" aria-label="Course pagination">
             {Array.from({ length: totalDots }).map((_, idx) => (
               <button
@@ -508,8 +508,8 @@ function PopularCoursesCarousel({ courses }) {
               >
                 <span
                   className={`block rounded-full transition-all duration-300 ${activeIndex === idx
-                      ? "h-2 w-6 bg-blue-600 shadow-xs"
-                      : "h-2 w-2 bg-slate-200 hover:bg-blue-200"
+                      ? "h-2 w-6 bg-[#1E0295] shadow-xs"
+                      : "h-2 w-2 bg-slate-200 hover:bg-[#1E0295]/30"
                     }`}
                 />
               </button>
@@ -520,7 +520,7 @@ function PopularCoursesCarousel({ courses }) {
             type="button"
             onClick={() => move(1)}
             aria-label="Next courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full bg-[#1E0295] text-white shadow-md shadow-[#1E0295]/25 transition hover:bg-[#2804a8] active:scale-95 cursor-pointer"
           >
             <i className="ti ti-arrow-right text-sm" />
           </button>
@@ -530,7 +530,7 @@ function PopularCoursesCarousel({ courses }) {
         <div className="sm:absolute sm:right-0">
           <Link
             to="/courses"
-            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b1528] px-6 text-xs font-bold text-white shadow-sm transition hover:bg-blue-600"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b1528] px-6 text-xs font-bold text-white shadow-sm transition hover:bg-[#1E0295]"
           >
             <span>Explore All 20+ Courses</span>
             <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-1" />
