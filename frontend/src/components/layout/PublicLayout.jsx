@@ -4,8 +4,8 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AcademyChatbot from "../AcademyChatbot";
 
-const BUTTON_PRIMARY = "#2563EB";
-const BUTTON_HOVER = "#1D4ED8";
+const BUTTON_PRIMARY = "#1E0295";
+const BUTTON_HOVER = "#2804a8";
 
 function ScrollProgress() {
   const [progress, setProgress] = useState(0);
@@ -43,7 +43,7 @@ function BackToTop() {
     <button
       aria-label="Back to top"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-24 right-7 z-[60] grid h-11 w-11 place-items-center rounded-full text-white shadow-lg shadow-[#1D4ED8]/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${
+      className={`fixed bottom-24 right-7 z-[60] grid h-11 w-11 place-items-center rounded-full text-white shadow-lg shadow-[#1E0295]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
       style={{ background: `linear-gradient(135deg, ${BUTTON_PRIMARY}, ${BUTTON_HOVER})` }}

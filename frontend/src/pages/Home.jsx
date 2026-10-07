@@ -489,7 +489,7 @@ function PopularCoursesCarousel({ courses }) {
             type="button"
             onClick={() => move(-1)}
             aria-label="Previous courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-[#1E0295] text-white shadow-md shadow-[#1E0295]/25 transition hover:bg-[#2804a8] active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-200 hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
           >
             <i className="ti ti-arrow-left text-sm" />
           </button>
@@ -520,7 +520,7 @@ function PopularCoursesCarousel({ courses }) {
             type="button"
             onClick={() => move(1)}
             aria-label="Next courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-[#1E0295] text-white shadow-md shadow-[#1E0295]/25 transition hover:bg-[#2804a8] active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-200 hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
           >
             <i className="ti ti-arrow-right text-sm" />
           </button>

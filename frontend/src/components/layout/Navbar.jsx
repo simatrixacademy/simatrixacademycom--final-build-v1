@@ -349,8 +349,8 @@ export default function Navbar() {
             onMouseEnter={() => setHoveredNav("home")}
             className={`py-1 text-[14px] xl:text-[14.5px] transition-colors ${
               isHomeActive
-                ? "font-semibold text-[#0070e0]"
-                : "font-medium text-slate-700 hover:text-[#0070e0]"
+                ? "font-semibold text-[#1E0295]"
+                : "font-medium text-slate-700 hover:text-[#1E0295]"
             }`}
           >
             <span>Home</span>
@@ -366,14 +366,14 @@ export default function Navbar() {
             aria-expanded={activeMenu === "courses"}
             className={`group flex items-center gap-1.5 py-1 text-[14px] xl:text-[14.5px] transition-colors cursor-pointer ${
               isCoursesActive
-                ? "font-semibold text-[#0070e0]"
-                : "font-medium text-slate-700 hover:text-[#0070e0]"
+                ? "font-semibold text-[#1E0295]"
+                : "font-medium text-slate-700 hover:text-[#1E0295]"
             }`}
           >
             <span>Courses</span>
             <i
               className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
-                isCoursesActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+                isCoursesActive ? "text-[#1E0295]" : "text-slate-400 group-hover:text-[#1E0295]"
               } ${activeMenu === "courses" ? "rotate-180" : ""}`}
             />
           </button>
@@ -388,14 +388,14 @@ export default function Navbar() {
             aria-expanded={activeMenu === "about"}
             className={`group flex items-center gap-1.5 py-1 text-[14px] xl:text-[14.5px] transition-colors cursor-pointer ${
               isAboutActive
-                ? "font-semibold text-[#0070e0]"
-                : "font-medium text-slate-700 hover:text-[#0070e0]"
+                ? "font-semibold text-[#1E0295]"
+                : "font-medium text-slate-700 hover:text-[#1E0295]"
             }`}
           >
             <span>About</span>
             <i
               className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
-                isAboutActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+                isAboutActive ? "text-[#1E0295]" : "text-slate-400 group-hover:text-[#1E0295]"
               } ${activeMenu === "about" ? "rotate-180" : ""}`}
             />
           </button>
@@ -410,14 +410,14 @@ export default function Navbar() {
             aria-expanded={activeMenu === "support"}
             className={`group flex items-center gap-1.5 py-1 text-[14px] xl:text-[14.5px] transition-colors cursor-pointer ${
               isCareerActive
-                ? "font-semibold text-[#0070e0]"
-                : "font-medium text-slate-700 hover:text-[#0070e0]"
+                ? "font-semibold text-[#1E0295]"
+                : "font-medium text-slate-700 hover:text-[#1E0295]"
             }`}
           >
             <span>Career & Placement</span>
             <i
               className={`ti ti-chevron-down text-xs transition-transform duration-200 ${
-                isCareerActive ? "text-[#0070e0]" : "text-slate-400 group-hover:text-[#0070e0]"
+                isCareerActive ? "text-[#1E0295]" : "text-slate-400 group-hover:text-[#1E0295]"
               } ${activeMenu === "support" ? "rotate-180" : ""}`}
             />
           </button>
@@ -428,8 +428,8 @@ export default function Navbar() {
             onMouseEnter={() => setHoveredNav("contact")}
             className={`py-1 text-[14px] xl:text-[14.5px] transition-colors ${
               isContactActive
-                ? "font-semibold text-[#0070e0]"
-                : "font-medium text-slate-700 hover:text-[#0070e0]"
+                ? "font-semibold text-[#1E0295]"
+                : "font-medium text-slate-700 hover:text-[#1E0295]"
             }`}
           >
             <span>Contact</span>
@@ -460,17 +460,17 @@ export default function Navbar() {
           {/* Phone Link */}
           <a
             href="tel:+919363793954"
-            className="inline-flex items-center gap-1.5 xl:gap-2 text-[13.5px] xl:text-[14px] font-semibold text-slate-800 hover:text-[#0070e0] transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 xl:gap-2 text-[13.5px] xl:text-[14px] font-semibold text-slate-800 hover:text-[#1E0295] transition-colors whitespace-nowrap"
             title="Call Admissions"
           >
-            <i className="ti ti-phone text-sm xl:text-base text-[#0070e0]" />
+            <i className="ti ti-phone text-sm xl:text-base text-[#1E0295]" />
             <span className="font-semibold text-slate-900">+91 93637 93954</span>
           </a>
 
           {/* CTA Button */}
           <Link
             to="/contact"
-            className="ml-0.5 xl:ml-1 inline-flex items-center gap-2 rounded-xl bg-[#0070e0] hover:bg-[#0060c4] px-3.5 py-2 xl:px-4.5 xl:py-2.5 text-[13.5px] xl:text-[14px] font-semibold text-white shadow-xs transition-all duration-150 active:scale-[0.98] whitespace-nowrap shrink-0"
+            className="ml-0.5 xl:ml-1 inline-flex items-center gap-2 rounded-xl bg-[#1E0295] hover:bg-[#2804a8] px-3.5 py-2 xl:px-4.5 xl:py-2.5 text-[13.5px] xl:text-[14px] font-semibold text-white shadow-xs transition-all duration-150 active:scale-[0.98] whitespace-nowrap shrink-0"
           >
             <span>Get Course Details</span>
             <i className="ti ti-arrow-right text-xs" />
@@ -945,7 +945,7 @@ export default function Navbar() {
             <Link
               to="/contact"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-lg bg-sky-600 py-2.5 text-sm font-bold text-white transition hover:bg-sky-500"
+              className="flex items-center justify-center gap-2 rounded-lg bg-[#1E0295] hover:bg-[#2804a8] py-2.5 text-sm font-bold text-white transition"
             >
               <span>Get Course Details</span>
               <i className="ti ti-arrow-right text-xs" />
