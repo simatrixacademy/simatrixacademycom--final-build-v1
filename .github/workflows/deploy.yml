@@ -25,19 +25,6 @@ jobs:
           npm install
           npm run build
 
-      - name: Clean Old Frontend Assets on Hostinger
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOSTINGER_HOST }}
-          username: ${{ secrets.HOSTINGER_USER }}
-          password: ${{ secrets.HOSTINGER_PASSWORD }}
-          port: 65002
-          script: |
-            rm -rf domains/simatrixacademy.com/public_html/assets
-            rm -rf domains/simatrixacademy.com/public_html/logos
-            rm -f domains/simatrixacademy.com/public_html/index.html
-            echo "Deployed commit ${{ github.sha }} at $(date)" > domains/simatrixacademy.com/public_html/deploy-time.txt
-
       - name: Upload Frontend
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -45,6 +32,8 @@ jobs:
           username: ${{ secrets.HOSTINGER_USER }}
           password: ${{ secrets.HOSTINGER_PASSWORD }}
           port: 65002
+          timeout: 120s
+          command_timeout: 120s
           source: "frontend/dist"
           target: "domains/simatrixacademy.com/public_html"
           strip_components: 2
@@ -56,6 +45,8 @@ jobs:
           username: ${{ secrets.HOSTINGER_USER }}
           password: ${{ secrets.HOSTINGER_PASSWORD }}
           port: 65002
+          timeout: 120s
+          command_timeout: 120s
           source: "backend"
           target: "domains/simatrixacademy.com/public_html/webapi"
           strip_components: 1
@@ -67,6 +58,8 @@ jobs:
           username: ${{ secrets.HOSTINGER_USER }}
           password: ${{ secrets.HOSTINGER_PASSWORD }}
           port: 65002
+          timeout: 120s
+          command_timeout: 120s
           script: |
             cd domains/simatrixacademy.com/public_html/webapi
             composer install --optimize-autoloader --no-dev
