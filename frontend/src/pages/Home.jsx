@@ -475,7 +475,7 @@ function PopularCoursesCarousel({ courses }) {
         {courses.map((course) => (
           <div
             key={course.id}
-            className="w-[85%] shrink-0 snap-start sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
+            className="w-[85%] shrink-0 snap-start sm:w-[calc(50%-10px)] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)]"
           >
             <CourseTile course={course} />
           </div>
@@ -1815,8 +1815,8 @@ export default function Home() {
                   </div>
                 </div>
                 {!data ? (
-                  <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {Array.from({ length: 3 }).map((_, i) => (
+                  <div className="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
                       <CourseCardSkeleton key={i} />
                     ))}
                   </div>
