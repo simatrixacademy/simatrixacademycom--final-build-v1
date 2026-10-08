@@ -26,13 +26,13 @@ export default function Courses() {
           <Link to="/career-guidance" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 py-3 font-bold text-[#0d1b32] hover:bg-amber-300">
             Help me choose<i className="ti ti-compass" />
           </Link>
-          <a href="#find-your-path" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-3 font-bold text-white hover:bg-white/10">
+          <a href="#course-list" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-3 font-bold text-white hover:bg-white/10">
             Browse programs<i className="ti ti-arrow-down" />
           </a>
         </div>
       </PageHero>
 
-      {/* Find Your Path - Choose the skill you want to build */}
+      {/* Find Your Path - Choose the skill you want to build (Commented out per request)
       <section id="find-your-path" className="scroll-mt-24 w-full bg-white py-14 sm:py-20 border-b border-slate-200/80">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
@@ -75,13 +75,16 @@ export default function Courses() {
           </div>
         </div>
       </section>
+      */}
 
-      <Section id="course-list" className="scroll-mt-24 py-16 sm:py-20">
+      <Section id="course-list" className="scroll-mt-24 pt-8 pb-16 sm:pt-10 sm:pb-20">
+        {/* Choose by goal / Check the level / Still unsure (Commented out per request)
         <div className="grid gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:grid-cols-3">
           {[["ti-target-arrow","Choose by goal","Begin with the role or skill you want to explore."],["ti-adjustments","Check the level","Review prerequisites and expected effort."],["ti-message-circle","Still unsure?","Use free career guidance to compare paths."]].map(([ico,title,text]) => <div key={title} className="flex gap-3"><i className={`ti ${ico} mt-0.5 text-xl text-amber-700`} /><div><p className="text-sm font-bold text-slate-900">{title}</p><p className="mt-1 text-xs leading-5 text-slate-600">{text}</p></div></div>)}
         </div>
+        */}
 
-        <div className="mt-10"><p className="mb-3 text-xs font-bold uppercase tracking-[.18em] text-slate-500">Filter by technology domain</p><div aria-label="Filter courses by category" className="-mx-5 flex gap-2.5 overflow-x-auto px-5 pb-3 sm:mx-0 sm:flex-wrap sm:px-0"><FilterChip label="All courses" active={!active} onClick={() => setCategory("")} />{categories.map((category) => <FilterChip key={category.id} label={category.name} ico={category.icon} active={active === category.slug} onClick={() => setCategory(category.slug)} />)}</div></div>
+        <div><p className="mb-3 text-xs font-bold uppercase tracking-[.18em] text-slate-500">Filter by technology domain</p><div aria-label="Filter courses by category" className="-mx-5 flex gap-2.5 overflow-x-auto px-5 pb-3 sm:mx-0 sm:flex-wrap sm:px-0"><FilterChip label="All courses" active={!active} onClick={() => setCategory("")} />{categories.map((category) => <FilterChip key={category.id} label={category.name} ico={category.icon} active={active === category.slug} onClick={() => setCategory(category.slug)} />)}</div></div>
 
         <div className="mt-10 flex items-end justify-between gap-5 border-b border-slate-200 pb-4"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-amber-700">Available learning paths</p><h2 className="mt-2 font-display text-3xl font-semibold text-slate-950">{activeName || "All courses"}</h2></div>{courses && <span className="shrink-0 text-sm text-slate-500" aria-live="polite">{courses.length} {courses.length === 1 ? "course" : "courses"}</span>}</div>
 

@@ -384,7 +384,7 @@ function CourseTile({ course }) {
           <span className="transition-colors group-hover:text-[#2804a8]">
             Explore Program
           </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#1E0295]/10 text-[#1E0295] shadow-2xs transition-all duration-300 group-hover:scale-105 group-hover:bg-[#1E0295] group-hover:text-white">
+          <span className="grid h-8 w-8 place-items-center rounded-full border border-[#1E0295] bg-white text-[#1E0295] shadow-2xs transition-all duration-300 group-hover:scale-105 group-hover:bg-[#1E0295] group-hover:text-white">
             <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
@@ -530,7 +530,7 @@ function PopularCoursesCarousel({ courses }) {
         <div className="sm:absolute sm:right-0">
           <Link
             to="/courses"
-            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b1528] px-6 text-xs font-bold text-white shadow-sm transition hover:bg-[#1E0295]"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-[#1E0295] bg-white px-6 text-xs font-bold text-[#1E0295] shadow-xs transition-all duration-200 hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer"
           >
             <span>Explore All 20+ Courses</span>
             <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-1" />

@@ -158,7 +158,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
                     onClick={() => setForm((f) => ({ ...f, current_status: opt.id }))}
                     className={`flex flex-col items-center justify-center rounded-xl border p-2.5 sm:p-3 text-center transition cursor-pointer ${
                       active
-                        ? "border-slate-900 bg-slate-900 text-white shadow-xs font-semibold"
+                        ? "border-[#1E0295] bg-[#1E0295] text-white shadow-sm font-semibold"
                         : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50/80 font-medium"
                     }`}
                   >
@@ -307,7 +307,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
         type="submit"
         disabled={submitting}
         aria-busy={submitting}
-        className="w-full py-3.5 px-6 rounded-xl font-bold text-white text-xs sm:text-sm transition-all duration-200 bg-slate-950 hover:bg-slate-900 hover:shadow-md active:scale-[0.99] disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer"
+        className="w-full py-3.5 px-6 rounded-xl font-bold text-white text-xs sm:text-sm transition-all duration-200 bg-[#1E0295] hover:bg-[#2804a8] hover:shadow-lg hover:shadow-[#1E0295]/25 active:scale-[0.99] disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer"
       >
         {submitting ? (
           <>

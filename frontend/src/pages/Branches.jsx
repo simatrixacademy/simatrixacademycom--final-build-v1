@@ -242,7 +242,7 @@ export default function Branches() {
                     </span>
                     <div>
                       <strong className="block text-xs uppercase tracking-wide text-slate-500">Operating Hours</strong>
-                      <span>Monday – Saturday: 9:00 AM – 6:30 PM (Sunday By Prior Appointment)</span>
+                      <span>Monday – Saturday: 9:00 AM – 7:00 PM</span>
                     </div>
                   </li>
 
