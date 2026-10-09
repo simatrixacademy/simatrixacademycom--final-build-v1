@@ -1,0 +1,23 @@
+{
+  "name": "Simatrix Academy",
+  "short_name": "Simatrix",
+  "description": "No.1 Software Training Institute in Virudhunagar with 100% placement support.",
+  "icons": [
+    {
+      "src": "/favicon/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1E0295",
+  "background_color": "#ffffff"
+}
