@@ -7,6 +7,7 @@ const ENTITY_ICON = {
   enquiry: "ti-inbox",
   admin: "ti-user-shield",
   course: "ti-book-2",
+  security: "ti-shield-lock",
 };
 
 function timeAgo(iso) {

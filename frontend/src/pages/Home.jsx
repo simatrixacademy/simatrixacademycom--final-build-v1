@@ -482,14 +482,14 @@ function PopularCoursesCarousel({ courses }) {
         ))}
       </div>
 
-      {/* Navigation Controls Centered with Matching Blue Buttons */}
+      {/* Navigation Controls Centered with Matching Black Buttons */}
       <div className="mt-8 flex flex-col items-center justify-center gap-5 sm:relative">
         <div className="flex items-center justify-center gap-3">
           <button
             type="button"
             onClick={() => move(-1)}
             aria-label="Previous courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full bg-black text-white shadow-md shadow-black/10 transition hover:bg-slate-800 active:scale-95 cursor-pointer"
           >
             <i className="ti ti-arrow-left text-sm" />
           </button>
@@ -520,7 +520,7 @@ function PopularCoursesCarousel({ courses }) {
             type="button"
             onClick={() => move(1)}
             aria-label="Next courses"
-            className="grid h-10 w-10 place-items-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95 cursor-pointer"
+            className="grid h-10 w-10 place-items-center rounded-full bg-black text-white shadow-md shadow-black/10 transition hover:bg-slate-800 active:scale-95 cursor-pointer"
           >
             <i className="ti ti-arrow-right text-sm" />
           </button>

@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['jwt' => JwtAuth::class]);
+        $middleware->trustProxies(at: '*');
+        $middleware->alias([
+            'jwt' => JwtAuth::class,
+            'check.ban' => \App\Http\Middleware\CheckBannedIp::class,
+        ]);
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
         $middleware->append(SecurityHeaders::class);
     })

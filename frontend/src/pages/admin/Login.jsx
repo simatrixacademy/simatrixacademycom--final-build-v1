@@ -25,7 +25,14 @@ export default function Login() {
       toast.success("Welcome back!");
       navigate("/admin");
     } catch (error) {
-      if (error?.code === "account_locked" || error?.status === 423 || error?.message?.toLowerCase().includes("locked")) {
+      if (
+        error?.code === "account_locked" ||
+        error?.code === "ip_banned" ||
+        error?.status === 423 ||
+        error?.status === 403 ||
+        error?.message?.toLowerCase().includes("locked") ||
+        error?.message?.toLowerCase().includes("banned")
+      ) {
         setLockoutMsg(error.message);
       }
       toast.error(error.message);
