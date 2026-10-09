@@ -14,6 +14,7 @@ const LINKS = [
   { to: "/admin/gallery", label: "Gallery", icon: "ti-photo" },
   { to: "/admin/awards", label: "Awards", icon: "ti-award" },
   { to: "/admin/staff", label: "Staff", icon: "ti-users" },
+  { to: "/admin/security", label: "IP Security", icon: "ti-shield-lock" },
   { to: "/admin/activity", label: "Activity log", icon: "ti-history" },
   { to: "/admin/settings", label: "Settings", icon: "ti-settings" },
 ];

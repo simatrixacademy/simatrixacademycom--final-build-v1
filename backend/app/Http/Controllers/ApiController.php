@@ -7,7 +7,7 @@ use App\Support\AuthService;
 use App\Support\BotDefense;
 use App\Support\Jwt;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{DB, Hash};
+use Illuminate\Support\Facades\{Cache, DB, Hash};
 use Illuminate\Support\Str;
 
 class ApiController
@@ -36,11 +36,77 @@ class ApiController
         'blog' => ['blog_posts', 'title'],
         'gallery' => ['gallery_images', 'image'],
         'awards' => ['awards', 'title'],
+        'banned_ips' => ['banned_ips', 'ip'],
     ];
 
     function health()
     {
         return ['status' => 1, 'message' => 'Simatrix Academy API running'];
+    }
+
+    private function handleFailedLogin(string $ip)
+    {
+        $row = DB::table('banned_ips')->where('ip', $ip)->first();
+        $attempts = ($row ? (int)$row->failed_attempts : 0) + 1;
+        $maxAttempts = 5;
+
+        if ($attempts >= $maxAttempts) {
+            $bannedUntil = now()->addHours(24);
+            DB::table('banned_ips')->updateOrInsert(
+                ['ip' => $ip],
+                [
+                    'reason' => 'Too many failed login attempts (Brute force protection)',
+                    'failed_attempts' => $attempts,
+                    'banned_by' => 'system',
+                    'is_banned' => 1,
+                    'banned_until' => $bannedUntil,
+                    'created_at' => $row->created_at ?? now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            Cache::forget('active_banned_ips_map');
+
+            // Audit log
+            DB::table('activity_logs')->insert([
+                'admin_id' => null,
+                'admin_name' => 'System Defense',
+                'action' => "Automatically banned IP {$ip} for 24 hours after 5 failed login attempts",
+                'entity' => 'security',
+                'created_at' => now(),
+            ]);
+
+            return response()->json([
+                'status' => 0,
+                'message' => "Your IP address ({$ip}) has been banned for 24 hours due to 5 consecutive failed login attempts. Contact an administrator to remove this ban.",
+                'code' => 'ip_banned',
+                'ip' => $ip,
+                'remaining_minutes' => 1440,
+                'banned_until' => $bannedUntil,
+            ], 403);
+        }
+
+        // Under 5 attempts: increment counter in banned_ips (not yet banned)
+        DB::table('banned_ips')->updateOrInsert(
+            ['ip' => $ip],
+            [
+                'reason' => 'Failed login attempt',
+                'failed_attempts' => $attempts,
+                'banned_by' => 'system',
+                'is_banned' => 0,
+                'banned_until' => null,
+                'created_at' => $row->created_at ?? now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        $remaining = $maxAttempts - $attempts;
+        return response()->json([
+            'status' => 0,
+            'message' => "Invalid email or password. {$remaining} attempt(s) remaining for your IP address before it is banned.",
+            'code' => 'invalid_credentials',
+            'remaining_attempts' => $remaining,
+        ], 401);
     }
 
     function login(Request $r)
@@ -49,7 +115,32 @@ class ApiController
             return $this->no('Missing field: ' . (!$r->email ? 'email' : 'password'));
         }
 
-        // 1. Bot Honeypot & Timing Check
+        $clientIp = $r->ip();
+
+        // 1. IP Ban check (active ban check with auto-expiry)
+        $ban = DB::table('banned_ips')->where('ip', $clientIp)->where('is_banned', 1)->first();
+        if ($ban) {
+            if ($ban->banned_until && strtotime($ban->banned_until) <= time()) {
+                // Ban expired, remove it automatically
+                DB::table('banned_ips')->where('id', $ban->id)->delete();
+            } else {
+                $rem = '';
+                if ($ban->banned_until) {
+                    $mins = max(1, ceil((strtotime($ban->banned_until) - time()) / 60));
+                    $rem = " Try again in {$mins} minute(s).";
+                }
+                return response()->json([
+                    'status' => 0,
+                    'message' => "Access denied. Your IP address ({$clientIp}) has been banned. Reason: {$ban->reason}.{$rem}",
+                    'code' => 'ip_banned',
+                    'ip' => $clientIp,
+                    'reason' => $ban->reason,
+                    'banned_until' => $ban->banned_until,
+                ], 403);
+            }
+        }
+
+        // 2. Bot Honeypot Check
         if (BotDefense::isBot($r)) {
             usleep(300000); // 300ms artificial delay
             return $this->no('Invalid email or password', 401, 'invalid_credentials');
@@ -60,63 +151,25 @@ class ApiController
             ->orWhereRaw('LOWER(name) = ?', [$loginInput])
             ->first();
 
-        // 2. Timing attack defense against user enumeration
+        // 3. Timing attack defense against user enumeration & IP failure tracking
         if (!$a) {
             Hash::check($r->password, '$2y$12$e8vK1Nl/tS4k3c90m8Qv7.x9vQv2w8B2l4m6n8p0q2r4s6t8u0v2w');
-            return $this->no('Invalid email or password', 401, 'invalid_credentials');
-        }
-
-        // 3. Account Lockout check (Phase 3 Brute-Force Defense)
-        if ($a->locked_until && strtotime($a->locked_until) > time()) {
-            $remainingSeconds = strtotime($a->locked_until) - time();
-            $remainingMinutes = max(1, ceil($remainingSeconds / 60));
-            return response()->json([
-                'status' => 0,
-                'message' => "Account is temporarily locked due to too many failed attempts. Try again in {$remainingMinutes} minute(s).",
-                'code' => 'account_locked',
-                'remaining_minutes' => $remainingMinutes,
-                'locked_until' => $a->locked_until,
-            ], 423);
+            return $this->handleFailedLogin($clientIp);
         }
 
         // 4. Verify password
         if (!Hash::check($r->password, $a->password_hash)) {
-            $attempts = ($a->failed_login_attempts ?? 0) + 1;
-            $maxAttempts = 5;
-
-            if ($attempts >= $maxAttempts) {
-                $lockedUntil = now()->addMinutes(15);
-                $a->update([
-                    'failed_login_attempts' => $attempts,
-                    'locked_until' => $lockedUntil,
-                ]);
-
-                return response()->json([
-                    'status' => 0,
-                    'message' => 'Account has been locked for 15 minutes due to 5 consecutive failed login attempts.',
-                    'code' => 'account_locked',
-                    'remaining_minutes' => 15,
-                    'locked_until' => $lockedUntil,
-                ], 423);
-            }
-
-            $a->update(['failed_login_attempts' => $attempts]);
-            $remaining = $maxAttempts - $attempts;
-
-            return response()->json([
-                'status' => 0,
-                'message' => "Invalid email or password. {$remaining} attempt(s) remaining before temporary lockout.",
-                'code' => 'invalid_credentials',
-                'remaining_attempts' => $remaining,
-            ], 401);
+            return $this->handleFailedLogin($clientIp);
         }
 
-        // 5. Successful login: Reset attempts & update audit info
+        // 5. Successful login: Reset un-banned attempts for this IP & update audit info
+        DB::table('banned_ips')->where('ip', $clientIp)->where('is_banned', 0)->delete();
+
         $a->update([
             'failed_login_attempts' => 0,
             'locked_until' => null,
             'last_login_at' => now(),
-            'last_login_ip' => $r->ip(),
+            'last_login_ip' => $clientIp,
         ]);
 
         $tokens = AuthService::issueTokens($a, $r);
@@ -305,12 +358,62 @@ class ApiController
     {
         if ($r === 'admins') return $this->ok(Admin::all());
         if ($r === 'activity') return $this->ok(DB::table('activity_logs')->orderByDesc('created_at')->limit(100)->get());
+        if ($r === 'banned_ips') {
+            $ips = DB::table('banned_ips')->orderByDesc('updated_at')->orderByDesc('created_at')->get();
+            return response()->json([
+                'status' => 1,
+                'message' => 'Success',
+                'data' => $ips,
+                'current_ip' => request()->ip(),
+            ]);
+        }
         if (!isset($this->map[$r])) return $this->no('Resource not found', 404);
         return $this->ok(DB::table($this->map[$r][0])->orderBy($r === 'enquiries' ? 'created_at' : 'order', 'desc')->get()->map(fn($x) => $r === 'courses' ? $this->jsonCourse($x) : $x));
     }
 
     function create(Request $q, $r)
     {
+        if ($r === 'banned_ips') {
+            $ip = trim($q->ip);
+            if (!$ip) return $this->no('IP address is required');
+            if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+                return $this->no('Please provide a valid IPv4 or IPv6 address.');
+            }
+            if ($ip === $q->ip()) {
+                return $this->no("You cannot ban your current IP address ({$ip}).");
+            }
+            $admin = $q->attributes->get('admin');
+            $adminName = $admin ? $admin->name : 'Admin';
+            $hours = (int)($q->hours ?? 0);
+            $bannedUntil = $hours > 0 ? now()->addHours($hours) : null;
+            $reason = trim($q->reason ?: 'Manually banned by administrator');
+
+            DB::table('banned_ips')->updateOrInsert(
+                ['ip' => $ip],
+                [
+                    'reason' => $reason,
+                    'failed_attempts' => 5,
+                    'banned_by' => $adminName,
+                    'is_banned' => 1,
+                    'banned_until' => $bannedUntil,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            Cache::forget('active_banned_ips_map');
+
+            DB::table('activity_logs')->insert([
+                'admin_id' => $admin ? $admin->id : null,
+                'admin_name' => $adminName,
+                'action' => "Banned IP {$ip}." . ($hours ? " Duration: {$hours}h." : " Permanent ban."),
+                'entity' => 'security',
+                'created_at' => now(),
+            ]);
+
+            return $this->ok(DB::table('banned_ips')->where('ip', $ip)->first(), "IP [{$ip}] has been banned successfully.", 201);
+        }
+
         if (!isset($this->map[$r])) return $this->no('Resource not found', 404);
         [$t, $need] = $this->map[$r];
         if (!$q->filled($need)) return $this->no("Missing field: $need");
@@ -325,6 +428,21 @@ class ApiController
 
     function update(Request $q, $r, $id)
     {
+        if ($r === 'banned_ips') {
+            $row = DB::table('banned_ips')->where('id', $id)->orWhere('ip', $id)->first();
+            if (!$row) return $this->no('Banned IP record not found', 404);
+            $fields = ['updated_at' => now()];
+            if ($q->has('reason')) $fields['reason'] = trim($q->reason);
+            if ($q->has('is_banned')) $fields['is_banned'] = (int)$q->is_banned;
+            if ($q->has('hours')) {
+                $hours = (int)$q->hours;
+                $fields['banned_until'] = $hours > 0 ? now()->addHours($hours) : null;
+            }
+            DB::table('banned_ips')->where('id', $row->id)->update($fields);
+            Cache::forget('active_banned_ips_map');
+            return $this->ok(DB::table('banned_ips')->find($row->id), 'IP record updated successfully');
+        }
+
         if (!isset($this->map[$r])) return $this->no('Resource not found', 404);
         $t = $this->map[$r][0];
         if (!DB::table($t)->find($id)) return $this->no('Resource not found', 404);
@@ -338,6 +456,25 @@ class ApiController
 
     function delete($r, $id)
     {
+        if ($r === 'banned_ips') {
+            $row = DB::table('banned_ips')->where('id', $id)->orWhere('ip', $id)->first();
+            if (!$row) return $this->no('Banned IP record not found', 404);
+            DB::table('banned_ips')->where('id', $row->id)->delete();
+            Cache::forget('active_banned_ips_map');
+
+            $admin = request()->attributes->get('admin');
+            $adminName = $admin ? $admin->name : 'Admin';
+            DB::table('activity_logs')->insert([
+                'admin_id' => $admin ? $admin->id : null,
+                'admin_name' => $adminName,
+                'action' => "Unbanned IP {$row->ip}",
+                'entity' => 'security',
+                'created_at' => now(),
+            ]);
+
+            return $this->ok(null, "IP [{$row->ip}] has been unbanned successfully.");
+        }
+
         if (!isset($this->map[$r])) return $this->no('Resource not found', 404);
         DB::table($this->map[$r][0])->where('id', $id)->delete();
         return $this->ok(null, 'Deleted successfully');

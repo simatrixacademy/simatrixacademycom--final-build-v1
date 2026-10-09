@@ -45,6 +45,7 @@ const ManageGallery = lazy(() => import("../pages/admin/ManageGallery"));
 const ManageAwards = lazy(() => import("../pages/admin/ManageAwards"));
 const ManageSettings = lazy(() => import("../pages/admin/ManageSettings"));
 const ManageStaff = lazy(() => import("../pages/admin/ManageStaff"));
+const ManageBannedIps = lazy(() => import("../pages/admin/ManageBannedIps"));
 const ActivityLog = lazy(() => import("../pages/admin/ActivityLog"));
 
 function PageFallback() {
@@ -107,6 +108,7 @@ export default function AppRoutes() {
           <Route path="gallery" element={<ManageGallery />} />
           <Route path="awards" element={<ManageAwards />} />
           <Route path="staff" element={<ManageStaff />} />
+          <Route path="security" element={<ManageBannedIps />} />
           <Route path="activity" element={<ActivityLog />} />
           <Route path="settings" element={<ManageSettings />} />
         </Route>

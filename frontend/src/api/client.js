@@ -46,6 +46,11 @@ async function refreshSession() {
   return refreshPromise;
 }
 
+let onIpBannedCallback = null;
+export function setIpBannedListener(fn) {
+  onIpBannedCallback = fn;
+}
+
 async function request(path, { method = "GET", body, auth = false, isRetry = false } = {}) {
   const headers = { "Content-Type": "application/json" };
   const token = getToken();
@@ -85,6 +90,13 @@ async function request(path, { method = "GET", body, auth = false, isRetry = fal
   }
 
   if (!res.ok || (json && json.status === 0)) {
+    if (json?.code === "ip_banned" || (res.status === 403 && json?.code === "ip_banned")) {
+      try { sessionStorage.removeItem("simatrix_site_cache"); } catch {}
+      siteCache = null;
+      if (typeof onIpBannedCallback === "function") {
+        onIpBannedCallback(json || { message: "You are banned" });
+      }
+    }
     const message = (json && (json.message || json.error)) || `Request failed (${res.status})`;
     const err = new Error(message);
     err.status = res.status;
