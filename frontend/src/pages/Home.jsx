@@ -1653,7 +1653,7 @@ export default function Home() {
       name: "Simatrix Academy",
       alternateName: ["Simatrix", "Simatrix Academy Virudhunagar"],
       url: "https://www.simatrixacademy.com",
-      logo: "https://www.simatrixacademy.com/simatrix_logo_only.png",
+      logo: "https://www.simatrixacademy.com/logos/simatrix_logo.png",
       description: "No.1 software training institute in Virudhunagar offering Python, Java, Full Stack, Data Analytics, Cloud and AI courses with 100% placement support.",
       telephone: "+91-93637-93954",
       address: {
