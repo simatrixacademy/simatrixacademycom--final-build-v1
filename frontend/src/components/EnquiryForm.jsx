@@ -19,7 +19,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
   const isSimplified = !full && (type === "guidance" || type === "contact" || type === "appointment");
   const [form, setForm] = useState(() => ({
     ...EMPTY,
-    current_status: isSimplified ? "Student" : "",
+    current_status: "",
     course_id: courses.length === 1 ? String(courses[0]?.id || "") : "",
   }));
   const [submitting, setSubmitting] = useState(false);
@@ -37,7 +37,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
     if (honeypot) {
       // Fake success for bots
       toast.success("Enquiry submitted! A counsellor will contact you shortly.");
-      setForm({ ...EMPTY, current_status: isSimplified ? "Student" : "" });
+      setForm({ ...EMPTY, current_status: "" });
       return;
     }
 
@@ -45,6 +45,12 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
       toast.error("Please enter your name and mobile number.");
       return;
     }
+
+    if (isSimplified && !form.current_status) {
+      toast.error("Please select your background (IT, Non-IT, or Student).");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const contextLabel = {
@@ -57,7 +63,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
       if (form.current_status) details.push(`Status: ${form.current_status}`);
       if (form.preferred_mode) details.push(`Mode: ${form.preferred_mode}`);
       const enrichedMessage = isSimplified
-        ? `${contextLabel} | Background: ${form.current_status || "Student"}`
+        ? `${contextLabel} | Background: ${form.current_status || "Not specified"}`
         : [details.join(" | "), form.message].filter(Boolean).join("\n\n");
 
       const res = await api.createEnquiry({
@@ -71,7 +77,7 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
         _submission_time: mountedAt.current,
       });
       toast.success(res.message || "Request received! A mentor will contact you shortly.");
-      setForm({ ...EMPTY, current_status: isSimplified ? "Student" : "" });
+      setForm({ ...EMPTY, current_status: "" });
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -150,12 +156,12 @@ export default function EnquiryForm({ courses = [], compact = false, type = "con
                 { id: "Non-IT", label: "Non-IT", sub: "Career Switcher", icon: "ti-arrows-shuffle" },
                 { id: "Student", label: "Student", sub: "College / Fresher", icon: "ti-school" },
               ].map((opt) => {
-                const active = (form.current_status || "Student") === opt.id;
+                const active = form.current_status === opt.id;
                 return (
                   <button
                     key={opt.id}
                     type="button"
-                    onClick={() => setForm((f) => ({ ...f, current_status: opt.id }))}
+                    onClick={() => setForm((f) => ({ ...f, current_status: f.current_status === opt.id ? "" : opt.id }))}
                     className={`flex flex-col items-center justify-center rounded-xl border p-2.5 sm:p-3 text-center transition cursor-pointer ${
                       active
                         ? "border-[#1E0295] bg-[#1E0295] text-white shadow-sm font-semibold"
