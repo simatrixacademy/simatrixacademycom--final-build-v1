@@ -1990,113 +1990,116 @@ export default function Home() {
         </section>
       )}
 
-      {/* =========================================================================
-          SECTION 3: "Campus & Environment" (Physical computer labs & mentor assistance)
-          STATUS: HIDDEN (Do not delete - easily re-enable anytime)
-          TO RE-ENABLE: Change "false && (" below to "true && ("
-         ========================================================================= */}
-      {false && (
-        <section id="learning-environment" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-            <SectionTitle
-              eyebrow="Campus & Environment"
-              title="Learn in physical computer labs with mentor assistance"
-              description="We believe programming is best learned when you are surrounded by fellow learners and dedicated trainers ready to debug with you."
-            />
+      {/* Real Campus & Lab Environment (Virudhunagar) + Parent Trust */}
+      <section id="learning-environment" className="scroll-mt-32 bg-slate-50 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
+          {/* =========================================================================
+              SECTION 3A: "Campus & Environment" (Physical computer labs & mentor assistance)
+              STATUS: HIDDEN (Do not delete - easily re-enable anytime)
+              TO RE-ENABLE: Change "false && (" below to "true && ("
+             ========================================================================= */}
+          {false && (
+            <>
+              <SectionTitle
+                eyebrow="Campus & Environment"
+                title="Learn in physical computer labs with mentor assistance"
+                description="We believe programming is best learned when you are surrounded by fellow learners and dedicated trainers ready to debug with you."
+              />
 
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-2xl text-blue-700">
-                  <i className="ti ti-device-desktop" />
-                </span>
-                <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Dedicated High-Speed Labs</h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                  Fully equipped computer workstations with development environments pre-configured so you focus on writing code from day one.
-                </p>
-                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
-                  <i className="ti ti-map-pin" /> Virudhunagar Campus
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-50 text-2xl text-purple-700">
-                  <i className="ti ti-user-check" />
-                </span>
-                <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Daily In-Person Lab Mentors</h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                  Stuck on a syntax error, CORS bug, or database migration? Trainers sit beside you to explain why the bug occurred and how to fix it.
-                </p>
-                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700">
-                  <i className="ti ti-check" /> Zero waiting for tickets
-                </div>
-              </div>
-
-              <div className="relative mt-8 md:mt-0 rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
-                <div className="absolute -top-16 right-6 z-10">
-                  <Mascot
-                    directions="/mascots/glasses-directions.webp"
-                    reactions="/mascots/glasses-reactions.webp"
-                    size={84}
-                    label="Glasses Mascot"
-                  />
-                </div>
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-700">
-                  <i className="ti ti-devices" />
-                </span>
-                <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Flexible Classroom or Online</h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                  Attend daily offline lab sessions or switch to live interactive classes online if you are a working professional or out of town.
-                </p>
-                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
-                  <i className="ti ti-video" /> Recorded sessions available
-                </div>
-              </div>
-            </div>
-
-            {/* Parent & Student Trust Box */}
-            <div className="mt-8 rounded-3xl border border-blue-200/80 bg-gradient-to-r from-blue-900 to-[#0b1528] p-6 text-white sm:p-8">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="max-w-2xl">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
-                    <i className="ti ti-shield-heart" />
-                    For Students &amp; Parents
-                  </div>
-                  <h4 className="mt-3 font-display text-xl font-bold sm:text-2xl">
-                    Transparent guidance. Honest career advice. No false promises.
-                  </h4>
-                  <p className="mt-2 text-xs leading-relaxed text-blue-100/80 sm:text-sm">
-                    We believe parents and students deserve honest clarity. We provide weekly progress milestones, practical lab attendance records, and direct counsellor access without aggressive sales tactics.
+              <div className="mt-12 grid gap-6 md:grid-cols-3">
+                <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-2xl text-blue-700">
+                    <i className="ti ti-device-desktop" />
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Dedicated High-Speed Labs</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    Fully equipped computer workstations with development environments pre-configured so you focus on writing code from day one.
                   </p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+                    <i className="ti ti-map-pin" /> Virudhunagar Campus
+                  </div>
                 </div>
-                <div className="flex shrink-0 flex-col sm:flex-row gap-3">
-                  <button
-                    type="button"
-                    onClick={() => toEnquiry("guidance")}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-5 text-xs font-bold text-slate-950 transition hover:bg-blue-50"
-                  >
-                    <span>Speak with a Counsellor</span>
-                    <i className="ti ti-arrow-right text-xs" />
-                  </button>
-                  <a
-                    href="tel:+919363793954"
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 text-xs font-semibold text-white transition hover:bg-white/20"
-                  >
-                    <i className="ti ti-phone text-xs" />
-                    <span>+91 93637 93954</span>
-                  </a>
+
+                <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-50 text-2xl text-purple-700">
+                    <i className="ti ti-user-check" />
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Daily In-Person Lab Mentors</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    Stuck on a syntax error, CORS bug, or database migration? Trainers sit beside you to explain why the bug occurred and how to fix it.
+                  </p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700">
+                    <i className="ti ti-check" /> Zero waiting for tickets
+                  </div>
                 </div>
+
+                <div className="relative mt-8 md:mt-0 rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+                  <div className="absolute -top-16 right-6 z-10">
+                    <Mascot
+                      directions="/mascots/glasses-directions.webp"
+                      reactions="/mascots/glasses-reactions.webp"
+                      size={84}
+                      label="Glasses Mascot"
+                    />
+                  </div>
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-700">
+                    <i className="ti ti-devices" />
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Flexible Classroom or Online</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    Attend daily offline lab sessions or switch to live interactive classes online if you are a working professional or out of town.
+                  </p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                    <i className="ti ti-video" /> Recorded sessions available
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Parent & Student Trust Box (Uncommented & Active) */}
+          <div className="rounded-3xl border border-blue-200/80 bg-gradient-to-r from-blue-900 to-[#0b1528] p-6 text-white sm:p-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
+                  <i className="ti ti-shield-heart" />
+                  For Students &amp; Parents
+                </div>
+                <h4 className="mt-3 font-display text-xl font-bold sm:text-2xl">
+                  Transparent guidance. Honest career advice. No false promises.
+                </h4>
+                <p className="mt-2 text-xs leading-relaxed text-blue-100/80 sm:text-sm">
+                  We believe parents and students deserve honest clarity. We provide weekly progress milestones, practical lab attendance records, and direct counsellor access without aggressive sales tactics.
+                </p>
+              </div>
+              <div className="flex shrink-0 flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => toEnquiry("guidance")}
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-5 text-xs font-bold text-slate-950 transition hover:bg-blue-50 cursor-pointer"
+                >
+                  <span>Speak with a Counsellor</span>
+                  <i className="ti ti-arrow-right text-xs" />
+                </button>
+                <a
+                  href="tel:+919363793954"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 text-xs font-semibold text-white transition hover:bg-white/20"
+                >
+                  <i className="ti ti-phone text-xs" />
+                  <span>+91 93637 93954</span>
+                </a>
               </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* =========================================================================
           SECTION 4: "The Simatrix Standard" (Software engineering cannot be learned through slides)
           STATUS: HIDDEN (Do not delete - easily re-enable anytime)
           TO RE-ENABLE: Change "false && (" below to "true && ("
          ========================================================================= */}
-      {false && (
+      {false&& (
         <CommunitySection data={data} courses={courses} testimonials={testimonials} />
       )}
 
