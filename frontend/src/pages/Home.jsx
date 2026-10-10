@@ -390,7 +390,7 @@ function CourseTile({ course }) {
           <span className="text-[#1E0295]">
             Explore Program
           </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#1E0295] text-white transition-all duration-300 group-hover:scale-110">
+          <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1E0295] group-hover:text-white">
             <i className="ti ti-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
         </div>
@@ -413,7 +413,7 @@ function CourseCardSkeleton() {
         <div className="mt-1.5 h-3.5 w-2/3 rounded bg-slate-200/60" />
         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3">
           <div className="h-3 w-20 rounded bg-slate-200/70" />
-          <div className="h-8 w-8 rounded-full bg-slate-200/70" />
+          <div className="h-8 w-8 rounded-full border-2 border-slate-200 bg-transparent" />
         </div>
       </div>
     </div>
