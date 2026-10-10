@@ -1831,247 +1831,265 @@ export default function Home() {
 
 
 
-      {/* Where Learning Leads / Tangible Outcomes */}
-      <section id="outcomes" className="scroll-mt-32 border-y border-slate-200/80 bg-gradient-to-b from-white to-slate-50/50 py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-700">Skills That Get You Hired</p>
-              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-                Learn to build real software. Not just collect paper certificates.
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-slate-600">
-                Companies don&apos;t hire pieces of paper. They hire people who know how to build apps and solve problems. At Simatrix Academy in Virudhunagar, you don&apos;t just watch theory—you build real projects that prove you are ready for a tech job.
-              </p>
-
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-xl text-blue-700">
-                    <i className="ti ti-device-desktop" />
-                  </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Real Apps You Can Show Online</h4>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Build 3 live websites and apps that open on any phone or laptop. Show interviewers real proof that your code works.
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-purple-50 text-xl text-purple-700">
-                    <i className="ti ti-messages" />
-                  </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Practice Job Interviews</h4>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Practice face-to-face coding interviews with our trainers before the real test. Speak clearly with zero fear.
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-xl text-emerald-700">
-                    <i className="ti ti-user-check" />
-                  </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Learn From Real Software Engineers</h4>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    Learn directly from engineers who work in tech companies. They sit beside you and help you fix bugs every day.
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-xl text-amber-700">
-                    <i className="ti ti-briefcase" />
-                  </span>
-                  <h4 className="mt-3 font-bold text-slate-950">Job &amp; Placement Support</h4>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                    We build your resume, prepare you for company tests, and connect you with hiring IT companies across Tamil Nadu.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Graduate Takeaway Checklist Card */}
-            <div className="rounded-3xl border border-brand-200/70 bg-gradient-to-br from-brand-900 to-[#0b1528] p-7 text-white shadow-2xl sm:p-9">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3.5 py-1 text-xs font-semibold text-amber-300">
-                <i className="ti ti-certificate" />
-                What You Walk Away With
-              </div>
-              <h3 className="mt-4 font-display text-2xl font-bold sm:text-3xl">
-                Everything you hold in your hands when you finish:
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-300 sm:text-sm">
-                You don&apos;t just finish a class. You leave with real proof that companies look for:
-              </p>
-
-              <ul className="mt-6 space-y-3.5 text-xs sm:text-sm">
-                {[
-                  "3+ Live, working apps running on your own web link",
-                  "Your own GitHub profile full of real code you wrote",
-                  "A clean software resume checked by senior tech leads",
-                  "Real confidence to explain your code in any company interview",
-                  "Official Simatrix Course Certificate + mentor recommendation",
-                  "Direct entry to company job drives and our student hiring network",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-500/20 text-emerald-400">
-                      <i className="ti ti-check text-xs font-bold" />
-                    </span>
-                    <span className="text-slate-200 font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={() => toEnquiry("guidance")}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 text-xs font-bold text-slate-950 transition hover:bg-amber-400"
-                >
-                  <span>Talk to a Mentor</span>
-                  <i className="ti ti-arrow-right text-xs" />
-                </button>
-                <Link
-                  to="/placement"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 text-xs font-semibold text-white transition hover:bg-white/10"
-                >
-                  <span>See Placement Support</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Your Learning Journey with Visual Progression Connectors */}
-      <section id="learning-journey" className="scroll-mt-32 bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-          <div className="relative overflow-hidden rounded-3xl bg-[#0d1b32] p-8 sm:p-12 lg:p-14 shadow-2xl border border-slate-800">
-            <SectionTitle
-              dark
-              eyebrow="Your learning journey"
-              title="A structured path from day one to your first tech job"
-              description="Every stage is intentionally designed so you never wonder what to work on next."
-            />
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {STEPS.map(([number, title, text], index) => (
-                <div
-                  key={number}
-                  className="relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[.04] p-6 backdrop-blur-xs transition hover:border-amber-400/40 hover:bg-white/[.06]"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-display text-3xl font-bold text-amber-300">{number}</span>
-                      {index < STEPS.length - 1 && (
-                        <span className="hidden lg:flex items-center text-slate-500 font-mono text-xs">
-                          Step 0{index + 1} → 0{index + 2}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="mt-4 text-lg font-bold text-white">{title}</h3>
-                    <p className="mt-2 text-xs leading-6 text-slate-300">{text}</p>
-                  </div>
-                  <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4 text-[11px] font-semibold text-amber-400">
-                    <i className="ti ti-circle-check text-xs" />
-                    <span>Phase Milestone</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Real Campus & Lab Environment (Virudhunagar) + Parent Trust */}
-      <section id="learning-environment" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-          <SectionTitle
-            eyebrow="Campus & Environment"
-            title="Learn in physical computer labs with mentor assistance"
-            description="We believe programming is best learned when you are surrounded by fellow learners and dedicated trainers ready to debug with you."
-          />
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-2xl text-blue-700">
-                <i className="ti ti-device-desktop" />
-              </span>
-              <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Dedicated High-Speed Labs</h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                Fully equipped computer workstations with development environments pre-configured so you focus on writing code from day one.
-              </p>
-              <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
-                <i className="ti ti-map-pin" /> Virudhunagar Campus
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-50 text-2xl text-purple-700">
-                <i className="ti ti-user-check" />
-              </span>
-              <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Daily In-Person Lab Mentors</h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                Stuck on a syntax error, CORS bug, or database migration? Trainers sit beside you to explain why the bug occurred and how to fix it.
-              </p>
-              <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700">
-                <i className="ti ti-check" /> Zero waiting for tickets
-              </div>
-            </div>
-
-            <div className="relative mt-8 md:mt-0 rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
-              <div className="absolute -top-16 right-6 z-10">
-                <Mascot
-                  directions="/mascots/glasses-directions.webp"
-                  reactions="/mascots/glasses-reactions.webp"
-                  size={84}
-                  label="Glasses Mascot"
-                />
-              </div>
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-700">
-                <i className="ti ti-devices" />
-              </span>
-              <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Flexible Classroom or Online</h3>
-              <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                Attend daily offline lab sessions or switch to live interactive classes online if you are a working professional or out of town.
-              </p>
-              <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
-                <i className="ti ti-video" /> Recorded sessions available
-              </div>
-            </div>
-          </div>
-
-          {/* Parent & Student Trust Box */}
-          <div className="mt-8 rounded-3xl border border-blue-200/80 bg-gradient-to-r from-blue-900 to-[#0b1528] p-6 text-white sm:p-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
-                  <i className="ti ti-shield-heart" />
-                  For Students &amp; Parents
-                </div>
-                <h4 className="mt-3 font-display text-xl font-bold sm:text-2xl">
-                  Transparent guidance. Honest career advice. No false promises.
-                </h4>
-                <p className="mt-2 text-xs leading-relaxed text-blue-100/80 sm:text-sm">
-                  We believe parents and students deserve honest clarity. We provide weekly progress milestones, practical lab attendance records, and direct counsellor access without aggressive sales tactics.
+      {/* =========================================================================
+          SECTION 1: "Skills That Get You Hired" (Tangible Outcomes)
+          STATUS: HIDDEN (Do not delete - easily re-enable anytime)
+          TO RE-ENABLE: Change "false && (" below to "true && ("
+         ========================================================================= */}
+      {false && (
+        <section id="outcomes" className="scroll-mt-32 border-y border-slate-200/80 bg-gradient-to-b from-white to-slate-50/50 py-20 sm:py-24">
+          <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
+            <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-700">Skills That Get You Hired</p>
+                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+                  Learn to build real software. Not just collect paper certificates.
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-slate-600">
+                  Companies don&apos;t hire pieces of paper. They hire people who know how to build apps and solve problems. At Simatrix Academy in Virudhunagar, you don&apos;t just watch theory—you build real projects that prove you are ready for a tech job.
                 </p>
+
+                <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-xl text-blue-700">
+                      <i className="ti ti-device-desktop" />
+                    </span>
+                    <h4 className="mt-3 font-bold text-slate-950">Real Apps You Can Show Online</h4>
+                    <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                      Build 3 live websites and apps that open on any phone or laptop. Show interviewers real proof that your code works.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-purple-50 text-xl text-purple-700">
+                      <i className="ti ti-messages" />
+                    </span>
+                    <h4 className="mt-3 font-bold text-slate-950">Practice Job Interviews</h4>
+                    <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                      Practice face-to-face coding interviews with our trainers before the real test. Speak clearly with zero fear.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-xl text-emerald-700">
+                      <i className="ti ti-user-check" />
+                    </span>
+                    <h4 className="mt-3 font-bold text-slate-950">Learn From Real Software Engineers</h4>
+                    <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                      Learn directly from engineers who work in tech companies. They sit beside you and help you fix bugs every day.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-xl text-amber-700">
+                      <i className="ti ti-briefcase" />
+                    </span>
+                    <h4 className="mt-3 font-bold text-slate-950">Job &amp; Placement Support</h4>
+                    <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                      We build your resume, prepare you for company tests, and connect you with hiring IT companies across Tamil Nadu.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="flex shrink-0 flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={() => toEnquiry("guidance")}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-5 text-xs font-bold text-slate-950 transition hover:bg-blue-50"
-                >
-                  <span>Speak with a Counsellor</span>
-                  <i className="ti ti-arrow-right text-xs" />
-                </button>
-                <a
-                  href="tel:+919363793954"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 text-xs font-semibold text-white transition hover:bg-white/20"
-                >
-                  <i className="ti ti-phone text-xs" />
-                  <span>+91 93637 93954</span>
-                </a>
+
+              {/* Graduate Takeaway Checklist Card */}
+              <div className="rounded-3xl border border-brand-200/70 bg-gradient-to-br from-brand-900 to-[#0b1528] p-7 text-white shadow-2xl sm:p-9">
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3.5 py-1 text-xs font-semibold text-amber-300">
+                  <i className="ti ti-certificate" />
+                  What You Walk Away With
+                </div>
+                <h3 className="mt-4 font-display text-2xl font-bold sm:text-3xl">
+                  Everything you hold in your hands when you finish:
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-300 sm:text-sm">
+                  You don&apos;t just finish a class. You leave with real proof that companies look for:
+                </p>
+
+                <ul className="mt-6 space-y-3.5 text-xs sm:text-sm">
+                  {[
+                    "3+ Live, working apps running on your own web link",
+                    "Your own GitHub profile full of real code you wrote",
+                    "A clean software resume checked by senior tech leads",
+                    "Real confidence to explain your code in any company interview",
+                    "Official Simatrix Course Certificate + mentor recommendation",
+                    "Direct entry to company job drives and our student hiring network",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-500/20 text-emerald-400">
+                        <i className="ti ti-check text-xs font-bold" />
+                      </span>
+                      <span className="text-slate-200 font-medium">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+                  <button
+                    type="button"
+                    onClick={() => toEnquiry("guidance")}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 text-xs font-bold text-slate-950 transition hover:bg-amber-400"
+                  >
+                    <span>Talk to a Mentor</span>
+                    <i className="ti ti-arrow-right text-xs" />
+                  </button>
+                  <Link
+                    to="/placement"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 text-xs font-semibold text-white transition hover:bg-white/10"
+                  >
+                    <span>See Placement Support</span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* =========================================================================
+          SECTION 2: "Your Learning Journey" (A structured path from day one to tech job)
+          STATUS: HIDDEN (Do not delete - easily re-enable anytime)
+          TO RE-ENABLE: Change "false && (" below to "true && ("
+         ========================================================================= */}
+      {false && (
+        <section id="learning-journey" className="scroll-mt-32 bg-white py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
+            <div className="relative overflow-hidden rounded-3xl bg-[#0d1b32] p-8 sm:p-12 lg:p-14 shadow-2xl border border-slate-800">
+              <SectionTitle
+                dark
+                eyebrow="Your learning journey"
+                title="A structured path from day one to your first tech job"
+                description="Every stage is intentionally designed so you never wonder what to work on next."
+              />
+              <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {STEPS.map(([number, title, text], index) => (
+                  <div
+                    key={number}
+                    className="relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[.04] p-6 backdrop-blur-xs transition hover:border-amber-400/40 hover:bg-white/[.06]"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-display text-3xl font-bold text-amber-300">{number}</span>
+                        {index < STEPS.length - 1 && (
+                          <span className="hidden lg:flex items-center text-slate-500 font-mono text-xs">
+                            Step 0{index + 1} → 0{index + 2}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="mt-4 text-lg font-bold text-white">{title}</h3>
+                      <p className="mt-2 text-xs leading-6 text-slate-300">{text}</p>
+                    </div>
+                    <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4 text-[11px] font-semibold text-amber-400">
+                      <i className="ti ti-circle-check text-xs" />
+                      <span>Phase Milestone</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* =========================================================================
+          SECTION 3: "Campus & Environment" (Physical computer labs & mentor assistance)
+          STATUS: HIDDEN (Do not delete - easily re-enable anytime)
+          TO RE-ENABLE: Change "false && (" below to "true && ("
+         ========================================================================= */}
+      {false && (
+        <section id="learning-environment" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
+          <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
+            <SectionTitle
+              eyebrow="Campus & Environment"
+              title="Learn in physical computer labs with mentor assistance"
+              description="We believe programming is best learned when you are surrounded by fellow learners and dedicated trainers ready to debug with you."
+            />
+
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-2xl text-blue-700">
+                  <i className="ti ti-device-desktop" />
+                </span>
+                <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Dedicated High-Speed Labs</h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                  Fully equipped computer workstations with development environments pre-configured so you focus on writing code from day one.
+                </p>
+                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+                  <i className="ti ti-map-pin" /> Virudhunagar Campus
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-50 text-2xl text-purple-700">
+                  <i className="ti ti-user-check" />
+                </span>
+                <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Daily In-Person Lab Mentors</h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                  Stuck on a syntax error, CORS bug, or database migration? Trainers sit beside you to explain why the bug occurred and how to fix it.
+                </p>
+                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700">
+                  <i className="ti ti-check" /> Zero waiting for tickets
+                </div>
+              </div>
+
+              <div className="relative mt-8 md:mt-0 rounded-3xl border border-slate-200/80 bg-white p-7 shadow-xs">
+                <div className="absolute -top-16 right-6 z-10">
+                  <Mascot
+                    directions="/mascots/glasses-directions.webp"
+                    reactions="/mascots/glasses-reactions.webp"
+                    size={84}
+                    label="Glasses Mascot"
+                  />
+                </div>
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-700">
+                  <i className="ti ti-devices" />
+                </span>
+                <h3 className="mt-5 font-display text-xl font-bold text-slate-950">Flexible Classroom or Online</h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                  Attend daily offline lab sessions or switch to live interactive classes online if you are a working professional or out of town.
+                </p>
+                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                  <i className="ti ti-video" /> Recorded sessions available
+                </div>
+              </div>
+            </div>
+
+            {/* Parent & Student Trust Box */}
+            <div className="mt-8 rounded-3xl border border-blue-200/80 bg-gradient-to-r from-blue-900 to-[#0b1528] p-6 text-white sm:p-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="max-w-2xl">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
+                    <i className="ti ti-shield-heart" />
+                    For Students &amp; Parents
+                  </div>
+                  <h4 className="mt-3 font-display text-xl font-bold sm:text-2xl">
+                    Transparent guidance. Honest career advice. No false promises.
+                  </h4>
+                  <p className="mt-2 text-xs leading-relaxed text-blue-100/80 sm:text-sm">
+                    We believe parents and students deserve honest clarity. We provide weekly progress milestones, practical lab attendance records, and direct counsellor access without aggressive sales tactics.
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-col sm:flex-row gap-3">
+                  <button
+                    type="button"
+                    onClick={() => toEnquiry("guidance")}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-5 text-xs font-bold text-slate-950 transition hover:bg-blue-50"
+                  >
+                    <span>Speak with a Counsellor</span>
+                    <i className="ti ti-arrow-right text-xs" />
+                  </button>
+                  <a
+                    href="tel:+919363793954"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 text-xs font-semibold text-white transition hover:bg-white/20"
+                  >
+                    <i className="ti ti-phone text-xs" />
+                    <span>+91 93637 93954</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Why Simatrix - Community & Mentors Section */}
       <CommunitySection data={data} courses={courses} testimonials={testimonials} />
