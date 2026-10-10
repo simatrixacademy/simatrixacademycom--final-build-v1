@@ -387,10 +387,10 @@ function CourseTile({ course }) {
 
         {/* Explore Program CTA Bar */}
         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-[#1E0295]">
-          <span className="text-[#1E0295]">
+          <span className="transition-colors duration-300 group-hover:text-[#9800E8]">
             Explore Program
           </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1E0295] group-hover:text-white">
+          <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-300 group-hover:scale-110 group-hover:border-[#9800E8] group-hover:bg-[#9800E8] group-hover:text-white">
             <i className="ti ti-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
         </div>
@@ -509,69 +509,86 @@ function PopularCoursesCarousel({ courses }) {
 
       {/* Navigation Controls Centered with Matching Centered Purple Buttons */}
       <div className="mt-8 flex flex-col items-center justify-center gap-5 sm:relative">
-        <div className="flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => canScrollLeft && move(-1)}
-            disabled={!canScrollLeft}
-            aria-label="Previous courses"
-            style={{ cursor: !canScrollLeft ? "default" : "pointer" }}
-            className={`grid h-10 w-10 place-items-center rounded-full border-2 transition-all duration-200 ${
-              !canScrollLeft
-                ? "border-slate-300 text-slate-300 bg-transparent shadow-none"
-                : "border-[#1E0295] bg-transparent text-[#1E0295] hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
-            }`}
-          >
-            <i className="ti ti-arrow-left text-sm" />
-          </button>
+        {/* Carousel Navigation Controls & Explore All Programs Button Centered */}
+        <div className="flex flex-col items-center justify-center gap-4 text-center">
+          <div className="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => canScrollLeft && move(-1)}
+              disabled={!canScrollLeft}
+              aria-label="Previous courses"
+              style={{ cursor: !canScrollLeft ? "default" : "pointer" }}
+              className={`grid h-10 w-10 place-items-center rounded-full border-2 transition-all duration-200 ${
+                !canScrollLeft
+                  ? "border-slate-300 text-slate-300 bg-transparent shadow-none"
+                  : "border-[#1E0295] bg-transparent text-[#1E0295] hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
+              }`}
+            >
+              <i className="ti ti-arrow-left text-sm" />
+            </button>
 
-          {/* Dots Indicator in Simatrix Centered Purple */}
-          <div className="flex items-center gap-1 sm:gap-1.5 px-1" role="tablist" aria-label="Course pagination">
-            {Array.from({ length: totalDots }).map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                role="tab"
-                aria-selected={activeIndex === idx}
-                aria-label={`Go to slide ${idx + 1}`}
-                onClick={() => scrollToDot(idx)}
-                className="flex items-center justify-center p-1 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
-              >
-                <span
-                  className={`block rounded-full transition-all duration-300 ${activeIndex === idx
-                      ? "h-2 w-6 bg-[#1E0295] shadow-xs"
-                      : "h-2 w-2 bg-slate-200 hover:bg-[#1E0295]/30"
-                    }`}
-                />
-              </button>
-            ))}
+            {/* Dots Indicator in Simatrix Centered Purple */}
+            <div className="flex items-center gap-1 sm:gap-1.5 px-1" role="tablist" aria-label="Course pagination">
+              {Array.from({ length: totalDots }).map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeIndex === idx}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  onClick={() => scrollToDot(idx)}
+                  className="flex items-center justify-center p-1 cursor-pointer border-0 bg-transparent outline-none focus:outline-none appearance-none leading-none"
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${activeIndex === idx
+                        ? "h-2 w-6 bg-[#1E0295] shadow-xs"
+                        : "h-2 w-2 bg-slate-200 hover:bg-[#1E0295]/30"
+                      }`}
+                  />
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => canScrollRight && move(1)}
+              disabled={!canScrollRight}
+              aria-label="Next courses"
+              style={{ cursor: !canScrollRight ? "default" : "pointer" }}
+              className={`grid h-10 w-10 place-items-center rounded-full border-2 transition-all duration-200 ${
+                !canScrollRight
+                  ? "border-slate-300 text-slate-300 bg-transparent shadow-none"
+                  : "border-[#1E0295] bg-transparent text-[#1E0295] hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
+              }`}
+            >
+              <i className="ti ti-arrow-right text-sm" />
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => canScrollRight && move(1)}
-            disabled={!canScrollRight}
-            aria-label="Next courses"
-            style={{ cursor: !canScrollRight ? "default" : "pointer" }}
-            className={`grid h-10 w-10 place-items-center rounded-full border-2 transition-all duration-200 ${
-              !canScrollRight
-                ? "border-slate-300 text-slate-300 bg-transparent shadow-none"
-                : "border-[#1E0295] bg-transparent text-[#1E0295] hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
-            }`}
-          >
-            <i className="ti ti-arrow-right text-sm" />
-          </button>
-        </div>
-
-        {/* Explore All Courses Button */}
-        <div className="sm:absolute sm:right-0">
+          {/* Explore All Programs Button under carousel navigation arrows */}
           <Link
             to="/courses"
-            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-[#1E0295] bg-white px-6 text-xs font-bold text-[#1E0295] shadow-xs transition-all duration-200 hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-[#1E0295] bg-white px-6 text-xs font-bold text-[#1E0295] shadow-xs transition-all duration-300 hover:border-[#9800E8] hover:bg-[#1E0295] hover:text-white hover:shadow-md hover:shadow-[#1E0295]/20 active:scale-95 cursor-pointer"
           >
-            <span>Explore All 20+ Courses</span>
-            <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-1" />
+            <span>Explore All Programs</span>
+            <i className="ti ti-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
+        </div>
+
+        {/* Need foundations? aligned with carousel arrows row */}
+        <div className="sm:absolute sm:right-0 sm:top-0 sm:h-10 sm:flex sm:items-center">
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="font-semibold text-slate-500">Need foundations?</span>
+            <Link
+              to="/courses?category=programming"
+              className="group/foundations inline-flex items-center gap-1 font-bold text-[#1E0295] transition-colors duration-200 hover:text-[#9800E8]"
+            >
+              <span className="underline underline-offset-4 decoration-[#1E0295]/40 group-hover/foundations:decoration-[#9800E8]">
+                Explore C, C++, Java &amp; more
+              </span>
+              <i className="ti ti-arrow-right text-[10px] no-underline transition-transform duration-200 group-hover/foundations:translate-x-0.5" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -1834,23 +1851,11 @@ export default function Home() {
           {(!data || featured.length > 0) && (
             <section id="popular-programs" className="scroll-mt-32 bg-slate-50 py-20 sm:py-28">
               <div className="mx-auto max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                  <SectionTitle
-                    left
-                    eyebrow="Flagship Programs"
-                    title="Industry-ready career tracks"
-                    description="Engineered for employability. Compare project outcomes, technical curriculum, and duration before getting started."
-                  />
-                  <div className="hidden md:flex items-center gap-2 pb-2">
-                    <span className="text-xs font-semibold text-slate-500">Need foundations?</span>
-                    <Link
-                      to="/courses"
-                      className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:text-brand-800 underline underline-offset-4"
-                    >
-                      Explore C, C++, Java &amp; more <i className="ti ti-arrow-right text-[10px]" />
-                    </Link>
-                  </div>
-                </div>
+                <SectionTitle
+                  eyebrow="Flagship Programs"
+                  title="Industry-ready career tracks"
+                  description="Engineered for employability. Compare project outcomes, technical curriculum, and duration before getting started."
+                />
                 {!data ? (
                   <div className="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {Array.from({ length: 4 }).map((_, i) => (
