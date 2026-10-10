@@ -155,10 +155,6 @@ html {
   }
 }
 
-::selection {
-  background: rgba(202, 138, 4, 0.22);
-  color: #131c30;
-}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-6px); }
