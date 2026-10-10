@@ -430,21 +430,38 @@ function CategorySkeleton() {
 function PopularCoursesCarousel({ courses }) {
   const trackRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const totalDots = Math.min(5, Math.max(courses.length, 1));
 
-  const updateActiveDot = () => {
+  const updateScrollState = () => {
     const track = trackRef.current;
     if (!track) return;
     const maxScroll = track.scrollWidth - track.clientWidth;
-    if (maxScroll <= 0) {
+    if (maxScroll <= 1) {
       setActiveIndex(0);
+      setCanScrollLeft(false);
+      setCanScrollRight(false);
       return;
     }
     const ratio = track.scrollLeft / maxScroll;
     const index = Math.min(totalDots - 1, Math.max(0, Math.round(ratio * (totalDots - 1))));
     setActiveIndex(index);
+    setCanScrollLeft(track.scrollLeft > 4);
+    setCanScrollRight(track.scrollLeft < maxScroll - 4);
   };
+
+  useEffect(() => {
+    updateScrollState();
+    const handleResize = () => updateScrollState();
+    window.addEventListener("resize", handleResize);
+    const timer = setTimeout(updateScrollState, 150);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
+    };
+  }, [courses]);
 
   const scrollToDot = (idx) => {
     const track = trackRef.current;
@@ -453,6 +470,8 @@ function PopularCoursesCarousel({ courses }) {
     const target = (idx / (totalDots - 1)) * maxScroll;
     track.scrollTo({ left: target, behavior: "smooth" });
     setActiveIndex(idx);
+    setCanScrollLeft(idx > 0 && target > 4);
+    setCanScrollRight(idx < totalDots - 1 && target < maxScroll - 4);
   };
 
   const move = (direction) => {
@@ -468,7 +487,7 @@ function PopularCoursesCarousel({ courses }) {
       {/* Scrollable Track */}
       <div
         ref={trackRef}
-        onScroll={updateActiveDot}
+        onScroll={updateScrollState}
         className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scroll-smooth"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
@@ -487,9 +506,15 @@ function PopularCoursesCarousel({ courses }) {
         <div className="flex items-center justify-center gap-3">
           <button
             type="button"
-            onClick={() => move(-1)}
+            onClick={() => canScrollLeft && move(-1)}
+            disabled={!canScrollLeft}
             aria-label="Previous courses"
-            className="grid h-10 w-10 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-200 hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
+            style={{ cursor: !canScrollLeft ? "default" : "pointer" }}
+            className={`grid h-10 w-10 place-items-center rounded-full border-2 transition-all duration-200 ${
+              !canScrollLeft
+                ? "border-slate-300 text-slate-300 bg-transparent shadow-none"
+                : "border-[#1E0295] bg-transparent text-[#1E0295] hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
+            }`}
           >
             <i className="ti ti-arrow-left text-sm" />
           </button>
@@ -518,9 +543,15 @@ function PopularCoursesCarousel({ courses }) {
 
           <button
             type="button"
-            onClick={() => move(1)}
+            onClick={() => canScrollRight && move(1)}
+            disabled={!canScrollRight}
             aria-label="Next courses"
-            className="grid h-10 w-10 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-200 hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
+            style={{ cursor: !canScrollRight ? "default" : "pointer" }}
+            className={`grid h-10 w-10 place-items-center rounded-full border-2 transition-all duration-200 ${
+              !canScrollRight
+                ? "border-slate-300 text-slate-300 bg-transparent shadow-none"
+                : "border-[#1E0295] bg-transparent text-[#1E0295] hover:bg-[#1E0295] hover:text-white active:scale-95 cursor-pointer shadow-xs"
+            }`}
           >
             <i className="ti ti-arrow-right text-sm" />
           </button>
@@ -2057,37 +2088,72 @@ export default function Home() {
             </>
           )}
 
-          {/* Parent & Student Trust Box (Uncommented & Active) */}
-          <div className="rounded-3xl border border-blue-200/80 bg-gradient-to-r from-blue-900 to-[#0b1528] p-6 text-white sm:p-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">
-                  <i className="ti ti-shield-heart" />
-                  For Students &amp; Parents
+          {/* Parent & Student Trust Hero Card - Learning Path Aesthetic */}
+          <div className="relative overflow-hidden rounded-3xl sm:rounded-[2rem] border border-violet-100/90 bg-gradient-to-br from-[#f8f7fe] via-[#f4f1fd] to-[#fbfaff] p-6 sm:p-8 lg:p-10 shadow-sm">
+            {/* Subtle decorative background ambient glow */}
+            <div
+              className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-purple-300/15 blur-3xl"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-indigo-300/15 blur-3xl"
+              aria-hidden="true"
+            />
+
+            <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
+              {/* Left Side: Student Illustration from Learning Path Hero Banner */}
+              <div className="flex items-center justify-center lg:col-span-5">
+                <div className="relative w-full max-w-[440px] overflow-hidden rounded-2xl shadow-xs lg:max-w-none">
+                  <img
+                    src="/banner/learning-path-illustration.png"
+                    alt="Students and parents career guidance at Simatrix Academy"
+                    loading="lazy"
+                    className="h-auto w-full object-contain [mask-image:linear-gradient(to_bottom,black_92%,transparent_100%)] lg:[mask-image:linear-gradient(to_right,black_90%,transparent_100%)]"
+                  />
                 </div>
-                <h4 className="mt-3 font-display text-xl font-bold sm:text-2xl">
-                  Transparent guidance. Honest career advice. No false promises.
-                </h4>
-                <p className="mt-2 text-xs leading-relaxed text-blue-100/80 sm:text-sm">
+              </div>
+
+              {/* Right Side: Content (Text and Buttons) */}
+              <div className="flex flex-col justify-center lg:col-span-7">
+                {/* Pill Badge */}
+                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-purple-200 bg-white/80 px-3.5 py-1.5 text-xs font-bold tracking-wide text-[#1E0295] shadow-2xs backdrop-blur-xs">
+                  <i className="ti ti-shield-heart text-sm text-[#1E0295]" />
+                  <span>SIMATRIX ACADEMY</span>
+                  <span className="text-purple-300">•</span>
+                  <span className="font-semibold text-purple-700">FOR STUDENTS &amp; PARENTS</span>
+                </div>
+
+                {/* Headline */}
+                <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl lg:text-[34px] lg:leading-[1.2]">
+                  Transparent guidance.{" "}
+                  <span className="text-[#1E0295]">Honest career advice.</span>{" "}
+                  No false promises.
+                </h3>
+
+                {/* Description Paragraph */}
+                <p className="mt-3.5 text-sm leading-relaxed text-slate-600 sm:text-base">
                   We believe parents and students deserve honest clarity. We provide weekly progress milestones, practical lab attendance records, and direct counsellor access without aggressive sales tactics.
                 </p>
-              </div>
-              <div className="flex shrink-0 flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={() => toEnquiry("guidance")}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-5 text-xs font-bold text-slate-950 transition hover:bg-blue-50 cursor-pointer"
-                >
-                  <span>Speak with a Counsellor</span>
-                  <i className="ti ti-arrow-right text-xs" />
-                </button>
-                <a
-                  href="tel:+919363793954"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 text-xs font-semibold text-white transition hover:bg-white/20"
-                >
-                  <i className="ti ti-phone text-xs" />
-                  <span>+91 93637 93954</span>
-                </a>
+
+                {/* Buttons */}
+                <div className="mt-7 flex flex-wrap items-center gap-3.5">
+                  <button
+                    type="button"
+                    onClick={() => toEnquiry("guidance")}
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#1E0295] px-7 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#1E0295]/20 transition-all duration-200 hover:bg-[#2804a8] hover:shadow-lg hover:shadow-[#1E0295]/30 active:scale-95 cursor-pointer"
+                  >
+                    <span>Speak with a Counsellor</span>
+                    <i className="ti ti-arrow-right text-xs" />
+                  </button>
+
+                  <a
+                    href="tel:+919363793954"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-slate-200 bg-white px-6 text-xs sm:text-sm font-semibold text-slate-800 shadow-2xs transition-all duration-200 hover:border-[#1E0295] hover:text-[#1E0295] active:scale-95 cursor-pointer"
+                  >
+                    <i className="ti ti-phone text-xs text-[#1E0295]" />
+                    <span>+91 93637 93954</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
