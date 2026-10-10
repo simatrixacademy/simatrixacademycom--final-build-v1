@@ -2091,8 +2091,14 @@ export default function Home() {
         </section>
       )}
 
-      {/* Why Simatrix - Community & Mentors Section */}
-      <CommunitySection data={data} courses={courses} testimonials={testimonials} />
+      {/* =========================================================================
+          SECTION 4: "The Simatrix Standard" (Software engineering cannot be learned through slides)
+          STATUS: HIDDEN (Do not delete - easily re-enable anytime)
+          TO RE-ENABLE: Change "false && (" below to "true && ("
+         ========================================================================= */}
+      {false && (
+        <CommunitySection data={data} courses={courses} testimonials={testimonials} />
+      )}
 
       {/* Learner Stories / Testimonials */}
       <section id="learner-stories" className="scroll-mt-32 relative bg-slate-50/40 py-16 sm:py-20 overflow-hidden border-y border-slate-100">
