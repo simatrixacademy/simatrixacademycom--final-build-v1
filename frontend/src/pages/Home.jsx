@@ -335,8 +335,14 @@ function CourseTile({ course }) {
   return (
     <Link
       to={`/courses/${course.slug}`}
-      className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1E0295]/40 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-[#1E0295]"
+      className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border-2 border-slate-200/90 bg-white transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-1.5 hover:border-[#9800E8] focus-visible:ring-2 focus-visible:ring-[#1E0295]"
     >
+      {/* Top accent line with brand gradient */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-0.5 scale-x-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-x-100"
+        style={{ background: "linear-gradient(90deg, transparent, #00A0F8, #9800E8, transparent)" }}
+      />
+
       {/* Top Banner with Clean Normal Image */}
       <div className="relative aspect-[16/8] w-full overflow-hidden bg-slate-100">
         <img
@@ -370,7 +376,7 @@ function CourseTile({ course }) {
             </span>
           </div>
 
-          <h3 className="mt-2.5 font-display text-base sm:text-lg font-bold leading-snug text-slate-950 transition-colors group-hover:text-[#1E0295] line-clamp-1">
+          <h3 className="mt-2.5 font-display text-base sm:text-lg font-bold leading-snug text-slate-950 transition-colors duration-300 group-hover:text-[#1E0295] line-clamp-1">
             {course.title}
           </h3>
 
@@ -381,11 +387,11 @@ function CourseTile({ course }) {
 
         {/* Explore Program CTA Bar */}
         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-[#1E0295]">
-          <span className="transition-colors group-hover:text-[#2804a8]">
+          <span className="text-[#1E0295]">
             Explore Program
           </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full border border-[#1E0295] bg-white text-[#1E0295] shadow-2xs transition-all duration-300 group-hover:scale-105 group-hover:bg-[#1E0295] group-hover:text-white">
-            <i className="ti ti-arrow-right text-xs transition-transform group-hover:translate-x-0.5" />
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#1E0295] text-white transition-all duration-300 group-hover:scale-110">
+            <i className="ti ti-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
         </div>
       </div>
@@ -488,7 +494,7 @@ function PopularCoursesCarousel({ courses }) {
       <div
         ref={trackRef}
         onScroll={updateScrollState}
-        className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scroll-smooth"
+        className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pt-2 pb-6 px-1 scroll-smooth"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {courses.map((course) => (
