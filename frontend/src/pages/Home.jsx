@@ -2122,12 +2122,10 @@ export default function Home() {
               {/* Right Side: Content (Text and Buttons) */}
               <div className="flex flex-col justify-center lg:col-span-7">
                 {/* Pill Badge */}
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-purple-200 bg-white/80 px-3.5 py-1.5 text-xs font-bold tracking-wide text-[#1E0295] shadow-2xs backdrop-blur-xs">
-                  <i className="ti ti-shield-heart text-sm text-[#1E0295]" />
-                  <span>SIMATRIX ACADEMY</span>
-                  <span className="text-purple-300">•</span>
-                  <span className="font-semibold text-purple-700">FOR STUDENTS &amp; PARENTS</span>
-                </div>
+
+                
+                <span className="font-semibold text-purple-700">FOR STUDENTS &amp; PARENTS</span>
+
 
                 {/* Headline */}
                 <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl lg:text-[34px] lg:leading-[1.2]">
