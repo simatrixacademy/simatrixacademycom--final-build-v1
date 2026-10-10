@@ -470,10 +470,10 @@ export default function Navbar() {
           {/* CTA Button */}
           <Link
             to="/contact"
-            className="ml-0.5 xl:ml-1 inline-flex items-center gap-2 rounded-xl bg-[#1E0295] hover:bg-[#2804a8] px-3.5 py-2 xl:px-4.5 xl:py-2.5 text-[13.5px] xl:text-[14px] font-semibold text-white shadow-xs transition-all duration-150 active:scale-[0.98] whitespace-nowrap shrink-0"
+            className="group ml-0.5 xl:ml-1 inline-flex items-center gap-2 rounded-xl border-2 border-[#1E0295] bg-white hover:bg-[#1E0295] px-3.5 py-1.5 xl:px-4.5 xl:py-2 text-[13.5px] xl:text-[14px] font-semibold text-[#1E0295] hover:text-white shadow-xs transition-all duration-200 active:scale-[0.98] whitespace-nowrap shrink-0"
           >
             <span>Get Course Details</span>
-            <i className="ti ti-arrow-right text-xs" />
+            <i className="ti ti-arrow-right text-sm transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
         </div>
 
@@ -945,10 +945,10 @@ export default function Navbar() {
             <Link
               to="/contact"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-lg bg-[#1E0295] hover:bg-[#2804a8] py-2.5 text-sm font-bold text-white transition"
+              className="group flex items-center justify-center gap-2 rounded-xl border-2 border-[#1E0295] bg-white py-2.5 text-sm font-bold text-[#1E0295] hover:bg-[#1E0295] hover:text-white transition-all duration-200 shadow-xs"
             >
               <span>Get Course Details</span>
-              <i className="ti ti-arrow-right text-xs" />
+              <i className="ti ti-arrow-right text-sm transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
