@@ -335,12 +335,12 @@ function CourseTile({ course }) {
   return (
     <Link
       to={`/courses/${course.slug}`}
-      className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border-2 border-slate-200/90 bg-white transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-1.5 hover:border-[#9800E8] focus-visible:ring-2 focus-visible:ring-[#1E0295]"
+      className="group relative mx-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border-2 border-slate-200/90 bg-white transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:-translate-y-1.5 hover:border-[#1E0295] focus-visible:ring-2 focus-visible:ring-[#1E0295]"
     >
       {/* Top accent line with brand gradient */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-0.5 scale-x-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-x-100"
-        style={{ background: "linear-gradient(90deg, transparent, #00A0F8, #9800E8, transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, #00A0F8, #1E0295, transparent)" }}
       />
 
       {/* Top Banner with Clean Normal Image */}
@@ -387,10 +387,10 @@ function CourseTile({ course }) {
 
         {/* Explore Program CTA Bar */}
         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-[#1E0295]">
-          <span className="transition-colors duration-300 group-hover:text-[#9800E8]">
+          <span className="text-[#1E0295]">
             Explore Program
           </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-300 group-hover:scale-110 group-hover:border-[#9800E8] group-hover:bg-[#9800E8] group-hover:text-white">
+          <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-[#1E0295] bg-transparent text-[#1E0295] transition-all duration-300 group-hover:scale-110 group-hover:border-[#1E0295] group-hover:bg-[#1E0295] group-hover:text-white">
             <i className="ti ti-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
         </div>
@@ -568,7 +568,7 @@ function PopularCoursesCarousel({ courses }) {
           {/* Explore All Programs Button under carousel navigation arrows */}
           <Link
             to="/courses"
-            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-[#1E0295] bg-white px-6 text-xs font-bold text-[#1E0295] shadow-xs transition-all duration-300 hover:border-[#9800E8] hover:bg-[#1E0295] hover:text-white hover:shadow-md hover:shadow-[#1E0295]/20 active:scale-95 cursor-pointer"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-[#1E0295] bg-white px-6 text-xs font-bold text-[#1E0295] shadow-xs transition-all duration-300 hover:border-[#1E0295] hover:bg-[#1E0295] hover:text-white hover:shadow-md hover:shadow-[#1E0295]/20 active:scale-95 cursor-pointer"
           >
             <span>Explore All Programs</span>
             <i className="ti ti-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1" />
@@ -581,9 +581,9 @@ function PopularCoursesCarousel({ courses }) {
             <span className="font-semibold text-slate-500">Need foundations?</span>
             <Link
               to="/courses?category=programming"
-              className="group/foundations inline-flex items-center gap-1 font-bold text-[#1E0295] transition-colors duration-200 hover:text-[#9800E8]"
+              className="group/foundations inline-flex items-center gap-1 font-bold text-[#1E0295] transition-colors duration-200 hover:text-[#1E0295]"
             >
-              <span className="underline underline-offset-4 decoration-[#1E0295]/40 group-hover/foundations:decoration-[#9800E8]">
+              <span className="underline underline-offset-4 decoration-[#1E0295]/40 group-hover/foundations:decoration-[#1E0295]">
                 Explore C, C++, Java &amp; more
               </span>
               <i className="ti ti-arrow-right text-[10px] no-underline transition-transform duration-200 group-hover/foundations:translate-x-0.5" />
