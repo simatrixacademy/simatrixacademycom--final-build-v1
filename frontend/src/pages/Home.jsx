@@ -2101,12 +2101,12 @@ export default function Home() {
             />
 
             <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
-              {/* Left Side: Student Illustration from Learning Path Hero Banner */}
+              {/* Left Side: Student Girl Graphic */}
               <div className="flex items-center justify-center lg:col-span-5">
                 <div className="relative w-full max-w-[440px] overflow-hidden rounded-2xl shadow-xs lg:max-w-none">
                   <img
-                    src="/banner/learning-path-illustration.png"
-                    alt="Students and parents career guidance at Simatrix Academy"
+                    src="/banner/student-guidance-girl.png"
+                    alt="Student career guidance at Simatrix Academy"
                     loading="lazy"
                     className="h-auto w-full object-contain [mask-image:linear-gradient(to_bottom,black_92%,transparent_100%)] lg:[mask-image:linear-gradient(to_right,black_90%,transparent_100%)]"
                   />
